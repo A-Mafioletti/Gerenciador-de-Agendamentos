@@ -111,6 +111,10 @@ Os dados dos clientes (telefones, nomes, endereços) devem ser associados e rest
 
 ## Escopo
 
-- **v1 (MVP):** Criação de página de recepção de agendamentos (booking page pro cliente); Dashboard "Minha Agenda" pro profissional com painel de listagem de serviços do dia; Fluxo simples de Autenticação Auth/Login.
-- **v2:** Gerenciamento refinado: possibilidade do profissional editar reservas/tempo bloqueado e de ter um painel (mini-CRM) com estatísticas de "Clientes que mais marcaram"; Disparos de Lembretes SMS e WhatsApp para reduzir No-Show (falta do cliente).
-- **v3:** Pagamentos integrados na própria página do cliente (Pix Copia e Cola / Cartão) cobrando sinais antes da confirmação, gerando vínculo financeiro para garantir a visita. Fluxos multi-serviços elaborados.
+- **Foco atual (v1 / MVP):** 
+  - Criação de página pública de recepção de agendamentos (booking page pro cliente).
+  - Dashboard "Minha Agenda" para o profissional, com painel de listagem de serviços do dia.
+  - Fluxo simples de Autenticação (Auth/Login) para o profissional acessar seu painel.
+  - Configuração básica de horários e dias de trabalho pelo profissional.
+
+*Nota: Funcionalidades avançadas como lembretes automáticos via WhatsApp, mini-CRM, relatórios de clientes frequentes e pagamentos integrados (checkout/pix) estão fora do escopo desta fase inicial e serão planejados para futuras iterações.*
