@@ -53,6 +53,11 @@ Para atender aos requisitos de alta disponibilidade (RNF-02) e foco no MVP, a ap
 - **Segurança (autenticação e autorização)**: Supabase Auth (Integrado p/ facilitar RLS) ou Clerk.
 - **Observabilidade**: Vercel Analytics / Sentry (para rastreamento de erros básicos de frontend e backend).
 
+### Gestão de Datas e Fusos Horários (Timezones)
+
+- **Padrão de Armazenamento**: Todas as datas e horários devem ser obrigatoriamente salvos no banco de dados em padrão `UTC` (ISO 8601).
+- **Manipulação no Frontend**: O parse e a exibição de horários para o usuário final e profissional deverão ser convertidos para o *timezone* local do navegador daquele usuário, utilizando bibliotecas leves como `date-fns` ou a API nativa `Intl`.
+
 ---
 
 ## Segurança

@@ -115,6 +115,6 @@ Os dados dos clientes (telefones, nomes, endereços) devem ser associados e rest
   - Criação de página pública de recepção de agendamentos (booking page pro cliente).
   - Dashboard "Minha Agenda" para o profissional, com painel de listagem de serviços do dia.
   - Fluxo simples de Autenticação (Auth/Login) para o profissional acessar seu painel.
-  - Configuração básica de horários e dias de trabalho pelo profissional.
+  - Configuração básica de horários e dias de trabalho, além do cadastro de serviços e suas respectivas durações.
 
 *Nota: Funcionalidades avançadas como lembretes automáticos via WhatsApp, mini-CRM, relatórios de clientes frequentes e pagamentos integrados (checkout/pix) estão fora do escopo desta fase inicial e serão planejados para futuras iterações.*

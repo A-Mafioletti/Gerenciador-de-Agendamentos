@@ -8,6 +8,7 @@ A seguir estão listadas as interfaces gráficas planejadas para o MVP (v1) do G
 
 - **Tipo de contêiner:** Página Web (Mobile-first)
 - **Campos:** 
+  - Header de Perfil (Avatar/Foto, Nome do Profissional e Título da Profissão - ex: "Carlos Eletricista").
   - Seleção de Data (Calendário simplificado em formato carrossel horizontal ou grid pequeno).
   - Seleção de Horário (Botões/pílulas apenas com horários disponíveis).
   - Nome Completo (Input text).
@@ -58,19 +59,19 @@ A seguir estão listadas as interfaces gráficas planejadas para o MVP (v1) do G
   - Menu de Navegação / Header (Ex: `Agenda`, `Configurações`, `Sair`).
 - **Considerações:** A visualização diária precisa ser a "tela inicial" logo após o login. O profissional entra aqui apenas para ver rapidamente para onde ele precisa ir na próxima hora.
 
-### INT-05 - Configuração de Disponibilidade (Settings)
+### INT-05 - Configuração de Disponibilidade e Serviços (Settings)
 
 - **Tipo de contêiner:** Formulário de Configurações
 - **Campos:** 
   - Dias de Trabalho (Checkboxes: Segunda a Domingo).
   - Horário de Início e Término Padrão (Time pickers, ex: 08:00 às 18:00).
-  - Duração Padrão do Serviço (Dropdown: 30min, 1h, 2h).
   - Horário de Almoço / Pausa (Time pickers, ex: 12:00 às 13:00 - opcional).
+  - Gestão de Serviços Oferecidos (Lista dinâmica onde o profissional adiciona "Nome do Serviço", "Descrição opcional" e "Duração em minutos/horas").
 - **Botões:** 
   - `Salvar Configurações`.
 - **Links:** 
   - `Voltar para Agenda`.
-- **Considerações:** A interface deve prevenir erros de conflito (ex: horário de término ser antes do horário de início). 
+- **Considerações:** A interface deve prevenir erros de conflito (ex: horário de término ser antes do horário de início) e exigir que no mínimo um serviço exista configurado. 
 
 ---
 
