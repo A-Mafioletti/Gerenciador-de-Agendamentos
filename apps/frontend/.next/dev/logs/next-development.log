@@ -1,0 +1,9 @@
+[00:00:12.294] Server  LOG     
+[00:00:12.294] Server  LOG       We detected TypeScript in your project and created a tsconfig.json file for you.
+[00:00:14.578] Server  LOG     ✓ Ready in 8.9s
+[00:00:17.704] Server  LOG     ○ Compiling / ...
+[00:00:19.748] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:01:05.996] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:02:08.431] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:04:05.433] Server  LOG     ✓ Compiled in 385ms
+[00:04:05.977] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
