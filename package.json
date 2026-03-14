@@ -1,0 +1,12 @@
+{
+  "name": "gerenciador-agendamentos",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "docker compose up --build",
+    "build": "npm run build --workspaces",
+    "start": "npm run start --workspaces"
+  }
+}
