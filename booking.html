@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Agendamento - Carlos Eletricista</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#16439c",
+                "background-light": "#f6f6f8",
+                "background-dark": "#111621",
+              },
+              fontFamily: {
+                "display": ["Inter"]
+              },
+              borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+<!-- Top Navigation -->
+<nav class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-4 py-3">
+<div class="max-w-md mx-auto flex items-center">
+<button class="text-slate-900 dark:text-slate-100 p-1">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="flex-1 text-center font-semibold text-lg">Agendamento</h1>
+<div class="w-8"></div>
+</div>
+</nav>
+<main class="max-w-md mx-auto pb-32">
+<!-- Header Profile -->
+<header class="flex flex-col items-center pt-8 pb-6 px-4">
+<div class="w-24 h-24 rounded-full border-4 border-white dark:border-slate-800 shadow-xl overflow-hidden mb-4 bg-primary/10">
+<img alt="Carlos Eletricista" class="w-full h-full object-cover" data-alt="Professional portrait of an electrician smiling" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTjL8evO208DzmWZwY_gGCcq2GM5LhO2ijZndyRkUbFG75MSoDJjW5i1A-uH6XcqbSXvhhAdvmyQB_Ada6LxaVqempgjZEJgl_uWv1ifI3hRY86RhJ7Ikcszve4PxvonGWv2UASq1szRikspY5rRNNL8RoSMG_yM0vuIIwq2rc-GxHL5_iWn28C-8SZu6ZiAC5mR8ekDPAXab7ZDGuXkhTqV04cze0qWzQv2YnKaC9VSN-gOCnZip4H35IMGjgFpY6xmRUcUhcQPE"/>
+</div>
+<h2 class="text-2xl font-bold tracking-tight">Carlos Eletricista</h2>
+<p class="text-slate-500 dark:text-slate-400 text-sm text-center mt-1">
+                Especialista em Instalações Residenciais e Comerciais com mais de 10 anos de experiência.
+            </p>
+</header>
+<!-- Section 1: Calendar Carousel -->
+<section class="mt-4 px-4">
+<div class="flex items-center justify-between mb-3">
+<h3 class="font-semibold text-slate-900 dark:text-slate-100">Selecione o Dia</h3>
+<span class="text-xs text-primary font-medium">Outubro 2023</span>
+</div>
+<div class="flex gap-3 overflow-x-auto hide-scrollbar pb-2">
+<button class="flex-shrink-0 flex flex-col items-center justify-center w-16 h-20 rounded-xl bg-primary text-white shadow-lg shadow-primary/20">
+<span class="text-[10px] uppercase font-bold opacity-80">Ter</span>
+<span class="text-xl font-bold">15</span>
+</button>
+<button class="flex-shrink-0 flex flex-col items-center justify-center w-16 h-20 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+<span class="text-[10px] uppercase font-bold text-slate-400">Qua</span>
+<span class="text-xl font-bold">16</span>
+</button>
+<button class="flex-shrink-0 flex flex-col items-center justify-center w-16 h-20 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+<span class="text-[10px] uppercase font-bold text-slate-400">Qui</span>
+<span class="text-xl font-bold">17</span>
+</button>
+<button class="flex-shrink-0 flex flex-col items-center justify-center w-16 h-20 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+<span class="text-[10px] uppercase font-bold text-slate-400">Sex</span>
+<span class="text-xl font-bold">18</span>
+</button>
+<button class="flex-shrink-0 flex flex-col items-center justify-center w-16 h-20 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+<span class="text-[10px] uppercase font-bold text-slate-400">Sáb</span>
+<span class="text-xl font-bold">19</span>
+</button>
+<button class="flex-shrink-0 flex flex-col items-center justify-center w-16 h-20 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+<span class="text-[10px] uppercase font-bold text-slate-400">Dom</span>
+<span class="text-xl font-bold">20</span>
+</button>
+</div>
+</section>
+<!-- Section 2: Time Slots -->
+<section class="mt-8 px-4">
+<h3 class="font-semibold text-slate-900 dark:text-slate-100 mb-3">Horários Disponíveis</h3>
+<div class="grid grid-cols-3 gap-2">
+<button class="py-2.5 rounded-lg border border-primary bg-primary/10 text-primary font-semibold text-sm">08:00</button>
+<button class="py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm hover:border-primary transition-colors">09:30</button>
+<button class="py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm hover:border-primary transition-colors">10:30</button>
+<button class="py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm hover:border-primary transition-colors">13:00</button>
+<button class="py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm hover:border-primary transition-colors">14:30</button>
+<button class="py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm hover:border-primary transition-colors">16:00</button>
+</div>
+</section>
+<!-- Section 3: Form -->
+<section class="mt-8 px-4">
+<h3 class="font-semibold text-slate-900 dark:text-slate-100 mb-4">Informações de Contato</h3>
+<div class="space-y-4">
+<div>
+<label class="block text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1 px-1">Seu Nome</label>
+<input class="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all" placeholder="Como podemos te chamar?" type="text"/>
+</div>
+<div>
+<label class="block text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1 px-1">WhatsApp</label>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-400 text-xl">call</span>
+<input class="w-full pl-12 pr-4 py-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all" placeholder="(00) 00000-0000" type="tel"/>
+</div>
+</div>
+<div>
+<label class="block text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1 px-1">Serviço Desejado</label>
+<select class="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all appearance-none">
+<option>Manutenção Preventiva</option>
+<option>Reparo em Disjuntores</option>
+<option>Instalação de Chuveiro</option>
+<option>Iluminação e Leds</option>
+<option>Outros</option>
+</select>
+</div>
+<div>
+<label class="block text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1 px-1">Endereço ou Observações</label>
+<textarea class="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all resize-none" placeholder="Rua, número e detalhes do problema..." rows="3"></textarea>
+</div>
+</div>
+</section>
+</main>
+<!-- Fixed Footer Action -->
+<footer class="fixed bottom-0 left-0 right-0 p-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg border-t border-slate-200 dark:border-slate-800">
+<div class="max-w-md mx-auto">
+<button class="w-full bg-primary text-white py-4 rounded-xl font-bold text-lg shadow-xl shadow-primary/30 active:scale-[0.98] transition-transform">
+                Confirmar Agendamento
+            </button>
+</div>
+</footer>
+</body></html>

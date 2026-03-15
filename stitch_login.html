@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#16439c",
+              "background-light": "#f8fafc",
+              "background-dark": "#0f172a",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {
+                "DEFAULT": "0.25rem", 
+                "lg": "0.5rem", 
+                "xl": "0.875rem", 
+                "2xl": "1.25rem",
+                "full": "9999px"
+            },
+          },
+        },
+      }
+    </script>
+<style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            min-height: 100dvh;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 flex flex-col items-center">
+<div class="relative flex h-full min-h-screen w-full flex-col max-w-[480px] px-8 py-16">
+<div class="flex flex-col items-center mb-16">
+<div class="w-24 h-24 rounded-2xl bg-primary flex items-center justify-center mb-0 shadow-2xl shadow-primary/30">
+<span class="material-symbols-outlined text-white text-5xl font-light">verified_user</span>
+</div>
+</div>
+<div class="text-center mb-10">
+<h1 class="text-slate-900 dark:text-slate-50 tracking-tight text-3xl font-bold leading-tight pb-3">
+                Entre na sua conta
+            </h1>
+<p class="text-slate-500 dark:text-slate-400 text-lg font-normal leading-relaxed px-4">
+                Sem senhas! Receba um link de acesso no seu e-mail.
+            </p>
+</div>
+<div class="space-y-8">
+<div class="flex flex-col gap-2">
+<label class="text-slate-600 dark:text-slate-300 text-sm font-semibold px-1">
+                    E-mail profissional
+                </label>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors">mail</span>
+<input class="w-full pl-12 pr-4 h-16 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-primary focus:border-transparent transition-all placeholder:text-slate-400 shadow-sm" placeholder="nome@empresa.com" type="email" value=""/>
+</div>
+</div>
+<button class="w-full h-16 bg-primary hover:bg-primary/95 text-white text-lg font-semibold rounded-xl transition-all flex items-center justify-center gap-3 shadow-xl shadow-primary/20 active:scale-[0.98]">
+<span>Enviar Link de Acesso</span>
+<span class="material-symbols-outlined text-2xl">arrow_forward</span>
+</button>
+</div>
+<div class="mt-auto pt-16 text-center">
+<p class="text-sm text-slate-500 dark:text-slate-400">
+                Precisa de ajuda? 
+                <a class="text-primary font-semibold hover:underline decoration-2 underline-offset-4" href="#">Falar com o suporte</a>
+</p>
+<div class="flex justify-center gap-6 mt-10 text-slate-300 dark:text-slate-700">
+<span class="material-symbols-outlined text-2xl">security</span>
+<span class="material-symbols-outlined text-2xl">lock</span>
+<span class="material-symbols-outlined text-2xl">verified</span>
+</div>
+</div>
+</div>
+
+</body></html>

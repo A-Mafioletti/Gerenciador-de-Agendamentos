@@ -1,0 +1,3 @@
+module.exports=[7630,(a,b,c)=>{let{createClientModuleProxy:d}=a.r(4595);a.n(d("[project]/pucminas/Projeto Integrado/Projeto-agendamentos/node_modules/next/dist/client/components/builtin/global-error.js <module evaluation>"))},42006,(a,b,c)=>{let{createClientModuleProxy:d}=a.r(4595);a.n(d("[project]/pucminas/Projeto Integrado/Projeto-agendamentos/node_modules/next/dist/client/components/builtin/global-error.js"))},10955,a=>{"use strict";a.i(7630);var b=a.i(42006);a.n(b)}];
+
+//# sourceMappingURL=41c0d_next_dist_client_components_builtin_global-error_6ea2fe90.js.map

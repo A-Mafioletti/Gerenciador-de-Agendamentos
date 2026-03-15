@@ -1,3 +1,11 @@
 {
-  "/page": "app/page.js"
+  "/(backoffice)/clientes/page": "app/(backoffice)/clientes/page.js",
+  "/(backoffice)/configuracoes/page": "app/(backoffice)/configuracoes/page.js",
+  "/(backoffice)/dashboard/page": "app/(backoffice)/dashboard/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/configuracoes/page": "app/configuracoes/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/login/page": "app/login/page.js",
+  "/page": "app/page.js",
+  "/sucesso/page": "app/sucesso/page.js"
 }

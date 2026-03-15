@@ -1,0 +1,86 @@
+﻿node.exe : ÔÜá Warning: Next.js inferred your 
+workspace root, but it may not be correct.
+No C:\nvm4w\nodejs\npx.ps1:29 caractere:3
++   & $NODE_EXE $NPX_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Ô 
+   Üá Warning: Ne...not be correct.:String) [  
+  ], RemoteException
+    + FullyQualifiedErrorId : NativeCommandErr 
+   or
+ 
+ We detected multiple lockfiles and selected 
+the directory of 
+C:\Users\Andre\package-lock.json as the root 
+directory.
+ To silence this warning, set `turbopack.root` 
+in your Next.js config, or consider removing 
+one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-referenc
+e/config/next-config-js/turbopack#root-director
+y for more information.
+ Detected additional lockfiles: 
+   * C:\Users\Andre\pucminas\Projeto Integrado\
+Projeto-agendamentos\package-lock.json
+
+Ôû▓ Next.js 16.1.6 (Turbopack)
+
+  Creating an optimized production build ...
+
+> Build error occurred
+Error: Turbopack build failed with 1 errors:
+./pucminas/Projeto Integrado/Projeto-agendament
+os/apps/frontend/src/app/globals.css
+Error evaluating Node.js code
+Error: It looks like you're trying to use 
+`tailwindcss` directly as a PostCSS plugin. 
+The PostCSS plugin has moved to a separate 
+package, so to continue using Tailwind CSS 
+with PostCSS you'll need to install 
+`@tailwindcss/postcss` and update your PostCSS 
+configuration.
+    [at at (C:\Users\Andre\pucminas\Projeto Int
+egrado\Projeto-agendamentos\node_modules\tailwi
+ndcss\dist\lib.js:38:1643)]
+    at turbopack:///[turbopack-node]/transforms
+/postcss.ts:56:14 
+[C:\Users\Andre\pucminas\Projeto Integrado\Proj
+eto-agendamentos\apps\frontend\.next\build\chun
+ks\[root-of-the-server]__38c1ccb8._.js:140:20]
+    [at <anonymous>]
+    at Module.init (turbopack:///[turbopack-nod
+e]/transforms/postcss.ts:43:33) 
+[C:\Users\Andre\pucminas\Projeto Integrado\Proj
+eto-agendamentos\apps\frontend\.next\build\chun
+ks\[root-of-the-server]__38c1ccb8._.js:130:35]
+    at run (turbopack:///[turbopack-node]/ipc/e
+valuate.ts:77:20) 
+[C:\Users\Andre\pucminas\Projeto Integrado\Proj
+eto-agendamentos\apps\frontend\.next\build\chun
+ks\[root-of-the-server]__69d86337._.js:429:26]
+    [at process.processTicksAndRejections 
+(node:internal/process/task_queues:105:5)]
+
+Import trace:
+  Client Component Browser:
+    ./pucminas/Projeto Integrado/Projeto-agenda
+mentos/apps/frontend/src/app/globals.css 
+[Client Component Browser]
+    ./pucminas/Projeto Integrado/Projeto-agenda
+mentos/apps/frontend/src/app/layout.tsx 
+[Server Component]
+
+
+    at Module.init (turbopack:///[turbopack-nod
+e]/transforms/postcss.ts:43:33) 
+[C:\Users\Andre\pucminas\Projeto Integrado\Proj
+eto-agendamentos\apps\frontend\.next\build\chun
+ks\[root-of-the-server]__38c1ccb8._.js:130:35])
+    at run (turbopack:///[turbopack-node]/ipc/e
+valuate.ts:77:20) 
+[C:\Users\Andre\pucminas\Projeto Integrado\Proj
+eto-agendamentos\apps\frontend\.next\build\chun
+ks\[root-of-the-server]__69d86337._.js:429:26])
+Assertion failed: !(handle->flags & 
+UV_HANDLE_CLOSING), file 
+c:\ws\deps\uv\src\win\async.c, line 76

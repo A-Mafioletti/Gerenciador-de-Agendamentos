@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+
+<html lang="pt-br"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#16439c",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#111621",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Minha Agenda - Dashboard</title>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<!-- Header Section -->
+<header class="bg-background-light dark:bg-background-dark sticky top-0 z-10 border-b border-primary/10">
+<div class="flex items-center p-4 justify-between max-w-xl mx-auto w-full">
+<div class="flex items-center gap-3">
+<div class="size-10 shrink-0 rounded-full bg-primary/10 flex items-center justify-center overflow-hidden border border-primary/20">
+<img class="w-full h-full object-cover" data-alt="Foto de perfil do usuário Carlos" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkjwANLDfxlVDtzvIKDo2bN48Zy9UdvRzpIokdPkDQP71x-WcAS5VXRSDhWwofML-Hol78X25iCpL6yQQg9Pcz8wdeAdFBK6iFBOXyuv8_8lDTqIyCctVukltG9qYzS8dLKIgIcj7m1UPykLcr9Pprp8U5cDitihz_ZaiPogE81k9xmcp_2ybv2xQuwL1N3nPDoNYuuZRQVGl6FNaiGOXrJq1z9rzO98q2xmpp8zkHUSufD-GA-owRxWFxazsVFcUddkaRlM7lvVU"/>
+</div>
+<div>
+<h1 class="text-sm text-slate-500 dark:text-slate-400 font-medium">Bem-vindo de volta,</h1>
+<h2 class="text-lg font-bold leading-tight tracking-tight">Olá, Carlos</h2>
+</div>
+</div>
+<button class="flex items-center gap-2 bg-primary/10 hover:bg-primary/20 text-primary px-3 py-2 rounded-lg transition-colors duration-200">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+<span class="text-xs font-bold uppercase tracking-wider">Copiar Link</span>
+</button>
+</div>
+<!-- Navigation Tabs -->
+<div class="px-4 max-w-xl mx-auto w-full">
+<div class="flex gap-8">
+<a class="flex flex-col items-center justify-center border-b-2 border-primary text-primary pb-3 pt-4" href="#">
+<p class="text-sm font-bold">Hoje</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 pb-3 pt-4 hover:text-primary transition-colors" href="#">
+<p class="text-sm font-bold">Próximos</p>
+</a>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 p-4 max-w-xl mx-auto w-full overflow-y-auto">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-base font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wide">Agenda de Hoje</h3>
+<span class="text-xs font-medium text-slate-500 bg-slate-200 dark:bg-slate-800 px-2 py-1 rounded">24 Out, Qui</span>
+</div>
+<!-- Appointments List -->
+<div class="flex flex-col gap-4">
+<!-- Appointment Card 1 -->
+<div class="flex flex-col gap-3 rounded-xl bg-white dark:bg-slate-900 p-4 shadow-sm border border-slate-100 dark:border-slate-800">
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-1">
+<span class="text-primary text-sm font-bold bg-primary/5 px-2 py-0.5 rounded-md w-fit">09:00 - 10:00</span>
+<p class="text-slate-900 dark:text-slate-100 text-lg font-bold mt-1">Ricardo Silva</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Corte de Cabelo + Barba Premium</p>
+</div>
+<div class="size-12 rounded-lg bg-slate-100 dark:bg-slate-800 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Avatar do cliente Ricardo Silva" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKk2vohwkJBqPAnXDVYe_2vFUIKCLQb9a1mm_gof4DH9ZsciJGbvKu7ndr9j5FtvdCW10XNIQb3ce34thFLzP8VPCLOmRTN61tHUjMt0z9jd_rEC-OYBggpZlUKvNzJosRe9YnG7K5POkRLjnvouOplVQpEhAvjVnh2TrSOuk0aKjx4KgSEeIg6xs-mtNEbxogLICNisFZG_3pfpkKRSftyWGDpjC9fp1pErovPUpx9WfO6jpSixGSVsG1MlHofatSf4YnJr1U92Y"/>
+</div>
+</div>
+<div class="flex gap-2 pt-2 border-t border-slate-50 dark:border-slate-800 mt-1">
+<button class="flex-1 flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366]/20 transition-colors font-semibold text-sm">
+<span class="material-symbols-outlined text-[20px]">chat</span>
+                        WhatsApp
+                    </button>
+<button class="flex items-center justify-center rounded-lg size-10 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+</div>
+<!-- Appointment Card 2 -->
+<div class="flex flex-col gap-3 rounded-xl bg-white dark:bg-slate-900 p-4 shadow-sm border border-slate-100 dark:border-slate-800">
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-1">
+<span class="text-primary text-sm font-bold bg-primary/5 px-2 py-0.5 rounded-md w-fit">10:30 - 11:15</span>
+<p class="text-slate-900 dark:text-slate-100 text-lg font-bold mt-1">Marcos Oliveira</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Aparagem de Barba</p>
+</div>
+<div class="size-12 rounded-lg bg-slate-100 dark:bg-slate-800 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Avatar do cliente Marcos Oliveira" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbVPjSAEHXrC2HdaHdVnGmcXfMf7-oUhOda65digkP4rk1Y46tTwwHeD4hEnz6UbPwMUs7QU68zCzSyQOoxfEso_korbrAmK-ertvmnMUlGQrn3QEHtmTvQkaLL9bpkscVe45UiNBSTR9nuDrvepTT3t1zLZvM1ebWhCU12IgZcb29aQMKDc1fICYGJlVVDy7pBBDH1oGnP0ir-SUIz5ZafcWvC2Q1vWowEyW0HRTXlZSYeM--c-oAzKskIAQiRhMCE4v7B5EIyik"/>
+</div>
+</div>
+<div class="flex gap-2 pt-2 border-t border-slate-50 dark:border-slate-800 mt-1">
+<button class="flex-1 flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366]/20 transition-colors font-semibold text-sm">
+<span class="material-symbols-outlined text-[20px]">chat</span>
+                        WhatsApp
+                    </button>
+<button class="flex items-center justify-center rounded-lg size-10 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+</div>
+<!-- Appointment Card 3 -->
+<div class="flex flex-col gap-3 rounded-xl bg-white dark:bg-slate-900 p-4 shadow-sm border border-slate-100 dark:border-slate-800">
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-1">
+<span class="text-primary text-sm font-bold bg-primary/5 px-2 py-0.5 rounded-md w-fit">13:00 - 14:00</span>
+<p class="text-slate-900 dark:text-slate-100 text-lg font-bold mt-1">André Santos</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Coloração e Corte</p>
+</div>
+<div class="size-12 rounded-lg bg-slate-100 dark:bg-slate-800 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Avatar do cliente André Santos" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoNjQ0b6W9bTs7u9GiBoBAJN6Zs1NwuD0CsPcmo5ZM3EMYY45CQFVjyES1S3O9XuIy9jH_345hDt-0r9peIm6coLtGOPaaaQf4-FqECnmcfwES4shIlbobzZ8n6lz53YRW06c4Ad8Ie_3U4b2Jv7rWWEfYNGMqbtimtj1sxGZv-LrA-AyNPlXr9ZdV-82HSXwKCaSGVw3k9bcNL7UwMFW-L_rrPM0p7B41e_XCsWqeV-OROwcKWymkJ7DOD9zhVDco9k4vvM0p4uc"/>
+</div>
+</div>
+<div class="flex gap-2 pt-2 border-t border-slate-50 dark:border-slate-800 mt-1">
+<button class="flex-1 flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366]/20 transition-colors font-semibold text-sm">
+<span class="material-symbols-outlined text-[20px]">chat</span>
+                        WhatsApp
+                    </button>
+<button class="flex items-center justify-center rounded-lg size-10 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Bottom Spacer -->
+<div class="h-24"></div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 px-6 pb-6 pt-3 z-20">
+<div class="max-w-xl mx-auto flex items-center justify-between">
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined fill-1">calendar_month</span>
+<p class="text-[10px] font-bold uppercase tracking-wider">Agenda</p>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+<p class="text-[10px] font-bold uppercase tracking-wider">Clientes</p>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-[10px] font-bold uppercase tracking-wider">Ajustes</p>
+</a>
+</div>
+</nav>
+<style>
+        .fill-1 { font-variation-settings: 'FILL' 1; }
+    </style>
+</body></html>
