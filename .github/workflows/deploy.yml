@@ -1,0 +1,86 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  # For vercel cli to work on backend when we execute it inside apps/backend
+  # It checks for VERCEL_PROJECT_ID environment variable
+  # We will pass the specific project ID inline during the execution step
+
+jobs:
+  lint-test-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js 20.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20.x
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run Linter
+      run: npm run lint --workspaces --if-present
+
+    - name: Run Tests
+      # Assuming your test script is defined in package.json
+      # which it might not be right now, --if-present makes it safe
+      run: npm run test --workspaces --if-present
+
+    - name: Install Vercel CLI
+      run: npm install --global vercel@latest
+
+    - name: Pull Vercel Environment Information (Backend)
+      run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+      env:
+        VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_BACKEND }}
+      working-directory: ./apps/backend
+
+    - name: Build Project Artifacts (Backend)
+      run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+      env:
+        VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_BACKEND }}
+      working-directory: ./apps/backend
+
+    - name: Deploy Project Artifacts to Vercel (Backend)
+      run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+      env:
+        VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_BACKEND }}
+      working-directory: ./apps/backend
+
+    - name: Pull Vercel Environment Information (Frontend)
+      run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+      env:
+        VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_FRONTEND }}
+      working-directory: ./apps/frontend
+
+    - name: Build Project Artifacts (Frontend)
+      run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+      env:
+        VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_FRONTEND }}
+      working-directory: ./apps/frontend
+
+    - name: Deploy Project Artifacts to Vercel (Frontend)
+      run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+      env:
+        VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_FRONTEND }}
+      working-directory: ./apps/frontend
+      
+    - name: Job Summary Configuration
+      if: always()
+      run: |
+        if [ "${{ job.status }}" = "success" ]; then
+          echo "### :rocket: Deploy completed successfully!" >> $GITHUB_STEP_SUMMARY
+          echo "The latest changes from \`main\` were pushed to production on Vercel." >> $GITHUB_STEP_SUMMARY
+        else
+          echo "### :x: Deploy Failed" >> $GITHUB_STEP_SUMMARY
+          echo "Please review the detailed logs above for more information." >> $GITHUB_STEP_SUMMARY
+        fi
