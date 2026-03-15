@@ -42,8 +42,8 @@ export default function ClientesPage() {
             <div>
               <h3 className="font-semibold text-slate-900 dark:text-slate-100">João Silva</h3>
               <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1">
-                <span className="material-symbols-outlined text-[14px]">bolt</span>
-                Instalação Elétrica
+                <span className="material-symbols-outlined text-[14px]">engineering</span>
+                Manutenção Preventiva
               </p>
               <p className="text-[11px] text-slate-400 mt-0.5">Última visita: 15 Out 2023</p>
             </div>
@@ -62,8 +62,8 @@ export default function ClientesPage() {
             <div>
               <h3 className="font-semibold text-slate-900 dark:text-slate-100">Maria Oliveira</h3>
               <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1">
-                <span className="material-symbols-outlined text-[14px]">water_drop</span>
-                Reparo Hidráulico
+                <span className="material-symbols-outlined text-[14px]">electrical_services</span>
+                Troca de Fiação
               </p>
               <p className="text-[11px] text-slate-400 mt-0.5">Última visita: 10 Out 2023</p>
             </div>
@@ -82,8 +82,8 @@ export default function ClientesPage() {
             <div>
               <h3 className="font-semibold text-slate-900 dark:text-slate-100">Ricardo Santos</h3>
               <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1">
-                <span className="material-symbols-outlined text-[14px]">format_paint</span>
-                Pintura Residencial
+                <span className="material-symbols-outlined text-[14px]">shower</span>
+                Instalação de Chuveiro
               </p>
               <p className="text-[11px] text-slate-400 mt-0.5">Última visita: 05 Out 2023</p>
             </div>
@@ -102,8 +102,8 @@ export default function ClientesPage() {
             <div>
               <h3 className="font-semibold text-slate-900 dark:text-slate-100">Ana Costa</h3>
               <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1">
-                <span className="material-symbols-outlined text-[14px]">architecture</span>
-                Consultoria Técnica
+                <span className="material-symbols-outlined text-[14px]">lightbulb</span>
+                Instalação de Luminárias
               </p>
               <p className="text-[11px] text-slate-400 mt-0.5">Última visita: 28 Set 2023</p>
             </div>
@@ -122,8 +122,8 @@ export default function ClientesPage() {
             <div>
               <h3 className="font-semibold text-slate-900 dark:text-slate-100">Bruno Lima</h3>
               <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1">
-                <span className="material-symbols-outlined text-[14px]">construction</span>
-                Instalação de AC
+                <span className="material-symbols-outlined text-[14px]">power</span>
+                Tomadas e Interruptores
               </p>
               <p className="text-[11px] text-slate-400 mt-0.5">Última visita: 15 Set 2023</p>
             </div>

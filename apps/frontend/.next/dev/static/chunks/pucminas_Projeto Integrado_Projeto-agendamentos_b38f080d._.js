@@ -69,11 +69,14 @@ function Home() {
     }["Home.useEffect"], []);
     const times = [
         "08:00",
-        "09:30",
-        "10:30",
-        "13:00",
+        "09:00",
+        "10:00",
+        "11:00",
+        "13:30",
         "14:30",
-        "16:00"
+        "15:30",
+        "16:30",
+        "17:30"
     ];
     const formatWhatsApp = (value)=>{
         // Remove all non-digits and limit to 11 characters
@@ -292,7 +295,7 @@ function Home() {
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pucminas$2f$Projeto__Integrado$2f$Projeto$2d$agendamentos$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "grid grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-2 lg:gap-3",
+                                            className: "grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-3 gap-2 lg:gap-3",
                                             children: times.map((time)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pucminas$2f$Projeto__Integrado$2f$Projeto$2d$agendamentos$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                                     onClick: ()=>setSelectedTime(time),
                                                     className: `py-2.5 lg:py-3 rounded-lg border text-sm lg:text-base transition-colors ${selectedTime === time ? "border-primary bg-primary/10 text-primary font-semibold shadow-sm" : "border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-primary/60 hover:bg-slate-50 dark:hover:bg-slate-700/50"}`,

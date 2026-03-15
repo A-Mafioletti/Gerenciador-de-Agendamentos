@@ -42,7 +42,7 @@ export default function Home() {
   }, []);
 
   const times = [
-    "08:00", "09:30", "10:30", "13:00", "14:30", "16:00"
+    "08:00", "09:00", "10:00", "11:00", "13:30", "14:30", "15:30", "16:30", "17:30"
   ];
 
   const formatWhatsApp = (value: string) => {
@@ -145,7 +145,7 @@ export default function Home() {
             {/* Section 2: Time Slots */}
             <section className="mt-8 lg:mt-10 px-4">
               <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-3 lg:mb-4 lg:text-lg">Horários Disponíveis</h3>
-              <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-2 lg:gap-3">
+              <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-3 gap-2 lg:gap-3">
                 {times.map((time) => (
                   <button 
                     key={time}

@@ -139,13 +139,13 @@ function ClientesPage() {
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pucminas$2f$Projeto__Integrado$2f$Projeto$2d$agendamentos$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                         className: "material-symbols-outlined text-[14px]",
-                                                        children: "bolt"
+                                                        children: "engineering"
                                                     }, void 0, false, {
                                                         fileName: "[project]/pucminas/Projeto Integrado/Projeto-agendamentos/apps/frontend/src/app/(backoffice)/clientes/page.tsx",
                                                         lineNumber: 45,
                                                         columnNumber: 17
                                                     }, this),
-                                                    "Instalação Elétrica"
+                                                    "Manutenção Preventiva"
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/pucminas/Projeto Integrado/Projeto-agendamentos/apps/frontend/src/app/(backoffice)/clientes/page.tsx",
@@ -230,13 +230,13 @@ function ClientesPage() {
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pucminas$2f$Projeto__Integrado$2f$Projeto$2d$agendamentos$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                         className: "material-symbols-outlined text-[14px]",
-                                                        children: "water_drop"
+                                                        children: "electrical_services"
                                                     }, void 0, false, {
                                                         fileName: "[project]/pucminas/Projeto Integrado/Projeto-agendamentos/apps/frontend/src/app/(backoffice)/clientes/page.tsx",
                                                         lineNumber: 65,
                                                         columnNumber: 17
                                                     }, this),
-                                                    "Reparo Hidráulico"
+                                                    "Troca de Fiação"
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/pucminas/Projeto Integrado/Projeto-agendamentos/apps/frontend/src/app/(backoffice)/clientes/page.tsx",
@@ -321,13 +321,13 @@ function ClientesPage() {
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pucminas$2f$Projeto__Integrado$2f$Projeto$2d$agendamentos$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                         className: "material-symbols-outlined text-[14px]",
-                                                        children: "format_paint"
+                                                        children: "shower"
                                                     }, void 0, false, {
                                                         fileName: "[project]/pucminas/Projeto Integrado/Projeto-agendamentos/apps/frontend/src/app/(backoffice)/clientes/page.tsx",
                                                         lineNumber: 85,
                                                         columnNumber: 17
                                                     }, this),
-                                                    "Pintura Residencial"
+                                                    "Instalação de Chuveiro"
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/pucminas/Projeto Integrado/Projeto-agendamentos/apps/frontend/src/app/(backoffice)/clientes/page.tsx",
@@ -412,13 +412,13 @@ function ClientesPage() {
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pucminas$2f$Projeto__Integrado$2f$Projeto$2d$agendamentos$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                         className: "material-symbols-outlined text-[14px]",
-                                                        children: "architecture"
+                                                        children: "lightbulb"
                                                     }, void 0, false, {
                                                         fileName: "[project]/pucminas/Projeto Integrado/Projeto-agendamentos/apps/frontend/src/app/(backoffice)/clientes/page.tsx",
                                                         lineNumber: 105,
                                                         columnNumber: 17
                                                     }, this),
-                                                    "Consultoria Técnica"
+                                                    "Instalação de Luminárias"
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/pucminas/Projeto Integrado/Projeto-agendamentos/apps/frontend/src/app/(backoffice)/clientes/page.tsx",
@@ -503,13 +503,13 @@ function ClientesPage() {
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$pucminas$2f$Projeto__Integrado$2f$Projeto$2d$agendamentos$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                         className: "material-symbols-outlined text-[14px]",
-                                                        children: "construction"
+                                                        children: "power"
                                                     }, void 0, false, {
                                                         fileName: "[project]/pucminas/Projeto Integrado/Projeto-agendamentos/apps/frontend/src/app/(backoffice)/clientes/page.tsx",
                                                         lineNumber: 125,
                                                         columnNumber: 17
                                                     }, this),
-                                                    "Instalação de AC"
+                                                    "Tomadas e Interruptores"
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/pucminas/Projeto Integrado/Projeto-agendamentos/apps/frontend/src/app/(backoffice)/clientes/page.tsx",
