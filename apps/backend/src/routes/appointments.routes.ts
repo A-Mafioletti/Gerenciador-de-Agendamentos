@@ -23,6 +23,7 @@ router.post('/', async (req, res) => {
         client_whatsapp: whatsapp,
         address_notes: details || '',
         date: appointmentDate,
+        start_time: time,
         service_id: '00000000-0000-0000-0000-000000000001',
         professional_id: '00000000-0000-0000-0000-000000000002'
       }
