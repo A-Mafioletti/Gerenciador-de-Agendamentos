@@ -20,14 +20,14 @@ model Cliente {
 }
 
 model Appointment {
-  id        String   @id @default(uuid()) @db.Uuid
-  date      String
-  time      String
-  name      String
-  whatsapp  String
-  service   String
-  details   String?
-  createdAt DateTime @default(now()) @map("created_at")
+  id              String   @id @default(uuid()) @db.Uuid
+  date            DateTime
+  client_name     String
+  client_whatsapp String
+  service_id      String   @db.Uuid
+  professional_id String   @db.Uuid
+  address_notes   String?
+  createdAt       DateTime @default(now()) @map("created_at")
 
   @@map("appointments")
 }

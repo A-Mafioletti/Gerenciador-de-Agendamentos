@@ -15,17 +15,24 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ success: false, message: 'Dados incompletos' });
     }
 
-    // Convert date string if it's just a day
-    let formattedDate = date;
+    // Construct full date from "date" and "time"
+    let baseDate: Date;
     if (typeof date === 'string' && date.length <= 2) {
-      const dateObj = new Date(2026, 2, parseInt(date));
-      // schema.prisma requires `date` as String
-      formattedDate = dateObj.toISOString(); 
+      baseDate = new Date(new Date().getFullYear(), new Date().getMonth(), parseInt(date, 10));
+    } else {
+      baseDate = new Date(date);
+    }
+    
+    if (time && typeof time === 'string') {
+      const parts = time.split(':');
+      if (parts.length >= 2) {
+        baseDate.setHours(parseInt(parts[0], 10), parseInt(parts[1], 10), 0, 0);
+      }
     }
 
     let finalService = service;
     
-    // @ts-ignore - Check if service model exists dynamically (not in schema.prisma currently)
+    // @ts-ignore - Check if service model exists dynamically
     if (prisma.service) {
       // @ts-ignore
       const foundService = await prisma.service.findFirst({ where: { name: service } });
@@ -34,12 +41,12 @@ router.post('/', async (req, res) => {
       }
     }
 
-    // @ts-ignore - Handle professional gracefully if sent, though not required by current schema
-    let finalProfessional = req.body.professional;
+    // Default professional fallback UUID if none provided or found
+    let finalProfessional = req.body.professional || '00000000-0000-0000-0000-000000000000';
     // @ts-ignore
-    if (finalProfessional && prisma.professional) {
+    if (prisma.professional) {
       // @ts-ignore
-      const foundProfessional = await prisma.professional.findFirst({ where: { name: finalProfessional } });
+      const foundProfessional = req.body.professional ? await prisma.professional.findFirst({ where: { name: req.body.professional } }) : await prisma.professional.findFirst();
       if (foundProfessional) {
         finalProfessional = foundProfessional.id;
       }
@@ -47,12 +54,12 @@ router.post('/', async (req, res) => {
 
     const appointment = await prisma.appointment.create({
       data: {
-        date: formattedDate,
-        time,
-        name,
-        whatsapp,
-        service: finalService,
-        details: details || null
+        date: baseDate,
+        client_name: name,
+        client_whatsapp: whatsapp,
+        service_id: finalService,
+        professional_id: finalProfessional,
+        address_notes: details || null
       }
     });
 
