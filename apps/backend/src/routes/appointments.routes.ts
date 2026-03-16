@@ -9,7 +9,7 @@ router.post('/', async (req, res) => {
   try {
     console.log("Dados recebidos:", req.body);
     const { name, whatsapp, details, date, time } = req.body;
-    
+
     // Simple validation
     if (!date || !time || !name || !whatsapp) {
       return res.status(400).json({ success: false, message: 'Dados incompletos' });
@@ -24,7 +24,7 @@ router.post('/', async (req, res) => {
         client_whatsapp: whatsapp,
         address_notes: details || '',
         date: appointmentDate,
-        start_time: time,
+        tart_time: startTimeAsDate,
         service_id: '00000000-0000-0000-0000-000000000001',
         professional_id: '00000000-0000-0000-0000-000000000002'
       }
