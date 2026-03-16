@@ -63,7 +63,7 @@ export default function Home() {
     setFormData({ ...formData, whatsapp: formatWhatsApp(e.target.value) });
   };
 
-  const handleBooking = () => {
+  const handleBooking = async () => {
     if (!formData.name.trim()) {
       alert("Por favor, preencha o seu nome.");
       return;
@@ -75,13 +75,36 @@ export default function Home() {
       return;
     }
 
-    console.log("Booking Confirmed!", { selectedDate, selectedTime, ...formData });
-    const query = new URLSearchParams({
-      data: selectedDate,
-      hora: selectedTime,
-      servico: formData.service,
-    }).toString();
-    router.push(`/sucesso?${query}`);
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+      const response = await fetch(`${apiUrl}/appointments`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          date: selectedDate,
+          time: selectedTime,
+          ...formData
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Erro ao salvar o agendamento: ${response.status}`);
+      }
+
+      console.log("Booking Confirmed!", { selectedDate, selectedTime, ...formData });
+      const query = new URLSearchParams({
+        data: selectedDate,
+        hora: selectedTime,
+        servico: formData.service,
+      }).toString();
+      router.push(`/sucesso?${query}`);
+
+    } catch (error) {
+      console.error("Erro no agendamento:", error);
+      alert("Ocorreu um erro ao tentar realizar o agendamento. Por favor, tente novamente.");
+    }
   };
 
   return (
