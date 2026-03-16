@@ -8,29 +8,23 @@ const prisma = new PrismaClient();
 router.post('/', async (req, res) => {
   try {
     console.log("Dados recebidos:", req.body);
-    const { name, whatsapp, details, date, service, time } = req.body;
+    const { name, whatsapp, details, date, time } = req.body;
     
     // Simple validation
-    if (!date || !time || !name || !whatsapp || !service) {
+    if (!date || !time || !name || !whatsapp) {
       return res.status(400).json({ success: false, message: 'Dados incompletos' });
     }
 
-    // 1. Busca os IDs REAIS no banco de dados para evitar erro de UUID
-    let serviceRecord = await prisma.service.findFirst(); 
-    const professionalRecord = await prisma.professional.findFirst();
-
-    // 2. Monta a data correta
     const appointmentDate = new Date(2026, 2, parseInt(date));
 
-    // 3. Salva usando apenas as colunas corretas e os IDs (UUIDs) buscados
     const newAppointment = await prisma.appointment.create({
       data: {
         client_name: name,
         client_whatsapp: whatsapp,
         address_notes: details || '',
         date: appointmentDate,
-        service_id: serviceRecord!.id,
-        professional_id: professionalRecord!.id
+        service_id: '00000000-0000-0000-0000-000000000001',
+        professional_id: '00000000-0000-0000-0000-000000000002'
       }
     });
 
