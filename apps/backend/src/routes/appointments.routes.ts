@@ -18,13 +18,13 @@ router.post('/', async (req, res) => {
     const appointmentDate = new Date(2026, 2, parseInt(date));
     const startTimeAsDate = new Date(`1970-01-01T${time}:00.000Z`);
 
-    const newAppointment = await prisma.appointment.create({
+    const newAppointment = await prisma.appointments.create({
       data: {
         client_name: name,
         client_whatsapp: whatsapp,
         address_notes: details || '',
         date: appointmentDate,
-        tart_time: startTimeAsDate,
+        start_time: startTimeAsDate,
         service_id: '00000000-0000-0000-0000-000000000001',
         professional_id: '00000000-0000-0000-0000-000000000002'
       }
