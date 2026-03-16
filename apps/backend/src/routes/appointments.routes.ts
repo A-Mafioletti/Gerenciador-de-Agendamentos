@@ -18,7 +18,7 @@ router.post('/', async (req, res) => {
     const appointmentDate = new Date(2026, 2, parseInt(date));
     const startTimeAsDate = new Date(`1970-01-01T${time}:00.000Z`);
 
-    const newAppointment = await prisma.appointments.create({
+    const newAppointment = await prisma.appointment.create({
       data: {
         client_name: name,
         client_whatsapp: whatsapp,
