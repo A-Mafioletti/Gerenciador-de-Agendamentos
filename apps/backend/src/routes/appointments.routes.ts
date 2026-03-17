@@ -18,6 +18,14 @@ router.post('/', async (req, res) => {
     const appointmentDate = new Date(2026, 2, parseInt(date));
     const startTimeAsDate = new Date(`1970-01-01T${time}:00.000Z`);
 
+    // Busca o primeiro profissional e serviço reais do banco
+    const professional = await prisma.professional.findFirst();
+    const service = await prisma.service.findFirst();
+
+    if (!professional || !service) {
+      return res.status(400).json({ success: false, message: 'Profissional ou serviço não cadastrado no banco.' });
+    }
+
     const newAppointment = await prisma.appointment.create({
       data: {
         client_name: name,
@@ -25,8 +33,8 @@ router.post('/', async (req, res) => {
         address_notes: details || '',
         date: appointmentDate,
         start_time: startTimeAsDate,
-        service_id: '00000000-0000-0000-0000-000000000001',
-        professional_id: '00000000-0000-0000-0000-000000000002'
+        service_id: service.id,
+        professional_id: professional.id
       }
     });
 
