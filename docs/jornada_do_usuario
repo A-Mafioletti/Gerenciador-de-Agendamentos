@@ -1,0 +1,111 @@
+# Jornada do Usuário
+
+> Produto / Serviço: Gerenciador de Agendamentos para Prestadores de Serviços   
+> Persona: Carlos, o Eletricista Conectado
+> Data: 10/03/2026  
+> Responsável: André Mafioletti
+
+---
+
+## 📌 Visão Geral da Jornada
+
+| Etapa | Descrição  | Objetivo do Usuário|
+|-------|--------------------|-------------------|
+| 1. Descoberta e Setup | Cadastro e configuração dos horários de serviço.      | Configurar a disponibilidade para começar a receber agendamentos.     |
+| 2. Divulgação do Link | Partilha do link de agendamento no perfil e conversas.| Direcionar o fluxo de clientes do WhatsApp para a plataforma.         |
+| 3. Agendamento Passivo| O cliente escolhe o horário e reserva sem intervenção.| Receber reservas confirmadas enquanto está a trabalhar noutro serviço.|
+| 4. Gestão e Execução  | Consulta da agenda do dia e realização do serviço.    | Executar o serviço sem atrasos ou esquecimentos.                      |
+| 5. Pós-atendimento    | Finalização do ciclo e libertação de novo horário.    | Manter a agenda atualizada e fidelizar o cliente.                     |
+
+---
+
+## 🔎 Detalhamento por Etapa
+
+---
+
+### 🟦 Etapa 1: Descoberta e Setup Inicial
+
+#### Ações do Usuário
+1. Cria a conta no sistema (via autenticação Clerk).
+2. Define os tipos de serviço (ex: Troca de disjuntor - 1h).
+3. Configura o horário de trabalho semanal (ex: Seg-Sex, 08h às 18h).
+
+#### Pontos de Contato (Touchpoints)
+- Interface de Login/Cadastro.
+- Painel de Configurações (Dashboard).
+- Cadastro de Serviços.
+
+#### Percepção do Usuário (Emoção / Experiência)
+- O que sente: Motivado, mas com receio de ser difícil de configurar.
+- Dúvidas: "Vou conseguir configurar sozinho?", "O cliente vai entender?".
+- Frustrações: Se houver campos demais para preencher.
+- Satisfação: Ver o link de agendamento pronto para uso pela primeira vez.
+
+#### Oportunidades de Melhoria
+-  Tutorial guiado (Onboarding) simples.
+-  Sugestões de serviços comuns para eletricistas já pré-cadastrados.
+- 
+
+---
+
+### 🟦 Etapa 2: Divulgação e Fluxo de Clientes
+
+#### Ações do Usuário
+1. Copia o link personalizado de agendamento.
+2. Cola o link na Bio do Instagram e na mensagem de saudação do WhatsApp.
+3. Envia o link para um cliente que perguntou a disponibilidade.
+
+#### Pontos de Contato (Touchpoints)
+- Botão "Copiar Link" no App.
+- Perfil do WhatsApp Business / Instagram.
+- Chat do WhatsApp.
+
+#### Percepção do Usuário (Emoção / Experiência)
+- O que sente: Alívio por não precisar digitar horários um a um.
+- Dúvidas: "O cliente vai mesmo clicar aqui?".
+- Frustrações: Clientes que ignoram o link e continuam a perguntar horários.
+- Satisfação: Ver que o link é visualmente profissional.
+
+#### Oportunidades de Melhoria
+-  Gerador de QR Code para o profissional colar nos seus cartões ou carrinha.
+-  Template de mensagem pronta para enviar ao cliente explicando como agendar.
+- 
+
+---
+
+### 🟦 Etapa 3: Agendamento Passivo (O "Momento Wow")
+
+#### Ações do Usuário
+1. Está a executar uma instalação elétrica num cliente.
+2. Recebe uma notificação de "Novo Agendamento Confirmado".
+3. Apenas visualiza a notificação e continua o trabalho atual.
+
+#### Pontos de Contato (Touchpoints)
+- Notificação Push / E-mail.
+- Lista de Agendamentos no Supabase.
+- 
+
+#### Percepção do Usuário (Emoção / Experiência)
+- O que sente: Sensação de produtividade e liberdade.
+- Dúvidas: "Será que houve choque com outro horário?".
+- Frustrações: Receio de o cliente ter marcado o serviço errado.
+- Satisfação: Saber que ganhou dinheiro/serviço sem precisar de parar o que estava a fazer.
+
+#### Oportunidades de Melhoria
+-  Integração com o Google Calendar para o profissional centralizar tudo.
+-  Bloqueio automático de horários de intervalo (almoço).
+- 
+
+---
+
+## 📊 Visão Analítica da Jornada
+
+### Momentos Críticos (Moments of Truth)
+- Primeiro Agendamento: Quando o profissional percebe que a ferramenta funciona sem ele digitar nada.
+- Configuração da Agenda: Se for muito complexa, ele desiste e volta para o papel.
+- Notificação de Confirmação: Deve ser instantânea para dar segurança a ambas as partes.
+
+### Pontos de Fricção
+- Educação do Cliente: O hábito do cliente final em querer "conversar" antes de agendar.
+- Sincronização: Se o profissional marcar algo fora do app (por telefone) e esquecer de bloquear o horário no sistema.
+- Conectividade: O profissional estar numa obra sem sinal de internet e não conseguir consultar o próximo endereço.

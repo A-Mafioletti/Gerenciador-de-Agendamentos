@@ -1,82 +1,78 @@
-# Gerenciador de Agendamentos Inteligente
+# 📅  Gerenciador de Agendamentos Inteligente   
 
-Bem-vindo ao repositório do **Gerenciador de Agendamentos Inteligente**, uma plataforma autônoma projetada para profissionais que executam trabalhos manuais (como eletricistas, encanadores, marcenaria e estética a domicílio).
+Bem-vindo ao repositório do Gerenciador de Agendamentos Inteligente, uma plataforma autônoma projetada para profissionais que executam trabalhos manuais (como eletricistas, encanadores, marcenaria e estética a domicílio).
 
 Este sistema atua como um assistente digital 24/7, permitindo que os clientes agendem horários de forma independente e fácil, integrando-se diretamente à agenda do profissional, reduzindo tarefas administrativas e evitando choques de horários ("double-booking").
 
-## 🚀 Sobre o Projeto
+## 🚀 Status do Projeto (Produção)
 
-O projeto visa solucionar a perda de serviços e tempo enfrentada por profissionais autônomos que não conseguem conciliar o atendimento imediato aos clientes com a execução do seu trabalho.
+A aplicação está implantada em ambiente público e 100% funcional:
 
-### Principais Funcionalidades (MVP - v1)
-- **Página de Agendamento Pública (Booking Page):** Link único para o cliente agendar serviços visualizando os horários vagos em tempo real.
-- **Minha Agenda (Dashboard):** Painel de controle para o profissional, exibindo os serviços e horários do dia.
-- **Gestão de Disponibilidade:** Configuração de grade horária, bloqueios de horário e cadastro de serviços com suas respectivas durações.
-- **Acesso Seguro:** Autenticação para o profissional acessar as configurações e a agenda.
+Link de Acesso: https://projeto-agendamentos-ashen.vercel.app
 
-## 🛠️ Tecnologias Utilizadas
+Credenciais: O acesso à Booking Page é público para os clientes finais. Não é necessário login para testar o fluxo de agendamento.
+
+## 🛠️ Tecnologias e Estrutura (Monorepo)
 
 A aplicação é um monorepo construído com tecnologias modernas voltadas para performance e escalabilidade (Jamstack / Serverless):
 
-- **Linguagem:** TypeScript
-- **Frontend:** Next.js (App Router), React, Tailwind CSS
-- **Backend:** Next.js (Edge/Serverless Runtime), Express (em `apps/backend` para testes de integração iniciais)
-- **Banco de Dados:** PostgreSQL (via Supabase)
-- **Deployment:** Vercel (Frontend & Backend) / Docker Compose (Ambiente Local)
+Linguagem: TypeScript
 
-## 📦 Estrutura do Monorepo
+Frontend: Next.js, React, Tailwind CSS
 
-O projeto está estruturado da seguinte forma:
+Backend/API: Node.js (Vercel Edge/Serverless Functions)
 
-```bash
+Banco de Dados: PostgreSQL (via Supabase) com PgBouncer
+
+Deployment: Vercel automatizado
+
+## 📦 Estrutura do Repositório
+
 gerenciador-agendamentos/
 ├── apps/
-│   ├── frontend/        # Aplicação Web Principal (Next.js)
-│   └── backend/         # API Base/Microsserviço (Express/Node.js)
-├── docs/                # Documentação técnica e de produto (PRD, Spec)
-├── infra/               # Configurações de infraestrutura
-├── docker-compose.yml   # Orquestração local de containers
+│   ├── frontend/        # Aplicação Web Principal (Vercel)
+│   └── backend/         # API Base, Lógica de Negócios e ORM (Prisma)
+├── docs/                # Documentação técnica, produto, negócios e IA
 └── package.json         # Workspaces do monorepo
-```
+
+
+## 🤖 Uso de Inteligência Artificial (IA)
+
+Este projeto utilizou ferramentas de IA Generativa (Google Gemini) como suporte ao desenvolvimento ("Pair Programming"). O registro detalhado dos prompts utilizados para modelagem de banco de dados, resolução de bugs de infraestrutura e geração de documentação encontra-se no arquivo /docs/ai_prompts.md.
 
 ## 💻 Como rodar o projeto localmente
 
-### Pré-requisitos
-- [Node.js](https://nodejs.org/) (versão LTS recomendada)
-- [Docker](https://www.docker.com/) e Docker Compose (para o banco de dados e execução em containers)
+Pré-requisitos
 
-### Passo a Passo
+Node.js (versão LTS recomendada)
 
-1. Instale as dependências na raiz do monorepo:
-   ```bash
-   npm install
-   ```
+Instância do PostgreSQL (ou Supabase configurado)
 
-2. Certifique-se de que o arquivo `.env` na raiz está configurado com as variáveis locais do banco de dados:
-   ```env
-   POSTGRES_USER=postgres
-   POSTGRES_PASSWORD=postgres
-   POSTGRES_DB=agendamentos
-   ```
+Passo a Passo
 
-3. Suba os serviços usando o Docker Compose:
-   ```bash
-   npm run dev
-   # ou
-   docker compose up --build
-   ```
+Clone o repositório e acesse a pasta do backend:
 
-   Os serviços estarão disponíveis em:
-   - **Frontend:** http://localhost:3000
-   - **Backend API:** http://localhost:3001
-   - **Banco de Dados (PostgreSQL):** localhost:5432
+cd apps/backend
 
-## 📝 Regras e Contribuição
+Instale as dependências:
 
-Para contribuir com o projeto, siga as orientações detalhadas na documentação contida na pasta `/docs`. Todas as especificações técnicas, regras de UI/UX e definições de produto (PRD) devem ser rigorosamente seguidas durante a implementação.
+npm install
 
-Destacamos a abordagem **Mobile-First** para todas as interfaces e a padronização das datas em **UTC** no banco de dados.
+Crie um arquivo .env baseado no .env.example e insira suas credenciais do banco.
 
-## 📄 Licença
+Sincronize o banco de dados (Prisma):
 
-Este projeto é desenvolvido e mantido de acordo com as diretrizes e regras restritas deste repositório fechado. O código-fonte não é aberto para uso livre sem autorização.
+npx prisma generate
+npx prisma db pull
+
+Inicie o servidor de desenvolvimento:
+
+npm run dev
+
+## 📝 Documentação Complementar
+
+Para contribuir ou entender as decisões de negócio e arquitetura, consulte a pasta /docs, que contém:
+
+Negócios: Lean Canvas, Persona, Jornada do Usuário.
+
+Técnico: PRD, Especificação Técnica, Especificação UI, ADRs e C4 Model.
