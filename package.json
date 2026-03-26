@@ -8,5 +8,8 @@
     "dev": "docker compose up --build",
     "build": "npm run build --workspaces",
     "start": "npm run start --workspaces"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.100.0"
   }
 }
