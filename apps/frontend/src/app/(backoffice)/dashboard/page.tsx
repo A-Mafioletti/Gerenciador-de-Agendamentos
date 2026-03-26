@@ -1,26 +1,61 @@
 "use client";
 
-import Link from "next/link";
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { createClient } from "@supabase/supabase-js";
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export default function DashboardPage() {
-  const handleNotImplemented = () => {
-    alert('Em desenvolvimento');
-  };
+  const [appointments, setAppointments] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const pathname = usePathname();
+  useEffect(() => {
+    async function fetchAppointments() {
+      try {
+        setIsLoading(true);
+        // Buscamos tudo de appointments e tentamos trazer o nome do serviço da tabela vinculada
+        const { data, error } = await supabase
+          .from("appointments")
+          .select(`
+            *,
+            services (
+              name
+            )
+          `)
+          .order("date", { ascending: true })
+          .order("start_time", { ascending: true });
+
+        if (error) throw error;
+        if (data) setAppointments(data);
+      } catch (error) {
+        console.error("Erro ao buscar dados:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchAppointments();
+  }, []);
+
+  const handleCopyLink = () => {
+    const link = "https://projeto-agendamentos-ashen.vercel.app/booking/carlos";
+    navigator.clipboard.writeText(link);
+    alert("Link de agendamento copiado!");
+  };
 
   return (
     <div className="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
-      {/* Header Section */}
       <header className="bg-background-light dark:bg-background-dark sticky top-0 z-10 border-b border-primary/10">
         <div className="flex items-center p-4 justify-between max-w-xl md:max-w-3xl lg:max-w-4xl mx-auto w-full">
           <div className="flex items-center gap-3">
             <div className="size-10 shrink-0 rounded-full bg-primary/10 flex items-center justify-center overflow-hidden border border-primary/20">
-              <img 
-                className="w-full h-full object-cover" 
-                data-alt="Foto de perfil do usuário Carlos" 
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTjL8evO208DzmWZwY_gGCcq2GM5LhO2ijZndyRkUbFG75MSoDJjW5i1A-uH6XcqbSXvhhAdvmyQB_Ada6LxaVqempgjZEJgl_uWv1ifI3hRY86RhJ7Ikcszve4PxvonGWv2UASq1szRikspY5rRNNL8RoSMG_yM0vuIIwq2rc-GxHL5_iWn28C-8SZu6ZiAC5mR8ekDPAXab7ZDGuXkhTqV04cze0qWzQv2YnKaC9VSN-gOCnZip4H35IMGjgFpY6xmRUcUhcQPE"
+              <img
+                className="w-full h-full object-cover"
+                alt="Carlos"
+                src="https://api.dicebear.com/7.x/avataaars/svg?seed=Carlos"
               />
             </div>
             <div>
@@ -28,121 +63,92 @@ export default function DashboardPage() {
               <h2 className="text-lg font-bold leading-tight tracking-tight">Olá, Carlos</h2>
             </div>
           </div>
-          <button className="flex items-center gap-2 bg-primary/10 hover:bg-primary/20 text-primary px-3 py-2 rounded-lg transition-colors duration-200">
+          <button
+            onClick={handleCopyLink}
+            className="flex items-center gap-2 bg-primary/10 hover:bg-primary/20 text-primary px-3 py-2 rounded-lg transition-colors duration-200"
+          >
             <span className="material-symbols-outlined text-[18px]">content_copy</span>
             <span className="text-xs font-bold uppercase tracking-wider hidden sm:block">Copiar Link</span>
           </button>
         </div>
-        
-        {/* Navigation Tabs */}
+
         <div className="px-4 max-w-xl md:max-w-3xl lg:max-w-4xl mx-auto w-full">
           <div className="flex gap-8">
             <div className="flex flex-col items-center justify-center border-b-2 border-primary text-primary pb-3 pt-4 cursor-pointer">
-              <p className="text-sm font-bold">Hoje</p>
-            </div>
-            <div className="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 pb-3 pt-4 hover:text-primary transition-colors cursor-pointer">
-              <p className="text-sm font-bold">Próximos</p>
+              <p className="text-sm font-bold">Agenda Completa</p>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Main Content Area */}
       <main className="flex-1 p-4 max-w-xl md:max-w-3xl lg:max-w-4xl mx-auto w-full overflow-y-auto">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-base font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wide">Agenda de Hoje</h3>
-          <span className="text-xs font-medium text-slate-500 bg-slate-200 dark:bg-slate-800 px-2 py-1 rounded">24 Out, Qui</span>
+          <h3 className="text-base font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wide">Cronograma Geral</h3>
+          <span className="text-xs font-medium text-slate-500 bg-slate-200 dark:bg-slate-800 px-2 py-1 rounded">
+            Sincronizado com Banco
+          </span>
         </div>
 
-        {/* Appointments List */}
         <div className="flex flex-col gap-4">
-          {/* Appointment Card 1 */}
-          <div className="flex flex-col gap-3 rounded-xl bg-white dark:bg-slate-900 p-4 shadow-sm border border-slate-100 dark:border-slate-800">
-            <div className="flex justify-between items-start">
-              <div className="flex flex-col gap-1">
-                <span className="text-primary text-sm font-bold bg-primary/5 px-2 py-0.5 rounded-md w-fit">09:00 - 10:00</span>
-                <p className="text-slate-900 dark:text-slate-100 text-lg font-bold mt-1">Ricardo Silva</p>
-                <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Instalação de Chuveiro</p>
-              </div>
-              <div className="size-12 rounded-lg bg-slate-100 dark:bg-slate-800 overflow-hidden">
-                <img 
-                  className="w-full h-full object-cover" 
-                  data-alt="Avatar do cliente Ricardo Silva" 
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKk2vohwkJBqPAnXDVYe_2vFUIKCLQb9a1mm_gof4DH9ZsciJGbvKu7ndr9j5FtvdCW10XNIQb3ce34thFLzP8VPCLOmRTN61tHUjMt0z9jd_rEC-OYBggpZlUKvNzJosRe9YnG7K5POkRLjnvouOplVQpEhAvjVnh2TrSOuk0aKjx4KgSEeIg6xs-mtNEbxogLICNisFZG_3pfpkKRSftyWGDpjC9fp1pErovPUpx9WfO6jpSixGSVsG1MlHofatSf4YnJr1U92Y"
-                />
-              </div>
+          {isLoading ? (
+            <p className="text-center py-10 text-slate-400 italic">Carregando dados reais...</p>
+          ) : appointments.length === 0 ? (
+            <div className="text-center py-16 bg-white dark:bg-slate-900 rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-800">
+              <p className="text-slate-500">Nenhum agendamento encontrado.</p>
             </div>
-            <div className="flex gap-2 pt-2 border-t border-slate-50 dark:border-slate-800 mt-1">
-              <button className="flex-1 flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366]/20 transition-colors font-semibold text-sm">
-                <span className="material-symbols-outlined text-[20px]">chat</span>
-                WhatsApp
-              </button>
-              <button className="flex items-center justify-center rounded-lg size-10 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
-                <span className="material-symbols-outlined">more_horiz</span>
-              </button>
-            </div>
-          </div>
+          ) : (
+            appointments.map((apt) => (
+              <div key={apt.id} className="flex flex-col gap-3 rounded-xl bg-white dark:bg-slate-900 p-4 shadow-sm border border-slate-100 dark:border-slate-800 transition-all hover:shadow-md">
+                <div className="flex justify-between items-start">
+                  <div className="flex flex-col gap-1">
+                    <div className="flex gap-2">
+                      <span className="text-primary text-[10px] font-bold bg-primary/5 px-2 py-0.5 rounded-md w-fit flex items-center gap-1 uppercase">
+                        <span className="material-symbols-outlined text-[12px]">calendar_month</span>
+                        {new Date(apt.date).toLocaleDateString('pt-BR')}
+                      </span>
+                      <span className="text-slate-600 dark:text-slate-400 text-[10px] font-bold bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-md w-fit flex items-center gap-1 uppercase">
+                        <span className="material-symbols-outlined text-[12px]">schedule</span>
+                        {apt.start_time.substring(0, 5)}h
+                      </span>
+                    </div>
+                    <p className="text-slate-900 dark:text-slate-100 text-lg font-bold mt-2">{apt.client_name}</p>
+                    <p className="text-primary dark:text-primary-light text-sm font-semibold italic">
+                      {apt.services?.name || "Serviço Geral"}
+                    </p>
+                    {apt.address_notes && (
+                      <p className="text-slate-500 dark:text-slate-400 text-xs mt-1 flex items-center gap-1">
+                        <span className="material-symbols-outlined text-[14px]">location_on</span>
+                        {apt.address_notes}
+                      </p>
+                    )}
+                  </div>
+                  <div className="size-12 rounded-lg bg-slate-100 dark:bg-slate-800 overflow-hidden shadow-inner">
+                    <img
+                      className="w-full h-full object-cover"
+                      src={`https://api.dicebear.com/7.x/initials/svg?seed=${apt.client_name}`}
+                      alt={apt.client_name}
+                    />
+                  </div>
+                </div>
 
-          {/* Appointment Card 2 */}
-          <div className="flex flex-col gap-3 rounded-xl bg-white dark:bg-slate-900 p-4 shadow-sm border border-slate-100 dark:border-slate-800">
-            <div className="flex justify-between items-start">
-              <div className="flex flex-col gap-1">
-                <span className="text-primary text-sm font-bold bg-primary/5 px-2 py-0.5 rounded-md w-fit">10:30 - 11:15</span>
-                <p className="text-slate-900 dark:text-slate-100 text-lg font-bold mt-1">Marcos Oliveira</p>
-                <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Manutenção Preventiva</p>
+                <div className="flex gap-2 pt-2 border-t border-slate-50 dark:border-slate-800 mt-1">
+                  <a
+                    href={`https://wa.me/55${apt.client_whatsapp?.replace(/\D/g, '')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366]/20 transition-all font-bold text-sm"
+                  >
+                    <span className="material-symbols-outlined text-[20px]">chat</span>
+                    WhatsApp
+                  </a>
+                </div>
               </div>
-              <div className="size-12 rounded-lg bg-slate-100 dark:bg-slate-800 overflow-hidden">
-                <img 
-                  className="w-full h-full object-cover" 
-                  data-alt="Avatar do cliente Marcos Oliveira" 
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbVPjSAEHXrC2HdaHdVnGmcXfMf7-oUhOda65digkP4rk1Y46tTwwHeD4hEnz6UbPwMUs7QU68zCzSyQOoxfEso_korbrAmK-ertvmnMUlGQrn3QEHtmTvQkaLL9bpkscVe45UiNBSTR9nuDrvepTT3t1zLZvM1ebWhCU12IgZcb29aQMKDc1fICYGJlVVDy7pBBDH1oGnP0ir-SUIz5ZafcWvC2Q1vWowEyW0HRTXlZSYeM--c-oAzKskIAQiRhMCE4v7B5EIyik"
-                />
-              </div>
-            </div>
-            <div className="flex gap-2 pt-2 border-t border-slate-50 dark:border-slate-800 mt-1">
-              <button className="flex-1 flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366]/20 transition-colors font-semibold text-sm">
-                <span className="material-symbols-outlined text-[20px]">chat</span>
-                WhatsApp
-              </button>
-              <button className="flex items-center justify-center rounded-lg size-10 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
-                <span className="material-symbols-outlined">more_horiz</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Appointment Card 3 */}
-          <div className="flex flex-col gap-3 rounded-xl bg-white dark:bg-slate-900 p-4 shadow-sm border border-slate-100 dark:border-slate-800">
-            <div className="flex justify-between items-start">
-              <div className="flex flex-col gap-1">
-                <span className="text-primary text-sm font-bold bg-primary/5 px-2 py-0.5 rounded-md w-fit">13:00 - 14:00</span>
-                <p className="text-slate-900 dark:text-slate-100 text-lg font-bold mt-1">André Santos</p>
-                <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Iluminação e Leds</p>
-              </div>
-              <div className="size-12 rounded-lg bg-slate-100 dark:bg-slate-800 overflow-hidden">
-                <img 
-                  className="w-full h-full object-cover" 
-                  data-alt="Avatar do cliente André Santos" 
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoNjQ0b6W9bTs7u9GiBoBAJN6Zs1NwuD0CsPcmo5ZM3EMYY45CQFVjyES1S3O9XuIy9jH_345hDt-0r9peIm6coLtGOPaaaQf4-FqECnmcfwES4shIlbobzZ8n6lz53YRW06c4Ad8Ie_3U4b2Jv7rWWEfYNGMqbtimtj1sxGZv-LrA-AyNPlXr9ZdV-82HSXwKCaSGVw3k9bcNL7UwMFW-L_rrPM0p7B41e_XCsWqeV-OROwcKWymkJ7DOD9zhVDco9k4vvM0p4uc"
-                />
-              </div>
-            </div>
-            <div className="flex gap-2 pt-2 border-t border-slate-50 dark:border-slate-800 mt-1">
-              <button className="flex-1 flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366]/20 transition-colors font-semibold text-sm">
-                <span className="material-symbols-outlined text-[20px]">chat</span>
-                WhatsApp
-              </button>
-              <button className="flex items-center justify-center rounded-lg size-10 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
-                <span className="material-symbols-outlined">more_horiz</span>
-              </button>
-            </div>
-          </div>
+            ))
+          )}
         </div>
-        
-        {/* Bottom Spacer */}
+
         <div className="h-24"></div>
       </main>
-
-
     </div>
   );
 }
