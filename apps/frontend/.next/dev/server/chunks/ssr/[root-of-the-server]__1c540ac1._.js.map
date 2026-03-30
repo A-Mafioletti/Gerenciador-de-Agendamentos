@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 10, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/Andre/pucminas/Projeto%20Integrado/Projeto-agendamentos/apps/frontend/src/app/page.tsx"],"sourcesContent":["export default async function Home() {\n  const res = await fetch(process.env.BACKEND_URL || 'http://localhost:3001/api/health', { cache: 'no-store' });\n  const data = await res.json().catch(() => ({ status: 'error' }));\n\n  return (\n    <main>\n      <h1>Gerenciador de Agendamentos</h1>\n      <p>Backend Status: {data.status}</p>\n    </main>\n  );\n}\n"],"names":[],"mappings":";;;;;;AAAe,eAAe;IAC5B,MAAM,MAAM,MAAM,MAAM,QAAQ,GAAG,CAAC,WAAW,IAAI,oCAAoC;QAAE,OAAO;IAAW;IAC3G,MAAM,OAAO,MAAM,IAAI,IAAI,GAAG,KAAK,CAAC,IAAM,CAAC;YAAE,QAAQ;QAAQ,CAAC;IAE9D,qBACE,2SAAC;;0BACC,2SAAC;0BAAG;;;;;;0BACJ,2SAAC;;oBAAE;oBAAiB,KAAK,MAAM;;;;;;;;;;;;;AAGrC"}}]
-}
