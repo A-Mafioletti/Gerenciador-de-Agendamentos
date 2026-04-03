@@ -1,111 +1,100 @@
 # Jornada do Usuário
 
-> Produto / Serviço: Gerenciador de Agendamentos para Prestadores de Serviços   
-> Persona: Carlos, o Eletricista Conectado
-> Data: 10/03/2026  
-> Responsável: André Mafioletti
+> **Produto / Serviço:** Gerenciador de Agendamentos Inteligente
+> **Persona:** Carlos, o Autônomo Conectado (Eletricista)
+> **Data de Atualização:** Abril/2026
+> **Responsável:** André Mafioletti
 
 ---
 
 ## 📌 Visão Geral da Jornada
 
-| Etapa | Descrição  | Objetivo do Usuário|
-|-------|--------------------|-------------------|
-| 1. Descoberta e Setup | Cadastro e configuração dos horários de serviço.      | Configurar a disponibilidade para começar a receber agendamentos.     |
-| 2. Divulgação do Link | Partilha do link de agendamento no perfil e conversas.| Direcionar o fluxo de clientes do WhatsApp para a plataforma.         |
-| 3. Agendamento Passivo| O cliente escolhe o horário e reserva sem intervenção.| Receber reservas confirmadas enquanto está a trabalhar noutro serviço.|
-| 4. Gestão e Execução  | Consulta da agenda do dia e realização do serviço.    | Executar o serviço sem atrasos ou esquecimentos.                      |
-| 5. Pós-atendimento    | Finalização do ciclo e libertação de novo horário.    | Manter a agenda atualizada e fidelizar o cliente.                     |
+| Etapa | Descrição | Objetivo do Usuário |
+| :--- | :--- | :--- |
+| **1. Descoberta e Setup** | Cadastro (Clerk) e configuração de expediente e serviços. | Configurar a disponibilidade base para o sistema trabalhar sozinho. |
+| **2. Divulgação** | Partilha do link público na Bio do Instagram e WhatsApp. | Direcionar clientes curiosos para o funil de agendamento autônomo. |
+| **3. Agendamento Passivo** | O sistema recebe a marcação sem intervenção humana. | Ganhar um novo serviço confirmado enquanto está com a "mão na massa". |
+| **4. Gestão de Exceções** | Inserção de bloqueios para compromissos pessoais. | Garantir tempo para si (médico, descanso) sem quebrar a agenda. |
+| **5. Execução e Histórico**| Consulta da agenda do dia e lista de clientes. | Executar o serviço no endereço correto e reter o contato do cliente. |
 
 ---
 
 ## 🔎 Detalhamento por Etapa
 
----
+### 🟦 Etapa 1: Descoberta e Setup Inicial (A Jornada de Configuração)
 
-### 🟦 Etapa 1: Descoberta e Setup Inicial
+**Ações do Usuário:**
+1. Cria a conta no sistema via Autenticação Social (Google).
+2. Acessa o Painel de Configurações.
+3. Define os dias de trabalho, horário comercial e sua pausa de almoço.
+4. Cadastra os tipos de serviço com duração estimada (ex: Troca de Chuveiro - 1h).
 
-#### Ações do Usuário
-1. Cria a conta no sistema (via autenticação Clerk).
-2. Define os tipos de serviço (ex: Troca de disjuntor - 1h).
-3. Configura o horário de trabalho semanal (ex: Seg-Sex, 08h às 18h).
+**Pontos de Contato (Touchpoints):**
+* Tela de Autenticação (Clerk).
+* Dashboard Restrito > Aba de Configurações.
 
-#### Pontos de Contato (Touchpoints)
-- Interface de Login/Cadastro.
-- Painel de Configurações (Dashboard).
-- Cadastro de Serviços.
-
-#### Percepção do Usuário (Emoção / Experiência)
-- O que sente: Motivado, mas com receio de ser difícil de configurar.
-- Dúvidas: "Vou conseguir configurar sozinho?", "O cliente vai entender?".
-- Frustrações: Se houver campos demais para preencher.
-- Satisfação: Ver o link de agendamento pronto para uso pela primeira vez.
-
-#### Oportunidades de Melhoria
--  Tutorial guiado (Onboarding) simples.
--  Sugestões de serviços comuns para eletricistas já pré-cadastrados.
-- 
+**Percepção do Usuário (Emoção / Experiência):**
+* **Dúvidas:** "O cliente vai conseguir marcar no meu horário de almoço?"
+* **Satisfação (Momento Wow):** Ver que o sistema bloqueia automaticamente o horário de almoço e calcula as janelas de disponibilidade com base na duração de cada serviço cadastrado.
 
 ---
 
 ### 🟦 Etapa 2: Divulgação e Fluxo de Clientes
 
-#### Ações do Usuário
-1. Copia o link personalizado de agendamento.
-2. Cola o link na Bio do Instagram e na mensagem de saudação do WhatsApp.
-3. Envia o link para um cliente que perguntou a disponibilidade.
+**Ações do Usuário:**
+1. Copia a URL personalizada de agendamento gerada pelo sistema.
+2. Atualiza a mensagem automática do WhatsApp Business: *"Estou em atendimento. Para agendar um serviço, clique aqui: [LINK]"*.
 
-#### Pontos de Contato (Touchpoints)
-- Botão "Copiar Link" no App.
-- Perfil do WhatsApp Business / Instagram.
-- Chat do WhatsApp.
+**Pontos de Contato (Touchpoints):**
+* Botão "Copiar Link" no Dashboard.
+* WhatsApp Business / Instagram do Profissional.
 
-#### Percepção do Usuário (Emoção / Experiência)
-- O que sente: Alívio por não precisar digitar horários um a um.
-- Dúvidas: "O cliente vai mesmo clicar aqui?".
-- Frustrações: Clientes que ignoram o link e continuam a perguntar horários.
-- Satisfação: Ver que o link é visualmente profissional.
-
-#### Oportunidades de Melhoria
--  Gerador de QR Code para o profissional colar nos seus cartões ou carrinha.
--  Template de mensagem pronta para enviar ao cliente explicando como agendar.
-- 
+**Percepção do Usuário (Emoção / Experiência):**
+* **O que sente:** Alívio por não precisar ficar negociando horários picados.
+* **Frustrações:** Clientes mais antigos que ainda insistem em perguntar "que horas você pode vir?" por texto.
 
 ---
 
-### 🟦 Etapa 3: Agendamento Passivo (O "Momento Wow")
+### 🟦 Etapa 3: Agendamento Passivo (O Assistente Digital)
 
-#### Ações do Usuário
-1. Está a executar uma instalação elétrica num cliente.
-2. Recebe uma notificação de "Novo Agendamento Confirmado".
-3. Apenas visualiza a notificação e continua o trabalho atual.
+**Ações do Usuário:**
+1. O profissional está executando uma instalação complexa (sem poder olhar o celular).
+2. O cliente final acessa a Booking Page, escolhe a data, preenche os dados e confirma.
+3. O profissional abre o celular no fim do dia e vê a agenda preenchida.
 
-#### Pontos de Contato (Touchpoints)
-- Notificação Push / E-mail.
-- Lista de Agendamentos no Supabase.
-- 
+**Pontos de Contato (Touchpoints):**
+* Página Pública de Agendamento (Booking Page).
+* Banco de Dados (Supabase atualizando em tempo real).
 
-#### Percepção do Usuário (Emoção / Experiência)
-- O que sente: Sensação de produtividade e liberdade.
-- Dúvidas: "Será que houve choque com outro horário?".
-- Frustrações: Receio de o cliente ter marcado o serviço errado.
-- Satisfação: Saber que ganhou dinheiro/serviço sem precisar de parar o que estava a fazer.
+**Percepção do Usuário (Emoção / Experiência):**
+* **Satisfação Extrema:** Ganhar dinheiro/serviço sem precisar parar o que estava fazendo. Fim do *Double-Booking* (choque de horários).
 
-#### Oportunidades de Melhoria
--  Integração com o Google Calendar para o profissional centralizar tudo.
--  Bloqueio automático de horários de intervalo (almoço).
-- 
+---
+
+### 🟦 Etapa 4: Gestão de Exceções e Bloqueio Pessoal (A Retomada de Controle)
+
+**Ações do Usuário:**
+1. Carlos descobre que precisará ir ao dentista na quinta-feira às 14h.
+2. Abre o Dashboard no celular, clica em "Bloquear Horário".
+3. Seleciona a data e inativa a janela das 14h às 15h.
+
+**Pontos de Contato (Touchpoints):**
+* Dashboard > Modal de Bloqueio Rápido.
+
+**Percepção do Usuário (Emoção / Experiência):**
+* **O que sente:** Segurança. Ele sabe que a ferramenta se adapta à vida real dele, e não o contrário.
+* **Satisfação:** O cliente final não vê o motivo do bloqueio, apenas que o horário está acinzentado e indisponível.
 
 ---
 
 ## 📊 Visão Analítica da Jornada
 
 ### Momentos Críticos (Moments of Truth)
-- Primeiro Agendamento: Quando o profissional percebe que a ferramenta funciona sem ele digitar nada.
-- Configuração da Agenda: Se for muito complexa, ele desiste e volta para o papel.
-- Notificação de Confirmação: Deve ser instantânea para dar segurança a ambas as partes.
+* **Primeiro Agendamento Sozinho:** Quando o profissional percebe que a ferramenta capturou um cliente sem que ele precisasse digitar uma única palavra.
+* **Confiabilidade do Bloqueio:** Quando o profissional bloqueia um horário para descanso e comprova que nenhum cliente conseguiu "furar" essa janela.
 
-### Pontos de Fricção
-- Educação do Cliente: O hábito do cliente final em querer "conversar" antes de agendar.
-- Sincronização: Se o profissional marcar algo fora do app (por telefone) e esquecer de bloquear o horário no sistema.
-- Conectividade: O profissional estar numa obra sem sinal de internet e não conseguir consultar o próximo endereço.
+### Pontos de Fricção e Soluções do MVP
+* **Fricção Inicial:** O hábito do cliente final em querer "conversar" antes de agendar.
+  * *Como mitigamos:* A página de agendamento é absurdamente simples, pedindo apenas o WhatsApp e o Endereço, o que reduz a barreira de entrada e ansiedade do cliente.
+* **Marcações "Por Fora":** O risco de o profissional aceitar um serviço "de boca" na rua e esquecer de atualizar o sistema.
+  * *Como mitigamos:* A criação do **INT-06 (Modal de Bloqueio)** permite inativar um horário no sistema em menos de 3 cliques, sendo rápido o suficiente para ser feito ainda na rua.

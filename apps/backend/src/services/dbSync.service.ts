@@ -13,23 +13,13 @@ export class DbSyncService {
     nomeCompleto: string
   ) {
     try {
-      const cliente = await prisma.cliente.upsert({
-        where: { email },
-        update: {
-          clerk_id: clerkId,
-          nome_completo: nomeCompleto,
-        },
-        create: {
-          email,
-          clerk_id: clerkId,
-          nome_completo: nomeCompleto,
-        },
-      });
-
-      return cliente;
+      // NOTE: Table "cliente" was removed on current schema. This service is deprecated.
+      console.log('Sync user bypassed', clerkId, email, nomeCompleto);
+      return null;
     } catch (error) {
-      console.error('Erro ao sincronizar cliente no bd local:', error);
+      console.error('Erro ao sincronizar', error);
       throw new Error('Falha na sincronização do banco de dados');
     }
   }
 }
+

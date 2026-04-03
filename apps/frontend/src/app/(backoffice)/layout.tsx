@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { SignOutButton } from "@clerk/nextjs";
+import { LogOut } from "lucide-react";
 
 export default function BackofficeLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -43,6 +45,13 @@ export default function BackofficeLayout({ children }: { children: React.ReactNo
               </Link>
             );
           })}
+          
+          <SignOutButton redirectUrl="/login">
+            <button className="flex w-full items-center gap-3 px-4 py-3 rounded-xl transition-all text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-100">
+              <LogOut className="size-6 shrink-0" />
+              <span className="font-medium">Sair</span>
+            </button>
+          </SignOutButton>
         </nav>
         
         <div className="p-4 border-t border-slate-200 dark:border-slate-800">
@@ -81,6 +90,13 @@ export default function BackofficeLayout({ children }: { children: React.ReactNo
                </Link>
              )
           })}
+
+          <SignOutButton redirectUrl="/login">
+            <button className="flex flex-col items-center gap-1 transition-colors text-slate-400 dark:text-slate-500 hover:text-primary">
+              <LogOut className="size-6 shrink-0" />
+              <p className="text-[10px] font-bold uppercase tracking-wider">Sair</p>
+            </button>
+          </SignOutButton>
         </div>
       </nav>
     </div>

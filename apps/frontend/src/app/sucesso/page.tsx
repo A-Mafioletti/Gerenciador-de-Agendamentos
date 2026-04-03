@@ -60,7 +60,9 @@ function SuccessContent() {
                 <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-1">Data</span>
                 <div className="flex items-center gap-2">
                   <span className="material-symbols-outlined text-primary text-xl">calendar_today</span>
-                  <p className="font-medium">{data !== 'Indisponível' ? `${data}/${new Date().getMonth() + 1}` : data}</p>
+                  <p className="font-medium">
+                    {data !== 'Indisponível' && data.includes('-') ? `${data.split('-')[2]}/${data.split('-')[1]}` : data}
+                  </p>
                 </div>
               </div>
               <div>

@@ -1,64 +1,73 @@
 # Prompt para Geração de Protótipos de UX/UI
 
-**Contexto:** Você assumirá o papel de um Especialista em UX/UI Sênior focado em interfaces "Mobile-First" e aplicações SaaS. Seu objetivo é criar wireframes e protótipos de alta fidelidade para uma aplicação web chamada "Gerenciador de Agendamentos Inteligente".
-
-## Visão Geral do Produto
-O sistema é uma plataforma de agendamento autônoma que funciona como um assistente digital 24/7. Seu foco é facilitar a vida de profissionais autônomos que realizam trabalho manual (ex: elétrica, encanamento, estética a domicílio, marcenaria), automatizando o agendamento de serviços.
-
-**Público-Alvo e Perfis de Usuário:**
-1. **O Cliente Final:** Precisa de rapidez para agendar um serviço emergencial ou corriqueiro. Seu objetivo é conseguir agendar um horário de forma rápida, ter a confirmação imediata e saber com certeza quando o profissional virá.
-2. **O Profissional Autônomo (Carlos):** Está na correria do dia a dia. Perde clientes por demora no WhatsApp, sofre com choques de horário, e precisa usar um sistema simples via Smartphone para gerenciar a própria agenda em movimento, sem exigir tempo na frente do computador.
-
-## Diretrizes de Design a serem seguidas estritamente
-- **Acessibilidade e Clean UI:** O foco absoluto deve ser interfaces minimalistas (estilo Apple/Stripe). Evitar excesso de bordas escuras. Priorizar o uso de "whitespace" (espaçamento em branco) para separação de elementos visuais. Acessibilidade (tags ARIA, contrastes) é obrigatória.
-- **Abordagem Mobile-First:** O design DEVE nascer pensado para telas de smartphone (mobile nativo), já que o profissional usará no celular o dia todo e o cliente agendará pela via mais rápida. Botões amigáveis para toque são essenciais. Adaptações desktop ocorrerão via breakpoints, não o inverso.
-- **Foco em Conversão (INT-01):** Um cliente novo deve conseguir visualizar as datas e aprovar a marcação em menos de 2 minutos. Elimine qualquer fricção, sem necesidad de baixar apps ou criar senhas.
-- **Stack-Friendly (Tailwind/React):** O sistema será desenvolvido usando React (Next.js) e estilização com Tailwind CSS (Utility-first). Portanto, planeje os designs utilizando Componentização (Atomic Design) para que facilmente derivem pequenos componentes independentes.
+**Instrução para a IA:** Você atuará como um Especialista em UX/UI Sênior focado em interfaces *Mobile-First* e aplicações SaaS. Seu objetivo é criar wireframes e protótipos de alta fidelidade (código ou visual) para a aplicação web "Gerenciador de Agendamentos Inteligente".
 
 ---
 
-## Escopo dos Protótipos (MVP / v1)
+## 1. Visão Geral do Produto e Personas
+Plataforma de agendamento autônoma (assistente digital 24/7) focada em profissionais autônomos de serviços manuais (ex: elétrica, encanamento).
 
-Construa os cenários ou as descrições estruturais detalhadas em pequenos sub-componentes para as 5 interfaces abaixo:
-
-### 1. INT-01 - Página de Agendamento Pública (Booking Page)
-Visão Pública do Cliente (Onde ocorre a conversão via link do Instagram/WhatsApp).
-- **Header do Perfil:** Avatar/Foto circular, Nome do Profissional e Título da Profissão (ex: "Carlos Eletricista").
-- **Seleção de Data:** Um calendário simplificado em formato carrossel horizontal ou um grid pequeno.
-- **Seleção de Horário:** Exibir apenas botões/pílulas dos horários DISPONÍVEIS no momento (horários ocupados desaparecem instantaneamente).
-- **Formulário de Contato:** Inputs simples solicitando Nome Completo, WhatsApp (com máscara de telefone), Serviço Desejado (input/dropdown opcional) e Endereço/Observações (Textarea - opcional).
-- **Ação:** Call to Action (CTA) limpo, de cor destacada, rotulado "Confirmar Agendamento".
-- **Opcional:** Link para um bate-papo no WhatsApp tirar dúvidas rápidas antes de agendar.
-
-### 2. INT-02 - Tela de Confirmação de Agendamento (Success Page)
-Feedback de conclusão após a confirmação do Cliente (Página de Sucesso / Modal tela cheia).
-- **Visual:** O design deve passar confiança de que a reserva está gravada, utilizando formas fluidas ou um íncone animado de confirmação.
-- **Resumo:** Exibir claramente o status e o compromisso (Nome do serviço, Data e Horário).
-- **Ações auxiliares:** Botão para "Adicionar ao meu Calendário" (Google/Apple) e "Fechar/Voltar ao início".
-
-### 3. INT-03 - Tela de Login do Profissional
-O processo de entrada para acesso do autônomo ao seu Dashboard.
-- **Visual:** Centralizado, simples e indolor (Mobile Form / Modal).
-- **Inputs:** E-mail e Senha, com destaque para a opção de uso de "Magic Link" (Input email) para maior velocidade sem ter que decorar senhas.
-- **Ações:** Botão "Entrar". Opcional incluir "Entrar com Google".
-- **Auxiliar:** Link de "Esqueci minha senha" (se aplicável).
-
-### 4. INT-04 - Dashboard Principal (Minha Agenda)
-A tela chave do dia a dia do prestador de serviço (Acessada imediatamente após o Login).
-- **Header:** Menu de Navegação superior com botão de ação imediata "Copiar meu Link de Agendamento" bem acessível para colar nas suas redes.
-- **Navegação rápida (Tempo):** Seletor rápido de Dia mostrando abas limpas (Ex: Hoje, Amanhã, Calendário geral).
-- **Lista Diária de Trabalhos:** Lista de Cards otimizados para rápida leitura.
-  - Cada card mostra: Horário Inicial/Final, Nome do Cliente, Serviço, e um botão visual para "Abrir no WhatsApp" diretamente no número preenchido pelo mesmo.
-- *O objetivo é que o usuário entre aqui só para confirmar onde e para que cliente precisa ir na próxima hora sem dar muitos cliques.*
-
-### 5. INT-05 - Configurações de Disponibilidade e Serviços (Settings)
-A tela onde o profissional dita suas premissas sem risco de falhas.
-- **Configuração de Dias de Trabalho:** Checkboxes de Segunda a Domingo de maneira otimizada.
-- **Grade Horária:** Time pickers limpos, configurando o Horário de Início Padrão e o Término Padrão (ex: 08:00 às 18:00).
-- **Bloqueios Extras:** Time pickers para Horário de Almoço / Pausa / Tempo de trajeto.
-- **Gestão de Serviços:** Área de adição contendo "Nome do Serviço", "Descrição Opcional" e "Duração em minutos/horas". O profissional adiciona itens a esta lista dinamicamente.
-- **Ação:** "Salvar Configurações". *A UI deve cuidar de prevenir visualmente os conflitos, desabilitando ações incogruentes (ex: término menor que Início).*
+* **Persona 1 - Cliente Final:** Busca rapidez. Quer agendar um serviço emergencial, ter confirmação imediata e saber o horário exato da visita.
+* **Persona 2 - Profissional (Carlos):** Trabalha em campo. Usa o sistema via smartphone para gerenciar a agenda em movimento. Precisa de fluxos de no máximo 3 cliques para não interromper seu trabalho técnico.
 
 ---
 
-**Comando Extra para o Agente UI:** Para cada Design/Interface gerada, forneça explicitamente a estrutura de *Componentização* recomendável na arquitetura `/components` (ex: a INT-01 deve ser particionada em `<CalendarPicker />`, `<TimeSlotGrid />` e `<BookingForm />`). Se precisar aplicar estados vazios (empty states) ou loaders, utilize uma estética refinada e alinhada ao estilo Clean UI. Lembre-se, na ausência de APIs em protótipos, crie os status de "loading" baseados em conexões fakes de sucesso. Não crie componentes complexos de navegação lateral (Sidebars grandes) que firam o príncipio puramente mobile-first do Dashboard do profissional.
+## 2. Diretrizes Estritas de Design
+* **Clean UI & Acessibilidade:** Estética minimalista (inspirada na Stripe/Apple). Farto uso de *whitespace* (espaçamento) para separar elementos. Evitar bordas pesadas.
+* **Mobile-First Nativo:** O design deve nascer para telas `< 640px`. Botões com *touch targets* grandes (mínimo 44px de altura).
+* **Stack Tailwind/React:** Estruture o design pensando em *Atomic Design* para facilitar a componentização em React. Use a escala de espaçamento padrão do Tailwind CSS.
+* **Feedback de Estado:** Inclua representações visuais para estados de *Loading* (spinners), *Success* (toasts) e *Disabled* (botões cinzas durante requisições).
+
+---
+
+## 3. Escopo dos Protótipos (MVP)
+
+Gere a estrutura detalhada e sub-componentes para as seguintes 7 interfaces:
+
+### INT-01: Página de Agendamento Pública (Booking Page)
+Visão focada em conversão (acessada via link no Instagram/WhatsApp).
+* **Header:** Avatar circular, Nome (ex: "Carlos Eletricista") e breve descrição.
+* **Seleção de Data:** Calendário simplificado estilo carrossel horizontal.
+* **Seleção de Horário:** Pílulas de horários. *Regra visual:* Horários ocupados/bloqueados devem aparecer desabilitados (cinza/opacidade reduzida) ou serem ocultados.
+* **Formulário:** Nome, WhatsApp (com máscara) e Textarea para Endereço.
+* **Serviços:** Dropdown dinâmico. *Regra de Negócio:* O serviço administrativo "🔒 BLOQUEIO PESSOAL" nunca deve ser renderizado aqui.
+* **Ação:** CTA "Confirmar Agendamento" (Cor primária forte).
+
+### INT-02: Tela de Confirmação (Success Page)
+Feedback de conclusão para o Cliente Final.
+* **Visual:** Modal tela cheia ou card centralizado com ícone animado de "Check" (Sucesso).
+* **Resumo:** Exibir Serviço, Data e Horário confirmados.
+* **Ações:** Botões secundários "Adicionar ao Calendário" e "Voltar".
+
+### INT-03: Login do Profissional
+Acesso administrativo.
+* **Visual:** Formulário minimalista centralizado.
+* **Ação Principal:** Botão em destaque "Entrar com Google" (Representando autenticação OAuth via Clerk).
+
+### INT-04: Dashboard Principal (Minha Agenda)
+A tela de acompanhamento diário do profissional.
+* **Header:** Botão de ação rápida "Copiar Meu Link".
+* **Navegação:** Filtro de dias (Hoje, Amanhã, Semana).
+* **Cards de Clientes:** Exibe Horário, Nome, Serviço. Botão de ação direta: "Chamar no WhatsApp" (ícone verde).
+* **Cards de Bloqueio:** *Regra visual crítica:* Se o card for um bloqueio pessoal, ele deve ter fundo acinzentado, ícone de cadeado e não possuir botões de interação com o cliente.
+
+### INT-05: Configurações de Disponibilidade e Serviços (Settings)
+Formulário dinâmico de regras de negócio.
+* **Expediente:** Checkboxes elegantes para dias da semana (Seg-Dom). Time-pickers para Início/Fim do dia e Início/Fim do Almoço.
+* **Catálogo:** Lista de serviços cadastrados. Botão para "+ Adicionar Serviço" (Nome e Duração em minutos).
+* **Ação:** CTA "Salvar Configurações".
+
+### INT-06: Modal de Bloqueio Pessoal (Fast Action)
+Criado para gestão de exceções emergenciais.
+* **Visual:** Overlay/Modal sobrepondo o Dashboard.
+* **Campos:** Datepicker simples e Grid de horários do dia selecionado.
+* **Ação:** O profissional seleciona um ou mais horários e clica em "Bloquear Agenda".
+
+### INT-07: Lista de Clientes (CRM Básico)
+Histórico de atendimentos.
+* **Visual:** Lista de cards simplificados.
+* **Dados:** Nome do cliente, último serviço realizado, data e atalho para o WhatsApp. Barra superior de busca.
+
+---
+
+**Output Esperado da IA:** Para cada interface, forneça o layout visual ou código Tailwind e sugira a quebra de componentes na arquitetura `/components` (ex: `<TimeSlotPicker />`, `<ServiceDropdown />`).

@@ -1,16 +1,16 @@
 # Lean Canvas
 
-> Projeto: Gerenciador de Agendamentos para Prestadores de Serviços 
-> Data: 10 / 03 / 2026  
-> Responsável: ANDRÉ MAFIOLETTI
+> **Projeto:** Gerenciador de Agendamentos para Prestadores de Serviços 
+> **Data:** Abril / 2026 
+> **Responsável:** André Mafioletti
 ---
 
 ## 1. Segmentos de Mercado
 
-- Segmento 1: Eletricistas autônomos que realizam atendimentos residenciais e prediais.
-- Segmento 2: Encanadores, montadores de móveis e técnicos de manutenção em geral.
-- Early adopters: Profissionais que já utilizam o WhatsApp Business mas sentem sobrecarga na gestão de mensagens.
-- Perfil do cliente ideal (ICP): Prestador de serviço solo, com volume de 3 a 5 atendimentos diários, que busca profissionalizar sua imagem e recuperar tempo pessoal.
+* **Segmento 1:** Eletricistas autônomos que realizam atendimentos residenciais e prediais.
+* **Segmento 2:** Encanadores, montadores de móveis e técnicos de manutenção em geral.
+* **Early adopters:** Profissionais que já utilizam o WhatsApp Business, mas sentem sobrecarga na gestão de mensagens e perda de orçamentos por demora no retorno.
+* **Perfil do cliente ideal (ICP):** Prestador de serviço solo, com volume de 3 a 5 atendimentos diários, que busca profissionalizar sua imagem e recuperar seu tempo pessoal.
 
 ---
 
@@ -18,39 +18,38 @@
 
 Principais problemas enfrentados pelo segmento:
 
-1. Gestão de tempo ineficiente: Pausa constante no trabalho técnico para responder orçamentos e horários no WhatsApp.
-2. Conflito de agenda: Erros manuais que geram choques de horários ou esquecimento de clientes (perda de receita).
-3. Falta de separação Vida/Trabalho: Necessidade de responder clientes em horários de lazer para não perder o serviço.
+1. **Gestão de tempo ineficiente:** Pausa constante no trabalho técnico para responder orçamentos e negociar horários no WhatsApp.
+2. **Conflito de agenda:** Erros manuais que geram choques de horários (*double-booking*) ou esquecimento de clientes (perda de receita e reputação).
+3. **Falta de separação Vida/Trabalho:** Necessidade de responder clientes em horários de lazer para não perder o serviço, ou não conseguir ir a uma consulta médica sem bagunçar a agenda.
 
-Alternativas existentes:
-- Caderno/Agenda de papel (pouco prática para consultas rápidas).
-- Google Calendar (exige preenchimento manual de todos os dados do cliente).
-- Mensagens fixadas e etiquetas no WhatsApp (geram poluição visual e não automatizam a reserva).
+**Alternativas existentes:**
+* Caderno/Agenda de papel (pouco prática para consultas rápidas na rua).
+* Google Calendar (exige preenchimento manual pesado de todos os dados do cliente e não é amigável para o cliente final agendar sozinho).
+* Mensagens fixadas e etiquetas no WhatsApp (geram poluição visual e não automatizam a reserva).
 
 ---
 
 ## 3. Solução
 
-Descreva a solução proposta para cada problema:
+A solução proposta para cada problema mapeado:
 
-- Funcionalidade 1: Link de agendamento público onde o cliente visualiza apenas os horários livres e reserva o serviço sozinho.
-- Funcionalidade 2: Painel administrativo (Dashboard) integrado com Supabase para visualização rápida da fila de trabalho do dia.
-- Funcionalidade 3: Autenticação segura via Clerk para garantir que apenas o prestador gerencie sua disponibilidade e dados sensíveis.
+* **Funcionalidade 1 (Otimização de Tempo):** Link de agendamento público *mobile-first* onde o cliente visualiza apenas os horários livres e reserva o serviço de forma totalmente autônoma.
+* **Funcionalidade 2 (Fim dos Conflitos):** Catálogo dinâmico de serviços onde cada serviço tem sua duração específica, bloqueando automaticamente a janela correta de tempo na agenda.
+* **Funcionalidade 3 (Separação Vida/Trabalho):** Sistema integrado de "Bloqueio Rápido", permitindo que o profissional inative janelas de horários para pausas de almoço ou compromissos pessoais com 3 cliques no Dashboard.
 
-MVP (Produto Mínimo Viável): Aplicação web/mobile simples que permita ao profissional cadastrar 3 tipos de serviços, definir horários de trabalho e gerar um link compartilhável de reserva.
-- 
+**MVP (Produto Mínimo Viável):** Aplicação web Serverless que permita ao profissional cadastrar seus serviços, definir dias/horários de trabalho, inserir bloqueios de exceção e gerar um link compartilhável seguro.
 
 ---
 
 ## 4. Proposta de Valor
 
-Frase clara e objetiva que explique o valor entregue: 
+Frase clara e objetiva que explica o valor entregue: 
 
->"Sua agenda trabalha para você enquanto você foca no serviço (e na sua família)."
+> **"Sua agenda trabalha para você enquanto você foca no serviço (e na sua família)."**
 
-Diferencial percebido pelo cliente:
--  Facilidade de agendar sem precisar esperar o prestador visualizar a mensagem.
--  Sensação de atendimento profissional e organizado desde o primeiro contato.
+**Diferencial percebido pelo cliente final:**
+* Facilidade de agendar sem precisar esperar o prestador visualizar a mensagem.
+* Sensação de atendimento *premium*, profissional e organizado desde o primeiro contato.
 
 ---
 
@@ -58,20 +57,18 @@ Diferencial percebido pelo cliente:
 
 O que não pode ser facilmente copiado ou comprado:
 
--  Integração de Ecossistema: Configuração otimizada com MCP Server e Supabase, permitindo escalabilidade e rapidez na resposta de dados.
--  Foco de Nicho: Interface simplificada desenhada especificamente para quem trabalha "com a mão na massa" (botões grandes, fluxo rápido).
-- 
+* **Foco no Nicho (UX Tailored):** Interface desenhada especificamente para quem trabalha "com a mão na massa". Botões grandes, alto contraste e fluxos curtos que exigem o mínimo de digitação possível, diferentemente de CRMs genéricos.
+* **Arquitetura Multi-Tenant Serverless:** O sistema escala horizontalmente mantendo o isolamento rigoroso dos dados de cada profissional (via RLS no banco), garantindo alta velocidade e segurança a custos operacionais baixíssimos.
 
 ---
 
 ## 6. Canais
 
-Como o produto alcança o cliente:
+Como o produto alcança o profissional:
 
-- Aquisição: Marketing de conteúdo focado em produtividade para autônomos.
-- Distribuição: Link na bio das redes sociais e status do WhatsApp.
-- Parcerias: Lojas de materiais elétricos e construção que podem indicar a ferramenta aos seus profissionais parceiros.
-- Canais digitais: Grupos de Facebook de prestadores de serviço e anúncios segmentados.
+* **Distribuição Direta:** Link na bio das redes sociais (Instagram) e na mensagem automática de saudação do WhatsApp Business.
+* **Aquisição (B2B):** Marketing de conteúdo focado em produtividade para autônomos no YouTube/Instagram.
+* **Parcerias:** Lojas de materiais elétricos e de construção que podem indicar a ferramenta aos seus profissionais cadastrados.
 
 ---
 
@@ -79,46 +76,38 @@ Como o produto alcança o cliente:
 
 Principais indicadores de desempenho (KPIs):
 
-- Aquisição: Número de novos profissionais cadastrados por semana.
-- Ativação: Primeiro link de agendamento gerado e compartilhado.
-- Retenção: Percentual de profissionais que realizam mais de 5 agendamentos/mês via plataforma.
-- Receita: Conversão de usuários free para planos com recursos extras (ex: lembrete SMS).
-- Indicação (Referral): Número de novos usuários vindos do selo "Agendado via [Seu App]" no link de reserva.
+* **Ativação:** Primeiro link de agendamento gerado e compartilhado pelo profissional.
+* **Retenção:** Percentual de profissionais que recebem mais de 5 agendamentos/mês via plataforma.
+* **Engajamento:** Frequência de uso do "Botão de Bloqueio" e atualização do catálogo de serviços.
+* **Indicação (Referral / Loop Viral):** Número de novos usuários vindos do selo "Agendado via [Seu App]" presente no rodapé da tela de confirmação do cliente.
 
-Métrica norte (North Star Metric):
-- Total de horas de atendimento agendadas com sucesso através da plataforma.
-
----
-
-## 8. Estrutura de Despesas (Opcional)
-
-Principais custos:
-
-- Desenvolvimento: Horas de codificação e manutenção (Postgraduate Project).
-- Infraestrutura: Custos de hospedagem (Vercel/Netlify) e banco de dados (Supabase Tier
-- Marketing: Pequeno investimento em tráfego pago para validação do MVP.
-- Operacional:
-- Outros:
+**Métrica Norte (North Star Metric):**
+* Total de horas de atendimento agendadas com sucesso de forma passiva (sem intervenção humana).
 
 ---
 
-## 9. Fontes de Receita (Opcional)
+## 8. Estrutura de Despesas
 
-Modelo de monetização:
+Principais custos de operação:
 
-- Assinatura: Plano mensal para remover limites de serviços e ter relatórios financeiros.
-- Comissão: Taxa simbólica por agendamento concluído (opcional).
-- Licenciamento:
-- Venda direta:
-- Outros: Plano Freemium (até 10 agendamentos/mês). Plano Pro: R$ 29,90/mês.
+* **Desenvolvimento:** Horas de engenharia de software e manutenção.
+* **Infraestrutura (Cloud):** Hospedagem Frontend/API (Vercel) e Banco de Dados com Connection Pooling (Supabase). Custo inicial próximo a zero no *Free Tier*.
+* **Segurança:** Autenticação gerenciada (Clerk).
+* **Marketing:** Pequeno investimento em tráfego pago (Meta Ads) para validação de aquisição.
 
-Preço estimado:
-- 
+---
+
+## 9. Fontes de Receita
+
+Modelo de monetização projetado (SaaS B2B):
+
+* **Plano Freemium:** Gratuito para uso básico (até 10 agendamentos/mês, recursos limitados de configuração).
+* **Plano Pro (Assinatura):** R$ 29,90/mês para agendamentos ilimitados, catálogo completo de serviços e funcionalidade de Bloqueio de Agenda.
 
 ---
 
 # Observações Estratégicas
 
-- Hipóteses críticas:O prestador de serviço consegue educar seu cliente final a usar o link em vez de insistir no chat do WhatsApp?
-- Riscos principais: Dependência excessiva de uma conexão estável de internet pelo prestador em locais de obra.
-- Próximos experimentos: Testar o envio de lembretes automáticos via API do WhatsApp para reduzir o no-show.
+* **Hipótese Crítica:** O prestador de serviço consegue educar e direcionar seu cliente final a usar o link, vencendo a barreira cultural de querer "conversar pelo WhatsApp" para fechar negócio?
+* **Riscos Principais:** Dependência de uma conexão estável de internet pelo prestador em locais de obra para verificar o próximo agendamento no Dashboard.
+* **Próximos Experimentos (Roadmap):** Testar o envio de lembretes automáticos de confirmação via API oficial do WhatsApp para reduzir a taxa de esquecimento (*no-show*) do cliente final.

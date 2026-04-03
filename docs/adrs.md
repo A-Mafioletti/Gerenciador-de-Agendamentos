@@ -2,6 +2,8 @@
 
 Este documento registra as principais decisões arquiteturais tomadas durante o desenvolvimento do backend do Gerenciador de Agendamentos para profissionais autônomos.
 
+---
+
 ## ADR 001: Estratégia de Conexão com Banco de Dados em Ambiente Serverless
 
 * **Status:** Aceito
@@ -34,3 +36,36 @@ Ajustamos o `schema.prisma` para mapear corretamente o modelo `Appointment` para
 
 **Consequências:**
 O banco de dados passou a validar estritamente as restrições de chave estrangeira (Foreign Key Constraints). O sistema rejeita na origem qualquer tentativa de agendamento com dados órfãos, garantindo a integridade transacional e prevenindo a criação de "agendamentos fantasmas".
+
+---
+
+## ADR 003: Modelagem de Configurações do Profissional (Uso de JSONB)
+
+* **Status:** Aceito
+* **Data:** Abril de 2026
+
+**Contexto:**
+Foi necessário implementar uma funcionalidade para que o profissional configurasse sua grade de horários e os dias da semana em que trabalha. Modelar isso de forma estritamente relacional exigiria tabelas auxiliares complexas (uma linha para cada dia da semana para cada profissional), o que aumentaria o custo de chamadas SQL e a complexidade de manipulação de estado no Frontend.
+
+**Decisão:**
+Optamos por criar uma tabela única `professional_settings` com relação 1:1 com o `Professional`. Para os dias de trabalho, utilizamos uma coluna do tipo **JSONB** (`working_days`). 
+
+**Consequências:**
+Simplificação drástica no tráfego de dados entre o Frontend e o Backend. O Next.js consegue ler e atualizar o array de dias de trabalho como um objeto JavaScript nativo de forma extremamente performática, acelerando o desenvolvimento do MVP.
+
+---
+
+## ADR 004: Estratégia de Bloqueio de Agenda (Uso de Serviço Administrativo)
+
+* **Status:** Aceito
+* **Data:** Abril de 2026
+
+**Contexto:**
+O sistema precisava permitir que o profissional bloqueasse janelas de horários para compromissos pessoais, inviabilizando-os para o cliente final. Criar uma tabela separada apenas para "Bloqueios" obrigaria o algoritmo de disponibilidade a cruzar duas tabelas pesadas a cada visualização do calendário. Além disso, o ORM Prisma exigia estritamente a presença de um `service_id` para salvar na tabela principal de agendamentos.
+
+**Decisão:**
+Decidimos reaproveitar a tabela de `appointments`. O sistema cria automaticamente um serviço administrativo "fantasma" no banco de dados (ex: "🔒 BLOQUEIO PESSOAL"). Quando o profissional realiza um bloqueio no Dashboard, o sistema realiza múltiplas inserções na tabela de agendamentos usando este `service_id` específico.
+
+**Consequências:**
+* **Positivo:** A lógica de cálculo de disponibilidade no backend continuou simples e com alta performance, precisando consultar apenas uma única tabela (`appointments`) para descobrir o que está ocupado.
+* **Trade-off:** Foi necessário adicionar filtros condicionais no frontend para garantir que este "Serviço Administrativo" não apareça no catálogo de serviços para o cliente público.

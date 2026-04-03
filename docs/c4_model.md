@@ -2,76 +2,88 @@
 
 # Arquitetura do Sistema - Gerenciador de Agendamentos
 
-Abaixo estão as representações arquiteturais do sistema, utilizando diagramas Mermaid para mapear desde o contexto geral até o deployment, refletindo a stack tecnológica atual (Next.js e Supabase).
+Abaixo estão as representações arquiteturais do sistema, utilizando diagramas Mermaid para mapear desde o contexto geral até o deployment, refletindo a stack tecnológica definitiva do MVP (Next.js, Prisma, Clerk e Supabase PostgreSQL).
 
 ---
 
 ## 1. Diagrama de Contexto
 
-Ilustra como os usuários interagem com o sistema em alto nível.
+Ilustra como os usuários interagem com o sistema em alto nível e as dependências externas da plataforma.
 
 ```mermaid
 flowchart TD
     Cliente([Cliente do Profissional])
     Profissional([Carlos Eletricista])
     Sistema{Sistema de Agendamentos}
+    Clerk[Clerk Auth Service]
+    Supabase[Supabase PostgreSQL]
 
-    Cliente -->|Acessa o site, escolhe serviço e horário| Sistema
-    Profissional -->|Faz login, visualiza e gerencia a agenda| Sistema
+    Cliente -->|Acessa o site, escolhe serviço e horário livre| Sistema
+    Profissional -->|Faz login, visualiza agenda, configura rotina e bloqueios| Sistema
+    Sistema -->|Delega validação de identidade e sessão| Clerk
+    Sistema -->|Persiste dados relacionais de agenda| Supabase
 ```
 
 ## 2. Diagrama de Contêineres
 
-Detalha as principais tecnologias e serviços utilizados na arquitetura.
+Detalha as principais tecnologias e serviços utilizados na arquitetura Serverless.
 
 ```mermaid
 flowchart TD
     Usuarios([Usuários: Cliente e Profissional])
     
-    subgraph Vercel [Hospedagem Frontend - Vercel]
+    subgraph Vercel [Hospedagem Frontend e API - Vercel]
         AppWeb[Aplicação Web Next.js\nReact, TailwindCSS]
+        API[Server Actions & Route Handlers\nPrisma ORM]
     end
     
+    subgraph ClerkCloud [Serviço de Identidade]
+        Auth[Clerk Auth]
+    end
+
     subgraph Supabase [Backend as a Service - Supabase]
-        Auth[Supabase Auth\nGerenciamento de Sessão]
         DB[(Banco de Dados\nPostgreSQL)]
     end
 
     Usuarios -->|HTTPS| AppWeb
-    AppWeb -->|Autenticação e RLS| Auth
-    AppWeb -->|Requisições via Supabase Client| DB
+    AppWeb -->|Proteção de Rotas via Middleware| Auth
+    AppWeb -->|Requisições Internas| API
+    API -->|Consultas seguras via Pooler TCP| DB
 ```
 
 ## 3. Diagrama de Componentes
 
-Foca na estrutura interna da Aplicação Web (Frontend)
+Foca na estrutura interna da Aplicação Web e na comunicação com o banco de dados via ORM.
 
 ```mermaid
 flowchart TD
     Interface[Interface de Usuário]
     
-    subgraph NextJS [Componentes Next.js]
+    subgraph NextJS [Componentes Next.js App Router]
         PaginaAgendamento[Página Pública\n/booking]
-        PaginaLogin[Página de Login\n/login]
         DashboardAdmin[Dashboard Protegido\n/dashboard]
+        Configuracoes[Painel de Ajustes\n/configuracoes]
+        Clientes[Histórico\n/clientes]
     end
     
-    subgraph SupabaseClient [Integração de Dados]
-        SupabaseJS[Cliente Supabase JS]
+    subgraph DataAccess [Camada de Dados]
+        PrismaClient[Prisma Client]
     end
 
     Interface --> PaginaAgendamento
-    Interface --> PaginaLogin
     Interface --> DashboardAdmin
+    Interface --> Configuracoes
+    Interface --> Clientes
 
-    PaginaAgendamento -->|Salva agendamento| SupabaseJS
-    PaginaLogin -->|Valida credenciais| SupabaseJS
-    DashboardAdmin -->|Consulta/Filtra agenda| SupabaseJS
+    PaginaAgendamento -->|POST /appointments| PrismaClient
+    DashboardAdmin -->|Consulta Agenda / Insere Bloqueios| PrismaClient
+    Configuracoes -->|Upsert Serviços e Expediente| PrismaClient
+    Clientes -->|Filtra Agendamentos 'completed'| PrismaClient
 ```
 
-## 4. Diagrama de Banco de Dados
+## 4. Diagrama de Banco de Dados (ERD)
 
-Detalha a estrutura das tabelas e relacionamentos no PostgreSQL.
+Detalha a estrutura relacional no PostgreSQL, destacando a estratégia Multi-Tenant e a gestão de rotina.
 
 ```mermaid
 classDiagram
@@ -79,49 +91,60 @@ classDiagram
         +uuid id
         +string name
         +string email
-        +string phone
     }
     
+    class ProfessionalSettings {
+        +uuid id
+        +uuid professional_id
+        +jsonb working_days
+        +string start_time
+        +string end_time
+    }
+
     class Service {
         +uuid id
         +string name
-        +decimal price
         +integer duration_minutes
+        +uuid professional_id
     }
     
     class Appointment {
         +uuid id
         +datetime start_time
         +string client_name
-        +string client_whatsapp
-        +string address_notes
+        +string status
+        +uuid service_id
         +uuid professional_id
     }
 
-    Professional "1" -- "*" Appointment : possui
+    Professional "1" -- "1" ProfessionalSettings : possui
+    Professional "1" -- "*" Appointment : gerencia
     Professional "1" -- "*" Service : oferece
+    Service "1" -- "*" Appointment : define
 ```
 
 ## 5. Diagrama de Deployment
 
-Ilustra a infraestrutura física/cloud onde o sistema roda.
+Ilustra a infraestrutura física/cloud distribuída onde o sistema roda em produção.
 
 ```mermaid
 flowchart TD
     Navegador([Navegador Web do Cliente/Profissional])
     
     subgraph CloudVercel [Vercel Edge Network]
-        NextApp[Next.js Serverless UI]
+        NextApp[Next.js Serverless UI & Functions]
+    end
+
+    subgraph CloudClerk [Clerk Cloud Infrastructure]
+        AuthSvc[Sessão e Identidade]
     end
     
     subgraph CloudSupabase [Supabase Cloud AWS]
         Postgres[(PostgreSQL)]
-        GoTrue[GoTrue Auth]
     end
 
     Navegador -->|Tráfego Público HTTPS| CloudVercel
-    CloudVercel -->|Chamadas de API Seguras| CloudSupabase
+    CloudVercel -->|Validação de Token JWT| CloudClerk
+    CloudVercel -->|Conexão TCP/IPv4| CloudSupabase
     CloudSupabase --> Postgres
-    CloudSupabase --> GoTrue
-```  
-
+```

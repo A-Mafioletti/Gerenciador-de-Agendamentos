@@ -1,93 +1,117 @@
 # Especificação Técnica
 
-## Visão Geral Técnica
-
+## 1. Visão Geral Técnica
 A presente Especificação Técnica do Produto estabelece as diretrizes arquiteturais, stack tecnológica padrão e regras de segurança para o desenvolvimento do **Gerenciador de Agendamentos Inteligente (MVP - v1)**. 
-O objetivo deste documento é servir como um guia definitivo para o time de desenvolvimento (humano e assistido por inteligência artificial), garantindo consistência, escalabilidade projetada e manutenção facilitada do código.
+
+O objetivo deste documento é servir como um guia definitivo para o desenvolvimento, garantindo consistência, escalabilidade e manutenção facilitada do código através de uma arquitetura moderna e segura.
 
 ---
 
-## Arquitetura de Referência
+## 2. Arquitetura de Referência (C4 Model)
 
-Para atender aos requisitos de alta disponibilidade (RNF-02) e foco no MVP, a aplicação adotará uma arquitetura focada no ecossistema Web Moderno (**Jamstack / Serverless**):
+A aplicação adota uma arquitetura baseada no modelo de **Recipientes (Containers)**, focada no ecossistema **Serverless/Jamstack**:
 
-- **Estilo Arquitetural**: Monorepo Serverless. A aplicação concentrará o frontend e funções de backend num único repositório, otimizando a velocidade de entrega para a v1.
-- **Componentes Principais**: 
-  - *Client Layer*: Renderização híbrida (SSR para a booking page, CSR para o Dashboard).
-  - *Data/API Layer*: Server Functions/Actions (Next.js).
-  - *Database Provider*: Banco de dados relacional gerenciado em nuvem (Supabase).
-- **Protocolos de Comunicação**: HTTPS obrigatório e chamadas REST.
-- **Infraestrutura de Deployment**: Deploy automatizado a cada push via Vercel.
+```mermaid
+graph TD
+    User((Cliente/Profissional))
+    WebApp[Next.js Application - Frontend/Backend]
+    Auth[Clerk - Auth Service]
+    DB[(Supabase - PostgreSQL)]
+    Prisma[Prisma ORM]
+
+    User -- "Acessa/Agenda" --> WebApp
+    WebApp -- "Autentica" --> Auth
+    WebApp -- "Queries via Prisma" --> Prisma
+    Prisma -- "Persiste Dados" --> DB
+```
+
+* **Estilo Arquitetural:** Monorepo Serverless.
+* **Componentes Principais:**
+    * **Client Layer:** Renderização híbrida (SSR para a booking page, CSR para o Dashboard).
+    * **Data/API Layer:** Server Functions e Route Handlers (Next.js).
+    * **Database Provider:** Banco de dados relacional gerenciado (Supabase).
+* **Infraestrutura de Deployment:** Deploy automatizado via Vercel conectado ao GitHub.
 
 ---
 
-## Stack Tecnológica
+## 3. Stack Tecnológica
 
 ### Frontend
-- **Linguagem**: TypeScript
-- **Framework web**: Next.js (React)
-- **Estilização**: Tailwind CSS (Abordagem Utility-first / Mobile-First).
+* **Linguagem:** TypeScript
+* **Framework web:** Next.js 14+ (React)
+* **Estilização:** Tailwind CSS (Mobile-First)
 
 ### Backend e Persistência
-- **Linguagem**: TypeScript
-- **Runtime**: Node.js (Vercel Serverless Functions)
-- **Framework**: Next.js (Route Handlers)
-- **Persistência**: PostgreSQL (Fornecido pelo Supabase)
-- **ORM**: Prisma ORM
+* **Linguagem:** TypeScript
+* **Runtime:** Node.js (Vercel Serverless Functions)
+* **Framework:** Next.js (App Router)
+* **Persistência:** PostgreSQL (Supabase)
+* **ORM:** Prisma ORM
 
 ### Stack de Desenvolvimento
-- **IDE**: VS Code
-- **Gerenciamento de pacotes**: `npm`
-- **Ambiente local**: Next.js Dev Server + variáveis `.env.local`.
-- **Infraestrutura como Código (IaC)**: Utilização do **Terraform** para provisionamento da infraestrutura de forma declarativa e documentada.
-- **Pipeline CI/CD**: Deploy automático nativo na Vercel conectado à branch `main` do GitHub.
-- **IA como Ferramenta**: Uso do Gemini e ChatGPT para *pair programming*, refatoração e geração de documentação (prompts de sistema documentados).
-
-### Integrações e Observabilidade
-- **Persistência / BaaS**: Supabase.
-- **Deployment**: Vercel.
-- **Observabilidade**: Logs da Vercel (Analytics) para rastrear eventos relevantes e erros do sistema.
+* **IDE:** VS Code
+* **Gerenciamento de pacotes:** npm
+* **Infraestrutura como Código (IaC):** Terraform para provisionamento de recursos.
+* **Pipeline CI/CD:** Vercel Git Integration.
 
 ---
 
-## Segurança (Autenticação e Autorização)
+## 4. Segurança
 
-### O Caso do Clerk vs. Supabase Auth
-*Nota Arquitetural:* Embora a documentação base do projeto citasse inicialmente a ferramenta **Clerk** para gestão de usuários, o desenvolvimento provou que a **integração nativa com o Supabase Auth** é arquiteturalmente superior para este caso específico.
-A escolha definitiva pelo Supabase Auth justifica-se pela adoção do **Row Level Security (RLS)**. Manter a autenticação e o banco de dados no mesmo provedor permite que o próprio banco de dados (PostgreSQL) recuse acessos indevidos com base no ID do usuário logado, elevando exponencialmente a segurança dos dados da aplicação em comparação com uma solução terceira como o Clerk.
+### Autenticação e Gestão de Sessão
+A aplicação delega a gestão de identidade ao **Clerk**, garantindo fluxos seguros de login (incluindo Google Auth) e proteção de rotas administrativas via Middleware.
 
-### Segurança de Dados
-- Sessões geradas via JWT seguro.
-- Todo tráfego forçado via TLS (HTTPS).
-- Validação rigorosa de inputs no frontend e backend.
+### Controle de Acesso e Autorização 
+O isolamento de dados é garantido pela chave **professional_id**. O sistema valida em cada requisição se o usuário autenticado possui permissão para acessar ou modificar os registros solicitados.
+
+### Segurança de Dados e Validação
+* **Criptografia:** Todo tráfego é criptografado via HTTPS/TLS. Dados em repouso são protegidos pela infraestrutura do Supabase.
+* **Sanitização:** Uso de tipos estritos em TypeScript para prevenir inconsistências e validação de esquemas no recebimento de dados.
 
 ---
 
-## APIs e Comunicação
-A comunicação cliente-servidor segue o padrão REST via Next.js Route Handlers.
+## 5. APIs e Comunicação
+A comunicação entre Cliente e Servidor segue o padrão REST.
 
 ### Endpoints Principais
-- **`POST /api/appointments`**:
-  - *Responsabilidade:* Receber os dados do formulário público de agendamento e gravar no banco.
-  - *Padrão de Comunicação:* Recebe payload JSON com `client_name`, `start_time` e `service_id`.
-- **`GET /api/appointments`**:
-  - *Responsabilidade:* Listar os agendamentos no Dashboard do profissional.
-  - *Padrão de Comunicação:* Rota protegida por JWT. Retorna array JSON.
-- **`POST /api/auth`**:
-  - *Responsabilidade:* Validar credenciais do profissional no Supabase.
+* `POST /api/appointments`: Criação de novos agendamentos (clientes) e inserção de bloqueios manuais (profissional).
+* `GET /api/appointments`: Recuperação da lista de compromissos filtrada por data e profissional.
+* `GET /api/services`: Listagem dinâmica do catálogo de serviços do prestador.
 
 ---
 
-## Tenancy e Histórico de Operações
-
-- **Estratégia**: Arquitetura *Multi-Tenant* (Single Database, Shared Schema).
-- Todos os agendamentos possuem a chave `professional_id`. O RLS do banco de dados bloqueia tentativas de leitura cruzada entre diferentes prestadores.
-- A plataforma Supabase mantém logs automáticos (histórico de operações) de acessos e modificações na estrutura de dados para auditoria técnica.
+## 6. Tenancy
+* **Estratégia:** Arquitetura *Multi-Tenant* (Single Database, Shared Schema).
+* **Isolamento:** A separação lógica é feita via `professional_id`. O sistema foi projetado para que cada profissional gerencie apenas sua própria grade, sem interferência em outros perfis.
+* **Segurança:** Filtros obrigatórios em todas as queries SQL/Prisma baseados na identidade do profissional logado.
 
 ---
 
-## Diretrizes para Desenvolvimento Assistido por IA
+## 7. Modelo de Dados (ERD)
 
-1. **Priorização TypeScript**: A IA não deve sugerir blocos de código com tipagens vagas (`any`).
-2. **Separação de Preocupações (SoC)**: Manter lógicas de banco isoladas no servidor.
-3. **Respeito ao Escopo**: A IA deverá alertar se o código solicitado extrapolar o escopo do documento `prd.md`.
+```mermaid
+erDiagram
+    PROFESSIONAL ||--|| SETTINGS : "possui"
+    PROFESSIONAL ||--o{ SERVICE : "oferece"
+    PROFESSIONAL ||--o{ APPOINTMENT : "gerencia"
+    SERVICE ||--o{ APPOINTMENT : "define"
+
+    SETTINGS {
+        uuid professional_id
+        jsonb working_days
+        string start_time
+        string end_time
+    }
+    APPOINTMENT {
+        string client_name
+        datetime start_time
+        uuid service_id
+    }
+```
+
+---
+
+## 8. Diretrizes para Desenvolvimento Assistido por IA
+1.  **Tipagem Estrita:** A IA deve sempre gerar interfaces TypeScript e evitar o tipo `any`.
+2.  **Modularização:** Manter componentes de interface separados da lógica de acesso ao banco de dados.
+3.  **Sincronia com PRD:** Toda nova implementação sugerida pela IA deve ser validada contra os requisitos definidos no documento de PRD.

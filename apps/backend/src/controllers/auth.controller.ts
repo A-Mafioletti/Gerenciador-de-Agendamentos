@@ -37,10 +37,10 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     const fullName = `${data.firstName} ${data.lastName}`.trim();
 
     // 2. Sincronizar com o banco de dados (upsert via email)
-    const localUser = await DbSyncService.syncUser(clerkUser.id, data.email, fullName);
+    await DbSyncService.syncUser(clerkUser.id, data.email, fullName);
 
     // 3. Gerar JWT do Backend
-    const token = jwt.sign({ userId: localUser.id, email: localUser.email, clerkId: clerkUser.id }, JWT_SECRET, {
+    const token = jwt.sign({ userId: clerkUser.id, email: data.email, clerkId: clerkUser.id }, JWT_SECRET, {
       expiresIn: '7d',
     });
 
@@ -52,7 +52,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 dias
     });
 
-    res.status(201).json({ message: 'Registrado com sucesso', user: { id: localUser.id, email: localUser.email, nomeCompleto: localUser.nome_completo } });
+    res.status(201).json({ message: 'Registrado com sucesso', user: { id: clerkUser.id, email: data.email, nomeCompleto: fullName } });
   } catch (error: any) {
     console.error('Registration Error:', error);
     res.status(400).json({ error: error.message || 'Falha ao registrar usuário' });
@@ -89,10 +89,10 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     const fullName = `${clerkUser.firstName || ''} ${clerkUser.lastName || ''}`.trim() || 'Usuário';
 
     // 3. Garantir / Sincronizar o usuário no BD local
-    const localUser = await DbSyncService.syncUser(clerkUser.id, data.email, fullName);
+    await DbSyncService.syncUser(clerkUser.id, data.email, fullName);
 
     // 4. Gerar JWT do Backend
-    const token = jwt.sign({ userId: localUser.id, email: localUser.email, clerkId: clerkUser.id }, JWT_SECRET, {
+    const token = jwt.sign({ userId: clerkUser.id, email: data.email, clerkId: clerkUser.id }, JWT_SECRET, {
       expiresIn: '7d',
     });
 
@@ -104,7 +104,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       maxAge: 7 * 24 * 60 * 60 * 1000, 
     });
 
-    res.status(200).json({ message: 'Login realizado com sucesso', user: { id: localUser.id, email: localUser.email, nomeCompleto: localUser.nome_completo } });
+    res.status(200).json({ message: 'Login realizado com sucesso', user: { id: clerkUser.id, email: data.email, nomeCompleto: fullName } });
   } catch (error: any) {
     console.error('Login Error:', error);
     res.status(401).json({ error: 'Falha na autenticação' });
