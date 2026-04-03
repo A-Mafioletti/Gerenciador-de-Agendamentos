@@ -2,7 +2,7 @@
 
 # Arquitetura do Sistema - Gerenciador de Agendamentos
 
-Abaixo estão as representações arquiteturais do sistema, utilizando diagramas Mermaid para mapear desde o contexto geral até o deployment, refletindo a stack tecnológica definitiva do MVP (Next.js, Prisma, Clerk e Supabase PostgreSQL).
+Abaixo estão as representações arquiteturais do sistema, utilizando diagramas Mermaid para mapear desde o contexto geral até o deployment, refletindo a stack tecnológica definitiva e a arquitetura de microsserviços Serverless na nuvem (Next.js, Node/Express, Prisma, Clerk e Supabase PostgreSQL).
 
 ---
 
@@ -26,15 +26,15 @@ flowchart TD
 
 ## 2. Diagrama de Contêineres
 
-Detalha as principais tecnologias e serviços utilizados na arquitetura Serverless.
+Detalha a separação de responsabilidades (Microsserviços) entre o Frontend e a API, ambos operando na infraestrutura Serverless.
 
 ```mermaid
 flowchart TD
     Usuarios([Usuários: Cliente e Profissional])
     
-    subgraph Vercel [Hospedagem Frontend e API - Vercel]
-        AppWeb[Aplicação Web Next.js\nReact, TailwindCSS]
-        API[Server Actions & Route Handlers\nPrisma ORM]
+    subgraph Vercel [Hospedagem Serverless - Vercel]
+        Frontend[Frontend Next.js\nReact, TailwindCSS]
+        Backend[Backend API Node.js\nExpress.js, Prisma ORM]
     end
     
     subgraph ClerkCloud [Serviço de Identidade]
@@ -45,40 +45,41 @@ flowchart TD
         DB[(Banco de Dados\nPostgreSQL)]
     end
 
-    Usuarios -->|HTTPS| AppWeb
-    AppWeb -->|Proteção de Rotas via Middleware| Auth
-    AppWeb -->|Requisições Internas| API
-    API -->|Consultas seguras via Pooler TCP| DB
+    Usuarios -->|HTTPS| Frontend
+    Frontend -->|Proteção de Rotas via Middleware| Auth
+    Frontend -->|Requisições HTTP REST (CORS)| Backend
+    Backend -->|Validação de Token JWT| Auth
+    Backend -->|Consultas seguras via Pooler TCP| DB
 ```
 
 ## 3. Diagrama de Componentes
 
-Foca na estrutura interna da Aplicação Web e na comunicação com o banco de dados via ORM.
+Foca na estrutura interna separada entre a Aplicação Web (Apresentação) e a API Node.js (Regra de Negócio e Persistência).
 
 ```mermaid
 flowchart TD
     Interface[Interface de Usuário]
     
-    subgraph NextJS [Componentes Next.js App Router]
+    subgraph FrontendApp [Aplicação Client - Next.js]
         PaginaAgendamento[Página Pública\n/booking]
         DashboardAdmin[Dashboard Protegido\n/dashboard]
         Configuracoes[Painel de Ajustes\n/configuracoes]
-        Clientes[Histórico\n/clientes]
     end
     
-    subgraph DataAccess [Camada de Dados]
-        PrismaClient[Prisma Client]
+    subgraph BackendAPI [Microsserviço API - Express.js]
+        Rotas[Endpoints REST\nRouter Express]
+        PrismaClient[Prisma Client\nORM Engine]
     end
 
     Interface --> PaginaAgendamento
     Interface --> DashboardAdmin
     Interface --> Configuracoes
-    Interface --> Clientes
 
-    PaginaAgendamento -->|POST /appointments| PrismaClient
-    DashboardAdmin -->|Consulta Agenda / Insere Bloqueios| PrismaClient
-    Configuracoes -->|Upsert Serviços e Expediente| PrismaClient
-    Clientes -->|Filtra Agendamentos 'completed'| PrismaClient
+    PaginaAgendamento -->|POST /appointments| Rotas
+    DashboardAdmin -->|GET /appointments| Rotas
+    Configuracoes -->|PUT /settings| Rotas
+    
+    Rotas -->|Mapeamento de Regras| PrismaClient
 ```
 
 ## 4. Diagrama de Banco de Dados (ERD)
@@ -125,26 +126,29 @@ classDiagram
 
 ## 5. Diagrama de Deployment
 
-Ilustra a infraestrutura física/cloud distribuída onde o sistema roda em produção.
+Ilustra a infraestrutura de nuvem distribuída onde os microsserviços rodam em produção, demonstrando a pipeline automatizada.
 
 ```mermaid
 flowchart TD
     Navegador([Navegador Web do Cliente/Profissional])
     
-    subgraph CloudVercel [Vercel Edge Network]
-        NextApp[Next.js Serverless UI & Functions]
+    subgraph CloudVercel [Vercel Infrastructure]
+        NextApp[Frontend: Edge Network SSR/SSG]
+        NodeApp[Backend: Node.js Serverless Functions]
     end
 
     subgraph CloudClerk [Clerk Cloud Infrastructure]
-        AuthSvc[Sessão e Identidade]
+        AuthSvc[Gestão de Sessão B2B/B2C]
     end
     
     subgraph CloudSupabase [Supabase Cloud AWS]
-        Postgres[(PostgreSQL)]
+        Postgres[(PostgreSQL Transactional)]
     end
 
-    Navegador -->|Tráfego Público HTTPS| CloudVercel
-    CloudVercel -->|Validação de Token JWT| CloudClerk
-    CloudVercel -->|Conexão TCP/IPv4| CloudSupabase
+    Navegador -->|Tráfego Público HTTPS| NextApp
+    NextApp -->|Consumo de API interna| NodeApp
+    NextApp -->|Geração de Sessão| AuthSvc
+    NodeApp -->|Verificação de Autenticidade| AuthSvc
+    NodeApp -->|Conexão TCP/IPv4 (rhel-openssl)| CloudSupabase
     CloudSupabase --> Postgres
 ```

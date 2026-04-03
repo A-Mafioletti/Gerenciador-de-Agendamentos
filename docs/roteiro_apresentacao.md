@@ -22,7 +22,7 @@ O sistema foi entregue superando as expectativas do PRD inicial. As principais e
 
 * **Booking Page Inteligente:** A interface pública (Mobile-First) cruza a duração de cada serviço com a grade de horários do profissional, ocultando automaticamente os horários já agendados ou bloqueados.
 * **Gestão Dinâmica (Configurações):** O profissional tem autonomia para cadastrar serviços e definir seus dias/horários de trabalho em tempo real.
-* **Bloqueio Pessoal (Gestão de Exceções):** Implementamos uma feature crítica onde o profissional pode "inativar" horários na agenda para compromissos pessoais, usando um fluxo de serviço administrativo interno que mantém a integridade do banco de dados.
+* **Bloqueio Pessoal (Gestão de Exceções):** Implementamos uma feature crítica onde o profissional pode "inativar" horários na agenda para compromissos pessoais, usando um fluxo de serviço administrativo interno que mantém a integridade do banco de dados (conforme ADR-004).
 
 ---
 
@@ -30,18 +30,19 @@ O sistema foi entregue superando as expectativas do PRD inicial. As principais e
 
 A aplicação não é apenas funcional, mas foi desenhada com padrões de arquitetura de nível corporativo (conforme documentado no nosso **C4 Model** e **ADRs**):
 
+* **Arquitetura Desacoplada (Microsserviços):** O sistema possui o Frontend em Next.js e uma API Backend em Node/Express.js. Ambos operam de forma independente no ambiente Serverless da Vercel, comunicando-se através de políticas estritas de segurança (CORS).
 * **Arquitetura Multi-Tenant:** O banco de dados PostgreSQL (via Supabase) isola rigorosamente os dados. O sistema valida todas as requisições baseadas no ID do profissional autenticado.
 * **Segurança e Identidade:** Delegamos a autenticação para o **Clerk** (OAuth), reduzindo a superfície de ataque e garantindo sessões seguras.
-* **Performance em Ambiente Serverless:** Como usamos as *Serverless Functions* do Next.js na Vercel, implementamos o **PgBouncer** no Prisma ORM (Connection Pooling) para garantir que picos de acesso não derrubem o limite de conexões do banco de dados (conforme ADR-001).
+* **Performance e Connection Pooling:** Para garantir que a escalabilidade elástica da Vercel não derrube o nosso banco de dados, configuramos o Prisma ORM com o **PgBouncer**, gerenciando eficientemente as conexões ativas (conforme ADR-001).
 
 ---
 
-## 4. Maturidade de Infraestrutura (DevOps & IaC)
+## 4. Maturidade de Infraestrutura (DevOps & Nuvem)
 
-O projeto consolida as melhores práticas de entrega contínua:
+O projeto consolida as melhores práticas de entrega contínua e resolução de conflitos de infraestrutura:
 
-* **CI/CD (Continuous Integration / Continuous Deployment):** O repositório conta com uma pipeline robusta via **GitHub Actions** (`.github/workflows/deploy.yml`) que automatiza testes, linting e realiza o deploy na Vercel a cada *push* aprovado na branch principal.
-* **Infrastructure as Code (IaC):** A infraestrutura deixou de ser manual. Adicionamos a declaração do projeto utilizando **Terraform** (pasta `/infra`). O arquivo `main.tf` mapeia o nosso serviço na Vercel e gerencia as variáveis de ambiente de forma declarativa e versionada.
+* **CI/CD Customizado:** O repositório conta com uma pipeline robusta via **GitHub Actions** (`deploy.yml`). Desativamos o deploy automático padrão para ter controle cirúrgico sobre o build, garantindo a injeção correta das variáveis de ambiente e a geração do ORM antes do código ir para a produção (conforme ADR-007).
+* **Compatibilidade Serverless:** Resolvemos conflitos complexos de sistema operacional na nuvem, configurando os *binaryTargets* do Prisma (`rhel-openssl-3.0.x`) para garantir que o motor do banco de dados rode perfeitamente no ambiente Linux da Vercel (conforme ADR-006).
 
 ---
 

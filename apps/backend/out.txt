@@ -1,3 +1,0 @@
-src/routes/appointments.routes.ts(53,9): error TS2322: Type 'string | null' is not assignable to type 'string | undefined'.
-  Type 'null' is not assignable to type 'string | undefined'.
-src/services/dbSync.service.ts(16,36): error TS2339: Property 'cliente' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.

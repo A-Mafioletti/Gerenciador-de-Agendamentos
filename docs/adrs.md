@@ -69,3 +69,51 @@ Decidimos reaproveitar a tabela de `appointments`. O sistema cria automaticament
 **Consequências:**
 * **Positivo:** A lógica de cálculo de disponibilidade no backend continuou simples e com alta performance, precisando consultar apenas uma única tabela (`appointments`) para descobrir o que está ocupado.
 * **Trade-off:** Foi necessário adicionar filtros condicionais no frontend para garantir que este "Serviço Administrativo" não apareça no catálogo de serviços para o cliente público.
+
+---
+
+## ADR 005: Comunicação entre Microsserviços e Política de CORS
+
+* **Status:** Aceito
+* **Data:** Abril de 2026
+
+**Contexto:**
+Para manter responsabilidades isoladas, o sistema foi dividido em dois projetos hospedados independentemente na Vercel: o Frontend (Next.js) e o Backend (Node/Express). Por rodarem em domínios diferentes, os navegadores dos usuários bloqueavam as requisições de agendamento por violação de segurança (política de Mesma Origem).
+
+**Decisão:**
+Implementar uma política explícita de CORS (*Cross-Origin Resource Sharing*) na API Express. Configuramos o middleware de CORS para validar e aceitar exclusivamente requisições provenientes da URL oficial de produção do Frontend, ativando também a flag `credentials: true` para suportar o tráfego de headers de autenticação do Clerk.
+
+**Consequências:**
+Comunicação segura e liberada entre os microsserviços na nuvem, mitigando riscos de requisições não autorizadas disparadas por domínios de terceiros.
+
+---
+
+## ADR 006: Compatibilidade do Prisma Engine no Linux Serverless
+
+* **Status:** Aceito
+* **Data:** Abril de 2026
+
+**Contexto:**
+O desenvolvimento local ocorreu em ambiente Windows, fazendo com que o Prisma gerasse o motor do banco de dados (Query Engine) otimizado para este sistema. Ao realizar o deploy para a Vercel, o ambiente Linux Serverless (`rhel-openssl-3.0.x`) não localizava o motor nativo, retornando erro 500 no acesso ao banco.
+
+**Decisão:**
+Configurar estritamente o bloco `generator client` no arquivo `schema.prisma` para declarar o uso da propriedade `binaryTargets = ["native", "rhel-openssl-3.0.x"]`.
+
+**Consequências:**
+Durante a etapa de Build na nuvem, o compilador passa a fazer o download da biblioteca C (Query Engine) exata exigida pela Vercel, garantindo que o ORM consiga se conectar ao Supabase em qualquer ambiente de execução, eliminando o erro de inicialização.
+
+---
+
+## ADR 007: Automação de Deploy Customizada via GitHub Actions
+
+* **Status:** Aceito
+* **Data:** Abril de 2026
+
+**Contexto:**
+A Vercel possui integração automática com repositórios Git. No entanto, o nosso monorepo exigia comandos de build altamente específicos (como a instalação de dependências globais, uso do Vercel CLI e geração do cliente do Prisma) que precisavam rodar em uma ordem exata antes do código ser promovido para produção.
+
+**Decisão:**
+Desativar o auto-deploy nativo da Vercel e adotar o **GitHub Actions** como ferramenta oficial de CI/CD. Criamos um workflow (`deploy.yml`) que assume o controle do ambiente virtual (Ubuntu), puxa o repositório, instala a Vercel CLI, gera as dependências de banco de dados e dispara o deploy manualmente via token.
+
+**Consequências:**
+Obtivemos controle cirúrgico sobre a nossa esteira de integração contínua. Essa decisão nos permite expandir a Action no futuro para rodar testes automatizados antes do deploy, garantindo um processo de entrega de software em nível de qualidade corporativa.
