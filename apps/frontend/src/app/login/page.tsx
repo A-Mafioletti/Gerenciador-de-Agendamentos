@@ -30,15 +30,6 @@ export default function LoginPage() {
             routing="hash"
             forceRedirectUrl="/dashboard"
             fallbackRedirectUrl="/dashboard"
-            localization={{
-              formFieldLabel__emailAddress: "E-mail profissional",
-              formFieldInputPlaceholder__emailAddress: "carlos.eletricista@email.com",
-              formFieldLabel__password: "Senha",
-              formFieldInputPlaceholder__password: "Sua senha",
-              formButtonPrimary: "Entrar",
-              dividerText: "OU",
-              socialButtonsBlockButton: "Entrar com Google",
-            }}
             appearance={{
               layout: {
                 socialButtonsPlacement: "bottom",
