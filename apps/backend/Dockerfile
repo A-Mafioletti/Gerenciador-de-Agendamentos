@@ -6,20 +6,21 @@ WORKDIR /app
 
 # Copy package.json and lock file first to leverage cache
 COPY package*.json ./
+COPY prisma ./prisma/
 
 # Install dependencies including dev dependencies
 RUN npm install
 
+# Generate Prisma client
+RUN npx prisma generate
+
 # Copy source code
 COPY . .
 
-# Expose Next.js port
-EXPOSE 3000
+# Expose backend port
+EXPOSE 3001
 
-# Start Next.js in development mode
-# Next.js by default uses polling or file system watching
-# In Docker, we sometimes need CHOKIDAR_USEPOLLING=true if file changes are not detected
-ENV CHOKIDAR_USEPOLLING=true
+# Hot Reload env vars for Node.js file watching
 ENV WATCHPACK_POLLING=true
 
 CMD ["npm", "run", "dev"]

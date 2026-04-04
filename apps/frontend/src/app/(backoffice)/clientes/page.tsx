@@ -113,11 +113,11 @@ export default function ClientesPage() {
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <span className="material-symbols-outlined text-slate-400 group-focus-within:text-primary transition-colors">search</span>
             </div>
-            <input 
+            <input
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="block w-full pl-10 pr-3 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl leading-5 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary sm:text-sm transition-all text-slate-900 dark:text-slate-100" 
-              placeholder="Buscar por nome ou serviço..." 
+              className="block w-full pl-10 pr-3 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl leading-5 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary sm:text-sm transition-all text-slate-900 dark:text-slate-100"
+              placeholder="Buscar por nome ou serviço..."
               type="text"
             />
           </div>
@@ -131,8 +131,8 @@ export default function ClientesPage() {
         ) : filteredClients.length === 0 ? (
           <div className="text-center py-16 bg-white dark:bg-slate-900 rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-800">
             <p className="text-slate-500">
-              {searchTerm 
-                ? "Nenhum cliente encontrado para sua busca." 
+              {searchTerm
+                ? "Nenhum cliente encontrado para sua busca."
                 : "Nenhum serviço concluído ainda. Seus clientes aparecerão aqui."}
             </p>
           </div>
@@ -141,8 +141,8 @@ export default function ClientesPage() {
             <div key={client.id} className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-100 dark:border-slate-800 shadow-sm flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <div className="h-14 w-14 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden shrink-0 border border-slate-200 dark:border-slate-700">
-                  <img 
-                    className="h-full w-full object-cover" 
+                  <img
+                    className="h-full w-full object-cover"
                     alt={`Portrait of ${client.client_name}`}
                     src={`https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(client.client_name)}`}
                   />
@@ -156,7 +156,7 @@ export default function ClientesPage() {
                   <p className="text-[11px] text-slate-400 mt-0.5">Última visita: {formatDate(client.date)}</p>
                 </div>
               </div>
-              <a 
+              <a
                 href={getWhatsappLink(client.client_whatsapp)}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -167,7 +167,7 @@ export default function ClientesPage() {
             </div>
           ))
         )}
-        
+
         {/* Bottom Spacer */}
         <div className="h-24"></div>
       </main>

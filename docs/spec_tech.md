@@ -9,7 +9,11 @@ O objetivo deste documento é servir como um guia definitivo para o desenvolvime
 
 ## 2. Arquitetura de Referência (C4 Model)
 
-A aplicação adota uma arquitetura baseada no modelo de **Recipientes (Containers)**, focada no ecossistema **Serverless/Jamstack**, com separação clara entre Frontend e Backend API:
+A aplicação adota uma arquitetura híbrida focada em agilidade e padronização:
+- **Desenvolvimento Local:** Utiliza **Docker e Docker Compose** para orquestração de serviços, garantindo paridade de ambiente entre desenvolvedores.
+- **Produção (Stable/Preview):** Utiliza arquitetura **Serverless PaaS na Vercel**, visando escalabilidade total e baixa manutenção.
+
+A estrutura é baseada no modelo de **Recipientes (Containers)**, com separação clara:
 
 ```mermaid
 graph TD
@@ -34,6 +38,7 @@ graph TD
     * **Data/API Layer (Backend):** Servidor Node.js rodando Express.js, operando como Serverless Functions na Vercel.
     * **Database Provider:** Banco de dados relacional gerenciado na nuvem (Supabase).
 * **Infraestrutura de Deployment:** CI/CD automatizado via GitHub Actions realizando o deploy integrado para a Vercel.
+* **Padronização Local:** Docker Compose para execução simultânea do Frontend (Next.js) e Backend (Express).
 
 ### Especificidades de Infraestrutura na Nuvem
 * **Comunicação Cross-Origin:** A API do Backend possui políticas estritas de CORS configuradas (com suporte a *credentials*) para aceitar requisições exclusivamente do domínio de produção do Frontend.
@@ -59,7 +64,8 @@ graph TD
 * **IDE:** VS Code
 * **Gerenciamento de pacotes:** npm
 * **Pipeline CI/CD:** GitHub Actions (Scripts customizados de deploy para Vercel).
-* **Hospedagem:** Vercel (Frontend e Backend).
+* **Hospedagem de Produção:** Vercel (Frontend e Backend).
+* **Ambiente de Desenvolvimento:** Docker & Docker Compose (Padrão local).
 
 ---
 

@@ -136,7 +136,7 @@ export default function Home() {
         if (generatedTimes.length > 0) setSelectedTime(generatedTimes[0]);
 
         const generatedDays = [];
-        let i = 0;
+        let i = 1; // Começa a partir de amanhã
         let daysGenerated = 0;
 
         while (daysGenerated < 15) {
