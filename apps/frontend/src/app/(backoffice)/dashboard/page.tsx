@@ -314,13 +314,14 @@ export default function DashboardPage() {
       <header className="bg-background-light dark:bg-background-dark sticky top-0 z-10 border-b border-primary/10">
         <div className="flex items-center p-4 justify-between max-w-xl md:max-w-3xl lg:max-w-4xl mx-auto w-full">
           <div className="flex items-center gap-3">
-            <div className="size-10 shrink-0 rounded-full bg-primary/10 flex items-center justify-center overflow-hidden border border-primary/20">
-              {/* Substitua o link abaixo pelo caminho do arquivo (ex: "/images/carlos.jpg") caso precise de uma imagem local */}
-              <img
-                className="w-full h-full object-cover"
-                alt={user?.firstName || "User"}
-                src={"https://lh3.googleusercontent.com/aida-public/AB6AXuCTjL8evO208DzmWZwY_gGCcq2GM5LhO2ijZndyRkUbFG75MSoDJjW5i1A-uH6XcqbSXvhhAdvmyQB_Ada6LxaVqempgjZEJgl_uWv1ifI3hRY86RhJ7Ikcszve4PxvonGWv2UASq1szRikspY5rRNNL8RoSMG_yM0vuIIwq2rc-GxHL5_iWn28C-8SZu6ZiAC5mR8ekDPAXab7ZDGuXkhTqV04cze0qWzQv2YnKaC9VSN-gOCnZip4H35IMGjgFpY6xmRUcUhcQPE"}
-              />
+            <div className="size-8 shrink-0 rounded-full bg-primary/10 flex items-center justify-center overflow-hidden border border-primary/20">
+              {user?.imageUrl && (
+                <img
+                  className="w-full h-full object-cover"
+                  alt={user?.firstName || "User"}
+                  src={user.imageUrl}
+                />
+              )}
             </div>
             <div>
               <h1 className="text-sm text-slate-500 dark:text-slate-400 font-medium">Bem-vindo de volta,</h1>
