@@ -10,9 +10,10 @@ export default function Home() {
   const [selectedTime, setSelectedTime] = useState("08:00");
   const [days, setDays] = useState<{ label: string; day: string; fullDate: string }[]>([]);
   const [monthYear, setMonthYear] = useState("");
-  const [bookedTimes, setBookedTimes] = useState<string[]>([]);
-  const [times, setTimes] = useState<string[]>([]); // state para gerar_horários dinâmicos
+  const [bookedTimes, setBookedTimes] = useState<{ startMins: number; endMins: number }[]>([]);
+  const [times, setTimes] = useState<{ time: string; isBooked: boolean }[]>([]); // state para gerar_horários dinâmicos
   const [servicesList, setServicesList] = useState<any[]>([]);
+  const [profSettings, setProfSettings] = useState<any>(undefined);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
@@ -90,50 +91,15 @@ export default function Home() {
           .eq('professional_id', internalId)
           .maybeSingle();
 
+        setProfSettings(settings || null);
+
         let workingDays: Record<string, boolean> = {
           seg: true, ter: true, qua: true, qui: true, sex: true, sab: false, dom: false
         };
-        let startTime = "08:00";
-        let endTime = "18:00";
-        let breakStart = "12:00";
-        let breakEnd = "13:00";
 
         if (settings) {
           if (settings.working_days) workingDays = settings.working_days as Record<string, boolean>;
-          if (settings.start_time) startTime = settings.start_time.substring(0, 5);
-          if (settings.end_time) endTime = settings.end_time.substring(0, 5);
-          if (settings.break_start) breakStart = settings.break_start.substring(0, 5);
-          if (settings.break_end) breakEnd = settings.break_end.substring(0, 5);
         }
-
-        // Generate times based on start/end and excluding break
-        const generatedTimes = [];
-        let [currentH, currentM] = startTime.split(':').map(Number);
-        const [endH, endM] = endTime.split(':').map(Number);
-        const [bsH, bsM] = breakStart.split(':').map(Number);
-        const [beH, beM] = breakEnd.split(':').map(Number);
-
-        const toMinutes = (h: number, m: number) => h * 60 + m;
-        const limitMinutes = toMinutes(endH, endM);
-        const breakStartM = toMinutes(bsH, bsM);
-        const breakEndM = toMinutes(beH, beM);
-
-        while (toMinutes(currentH, currentM) < limitMinutes) {
-          const currentMins = toMinutes(currentH, currentM);
-          // Check if it falls into break interval [breakStartM, breakEndM)
-          if (currentMins >= breakStartM && currentMins < breakEndM) {
-            currentH = beH;
-            currentM = beM;
-            continue; // jump to break end
-          }
-
-          generatedTimes.push(`${String(currentH).padStart(2, '0')}:${String(currentM).padStart(2, '0')}`);
-
-          // Increment 1 hour
-          currentH++;
-        }
-        setTimes(generatedTimes);
-        if (generatedTimes.length > 0) setSelectedTime(generatedTimes[0]);
 
         const generatedDays = [];
         let i = 1; // Começa a partir de amanhã
@@ -188,16 +154,15 @@ export default function Home() {
         // Buscamos os agendamentos confirmados para o profissional e data selecionados
         const { data, error } = await supabase
           .from('appointments')
-          .select('date, start_time, status')
+          .select('date, start_time, status, services(duration_minutes)')
           .eq('status', 'confirmed')
           .eq('professional_id', professionalId)
           .eq('date', selectedDayObj.fullDate);
 
         if (error) throw error;
 
-        // Normalização e extração apenas das horas (HH:mm) para agendamentos confirmados
+        // Normalização e extração com duração do serviço
         const occupied = data?.filter((app) => {
-          // Normalização de Data: garante comparação idêntica de YYYY-MM-DD
           const appDate = String(app.date).substring(0, 10);
           return appDate === selectedDayObj.fullDate;
         }).map((app) => {
@@ -205,25 +170,22 @@ export default function Home() {
 
           let timePart = app.start_time;
 
-          // Caso a hora venha em formato ISO completo ou com T
           if (timePart.includes('T')) {
             timePart = timePart.split('T')[1].split(/[Z+-]/)[0]; // Pega HH:mm:ss
           }
 
-          // Garante formato HH:mm comparável com a lista 'times' (ex: "08:00")
           const parts = timePart.split(':');
           if (parts.length < 2) return null;
-          const h = parts[0].padStart(2, '0');
-          const m = parts[1].padStart(2, '0');
-          return `${h}:${m}`;
-        }).filter(Boolean) as string[] || [];
+          const h = parseInt(parts[0], 10);
+          const m = parseInt(parts[1], 10);
+          const startMins = h * 60 + m;
+
+          // Se não houver duração no recorde do serviço associado, pressupõe-se 60 min
+          const duration = (app.services as any)?.duration_minutes || 60;
+          return { startMins, endMins: startMins + duration };
+        }).filter(Boolean) as { startMins: number, endMins: number }[] || [];
 
         setBookedTimes(occupied);
-
-        // Se o horário selecionado acabou de ser ocupado, limpa a seleção
-        if (occupied.includes(selectedTime)) {
-          setSelectedTime("");
-        }
       } catch (err) {
         console.error("Erro ao buscar horários ocupados:", err);
       }
@@ -233,6 +195,94 @@ export default function Home() {
       fetchBookedTimes();
     }
   }, [selectedDate, professionalId, days]);
+
+  // Recalcular horários disponíveis sempre que o serviço, as configurações ou a data trocam
+  useEffect(() => {
+    if (profSettings === undefined) return;
+
+    let startTime = "08:00";
+    let endTime = "18:00";
+    let breakStart = "12:00";
+    let breakEnd = "13:00";
+
+    if (profSettings) {
+      if (profSettings.start_time) startTime = profSettings.start_time.substring(0, 5);
+      if (profSettings.end_time) endTime = profSettings.end_time.substring(0, 5);
+      if (profSettings.break_start) breakStart = profSettings.break_start.substring(0, 5);
+      if (profSettings.break_end) breakEnd = profSettings.break_end.substring(0, 5);
+    }
+
+    const selectedService = servicesList.find((s) => s.id === formData.service_id);
+    const serviceDuration = selectedService?.duration_minutes || 60; // 60 minutos como padrão
+
+    const generatedTimes: { time: string, isBooked: boolean }[] = [];
+    let [currentH, currentM] = startTime.split(':').map(Number);
+    const [endH, endM] = endTime.split(':').map(Number);
+    const [bsH, bsM] = breakStart.split(':').map(Number);
+    const [beH, beM] = breakEnd.split(':').map(Number);
+
+    const toMinutes = (h: number, m: number) => h * 60 + m;
+    const limitMinutes = toMinutes(endH, endM);
+    const breakStartM = toMinutes(bsH, bsM);
+    const breakEndM = toMinutes(beH, beM);
+
+    let startMinutes = toMinutes(currentH, currentM);
+
+    while (startMinutes < limitMinutes) {
+      const slotEndMinutes = startMinutes + serviceDuration;
+      let isValid = true;
+      let isBooked = false;
+
+      // Regra 1: Horário final do serviço não pode ultrapassar o fim do expediente
+      if (slotEndMinutes > limitMinutes) {
+        isValid = false;
+      }
+
+      // Regra 2: O serviço não pode cruzar o período de intervalo (break)
+      if (startMinutes < breakEndM && slotEndMinutes > breakStartM) {
+        isValid = false;
+      }
+
+      // Regra 3 (Nova): Colisão com agendamentos existentes no banco
+      if (isValid) {
+        for (const booked of bookedTimes) {
+          // Se cruza com algum tempo já agendado (slotStart < bookEnd AND slotEnd > bookStart)
+          if (startMinutes < booked.endMins && slotEndMinutes > booked.startMins) {
+            if (startMinutes >= booked.startMins && startMinutes < booked.endMins) {
+              // O slot cai no princípio ou exatamente dentro de um agendamento. Marcamos como inativo visualmente
+              isBooked = true;
+            } else if (startMinutes < booked.startMins && slotEndMinutes > booked.startMins) {
+               // Choque por invadir retroativamente o horário já ocupado (e.g. pega um serviço de 1h30 q alcançaria o evento logo após)
+               isValid = false; // "deve ser removido da lista de disponíveis"
+               break;
+            }
+          }
+        }
+      }
+
+      if (isValid) {
+        const h = Math.floor(startMinutes / 60);
+        const m = startMinutes % 60;
+        generatedTimes.push({
+          time: `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`,
+          isBooked
+        });
+      }
+
+      // Incrementa 1 hora (60 minutos) conforme o padrão anterior
+      startMinutes += 60;
+    }
+
+    setTimes(generatedTimes);
+    
+    // Se o horário atualmente selecionado agora não está mais disponível ou está ocupado
+    if (selectedTime !== "") {
+      const matchingTime = generatedTimes.find(t => t.time === selectedTime);
+      if (!matchingTime || matchingTime.isBooked) {
+        setSelectedTime("");
+      }
+    }
+  }, [profSettings, formData.service_id, servicesList, selectedTime, bookedTimes]);
 
   // O array `times` foi definido como state dinâmico. Removendo o constante.
 
@@ -376,8 +426,9 @@ export default function Home() {
             <section className="mt-8 lg:mt-10 px-4">
               <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-3 lg:mb-4 lg:text-lg">Horários Disponíveis</h3>
               <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-3 gap-2 lg:gap-3">
-                {times.map((time) => {
-                  const isBooked = bookedTimes.includes(time);
+                {times.map((item) => {
+                  const time = item.time;
+                  const isBooked = item.isBooked;
                   return (
                     <button
                       key={time}
