@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase-client";
+import { Loader2 } from "lucide-react";
 
 export default function Home() {
   const router = useRouter();
@@ -55,6 +56,7 @@ export default function Home() {
   });
 
   const [professionalId, setProfessionalId] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     async function loadConfigAndGenerateDays() {
@@ -316,6 +318,7 @@ export default function Home() {
       return;
     }
 
+    setIsSubmitting(true);
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
       const response = await fetch(`${apiUrl}/appointments`, {
@@ -349,6 +352,8 @@ export default function Home() {
     } catch (error) {
       console.error("Erro no agendamento:", error);
       alert("Ocorreu um erro ao tentar realizar o agendamento. Por favor, tente novamente.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -509,9 +514,17 @@ export default function Home() {
                   <div className="hidden lg:block mt-8">
                     <button
                       onClick={handleBooking}
-                      className="w-full bg-primary text-white py-4 rounded-xl font-bold text-lg shadow-xl shadow-primary/30 active:scale-[0.98] transition-transform hover:bg-primary/90 hover:shadow-primary/40"
+                      disabled={isSubmitting}
+                      className="w-full flex items-center justify-center gap-2 bg-primary text-white py-4 rounded-xl font-bold text-lg shadow-xl shadow-primary/30 active:scale-[0.98] transition-transform hover:bg-primary/90 hover:shadow-primary/40 disabled:opacity-70 disabled:pointer-events-none"
                     >
-                      Confirmar Agendamento
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                          Agendando...
+                        </>
+                      ) : (
+                        "Confirmar Agendamento"
+                      )}
                     </button>
                   </div>
                 </div>
@@ -522,9 +535,17 @@ export default function Home() {
                 <div className="max-w-md mx-auto">
                   <button
                     onClick={handleBooking}
-                    className="w-full bg-primary text-white py-4 rounded-xl font-bold text-lg shadow-xl shadow-primary/30 active:scale-[0.98] transition-transform hover:bg-primary/90"
+                    disabled={isSubmitting}
+                    className="w-full flex items-center justify-center gap-2 bg-primary text-white py-4 rounded-xl font-bold text-lg shadow-xl shadow-primary/30 active:scale-[0.98] transition-transform hover:bg-primary/90 disabled:opacity-70 disabled:pointer-events-none"
                   >
-                    Confirmar Agendamento
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        Agendando...
+                      </>
+                    ) : (
+                      "Confirmar Agendamento"
+                    )}
                   </button>
                 </div>
               </footer>
