@@ -59,17 +59,22 @@
 
 ---
 
-## Requisitos Não Funcionais
+## Requisitos Não Funcionais (RNFs)
 
-### RNF-01 - Mobile-First e Responsividade
-O sistema deve ser perfeitamente funcional em telas pequenas, visto que o profissional gerencia a agenda em campo.
+Para garantir a qualidade, estabilidade e segurança da plataforma, o sistema deve atender aos seguintes critérios técnicos:
 
-### RNF-02 - Persistência e Integridade de Dados
-Uso de banco de dados PostgreSQL (Supabase) com ORM Prisma para garantir que nenhum agendamento seja perdido ou duplicado.
+* **Desempenho (Performance):** O tempo de carregamento da página pública de agendamento (Booking Page) deve ser inferior a 2 segundos em conexões 4G (LCP < 2.5s).
+* O cálculo de horários disponíveis (considerando Lead Time e fuso horário) deve ser processado em tempo real, garantindo uma resposta ágil da interface.
 
-### RNF-03 - Segurança (LGPD)
-Isolamento de dados por profissional usando Row Level Security (RLS), garantindo que um prestador não acesse os dados de clientes de outro.
+* **Segurança e Privacidade:** A autenticação e a gestão de sessão do profissional devem ser protegidas via **Clerk**, suportando mecanismos de segurança robustos.
+* Os dados sensíveis dos clientes (telefone, endereço) devem ser isolados no banco de dados (Supabase) através de **Row Level Security (RLS)**, garantindo que o Profissional "A" nunca acesse dados do Profissional "B" (Compliance com LGPD).
+* Toda a comunicação deve ocorrer obrigatoriamente via HTTPS (TLS/SSL).
 
+* **Escalabilidade e Disponibilidade:** O sistema deve possuir uma disponibilidade mínima de 99.9% (SLA padrão).
+* A adoção de uma arquitetura *Serverless* (Next.js na Vercel) deve garantir o escalonamento automático (auto-scaling) para suportar picos de acessos sem degradação do serviço.
+
+* **Usabilidade (UX/UI):** A interface deve ser estritamente **Mobile-First**, garantindo navegação fluida em telas menores, com alvos de toque adequados (mínimo de 44x44px).
+* O sistema deve fornecer feedback visual imediato para ações críticas (ex: confirmações de agendamento, validações de formulário).
 ---
 
 ## Métricas de Sucesso
@@ -79,12 +84,35 @@ Isolamento de dados por profissional usando Row Level Security (RLS), garantindo
 
 ---
 
-## Premissas e restrições
-- **Premissas:** O profissional possui acesso à internet e conta ativa no sistema.
-- **Restrições:** O sistema não realiza processamento de pagamentos nesta versão (v1).
+## Premissas e Restrições
+
+**Premissas (Técnicas e Organizacionais):**
+* O profissional autônomo possui um smartphone com acesso à internet e o aplicativo WhatsApp instalado para receber as notificações de serviço.
+* O cliente final possui um navegador web moderno e acesso à internet.
+* A comunicação do profissional com o cliente continuará sendo feita primariamente via WhatsApp após o agendamento no sistema.
+
+**Restrições (Técnicas e de Infraestrutura):**
+* O sistema não realiza processamento de pagamentos nesta versão (v1).
+* A aplicação será exclusivamente web (Progressive Web App - PWA em potencial), não havendo desenvolvimento ou publicação de aplicativos nativos nas lojas (App Store / Google Play).
+* O envio de notificações automatizadas (SMS/WhatsApp API) está fora do escopo atual devido aos custos de integração; o redirecionamento é feito via *deep link* gratuito do WhatsApp.
 
 ---
 
-## Escopo
-- **V1 (Atual):** Cadastro de serviços, configuração de grade, agendamento público, dashboard e bloqueio manual de horários.
-- **V2 (Futuro):** Notificações push/WhatsApp, relatórios financeiros e integração de pagamento via Pix.
+## Escopo do Projeto
+
+O escopo do projeto está estritamente focado em resolver a dor do agendamento manual.
+
+**Está no Escopo (O que será entregue na V1):**
+* Autenticação segura do profissional (Clerk).
+* Configuração da grade de horários de trabalho, dias úteis e bloqueios (Lead Time).
+* Cadastro e gestão de serviços ofertados.
+* Página pública de agendamento com cálculo dinâmico de disponibilidade.
+* Dashboard administrativo para visualizar e alterar status de agendamentos (Concluir/Cancelar).
+* Bloqueio manual de horários (Compromissos pessoais).
+
+**Fora do Escopo (O que não será entregue nesta fase):**
+* Gateway de pagamento online integrado (Pix, Cartão de Crédito).
+* Disparo automatizado de mensagens via WhatsApp Business API (bots).
+* Emissão de Notas Fiscais ou recibos de serviço.
+* Chat interno na plataforma.
+* Relatórios financeiros ou de produtividade complexos.

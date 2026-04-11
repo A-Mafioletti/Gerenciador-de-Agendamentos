@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
-import { useSession } from "@clerk/nextjs";
+import { useUser, useSession } from "@clerk/nextjs";
 import { supabase } from "@/lib/supabase-client";
 
 const getTodayString = () => {
@@ -34,6 +34,7 @@ export default function DashboardPage() {
   const [isBlocking, setIsBlocking] = useState(false);
 
   const { session } = useSession();
+  const { user } = useUser();
   const hasFetched = useRef(false);
 
   useEffect(() => {
@@ -316,13 +317,13 @@ export default function DashboardPage() {
             <div className="size-10 shrink-0 rounded-full bg-primary/10 flex items-center justify-center overflow-hidden border border-primary/20">
               <img
                 className="w-full h-full object-cover"
-                alt="Carlos"
-                src="https://api.dicebear.com/7.x/avataaars/svg?seed=Carlos"
+                alt={user?.firstName || "User"}
+                src={user?.imageUrl}
               />
             </div>
             <div>
               <h1 className="text-sm text-slate-500 dark:text-slate-400 font-medium">Bem-vindo de volta,</h1>
-              <h2 className="text-lg font-bold leading-tight tracking-tight">Olá, Carlos</h2>
+              <h2 className="text-lg font-bold leading-tight tracking-tight">Olá, {user?.firstName || "Profissional"}</h2>
             </div>
           </div>
           <div className="flex items-center gap-2">
