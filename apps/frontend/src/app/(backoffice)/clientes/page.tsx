@@ -8,6 +8,7 @@ export default function ClientesPage() {
   const [clients, setClients] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedPeriod, setSelectedPeriod] = useState("current");
   const { session } = useSession();
   const hasFetched = useRef(false);
 
@@ -74,11 +75,42 @@ export default function ClientesPage() {
     fetchClients();
   }, [session?.user?.id]);
 
+  const isDateInPeriod = (dateString: string, period: string) => {
+    if (period === "all" || !dateString) return true;
+    
+    // Fallback split for ISO or standard date strings up to 'T' to process reliably ignoring local offsets
+    const cleanDateStr = dateString.split('T')[0];
+    const [y, m] = cleanDateStr.split('-');
+    const dateY = parseInt(y, 10);
+    const dateM = parseInt(m, 10) - 1; // 0-based month
+    
+    const today = new Date();
+    
+    if (period === "current") {
+      return dateY === today.getFullYear() && dateM === today.getMonth();
+    } else if (period === "previous") {
+      const target = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+      return dateY === target.getFullYear() && dateM === target.getMonth();
+    } else if (period === "previous-2") {
+      const target = new Date(today.getFullYear(), today.getMonth() - 2, 1);
+      return dateY === target.getFullYear() && dateM === target.getMonth();
+    }
+    
+    return true;
+  };
+
   const filteredClients = clients.filter((client) => {
-    const term = searchTerm.toLowerCase();
-    const nameMatch = client.client_name?.toLowerCase().includes(term);
-    const serviceMatch = client.services?.name?.toLowerCase().includes(term);
-    return nameMatch || serviceMatch;
+    const term = searchTerm.trim().toLowerCase();
+    
+    // Global search prioritizes text input. If text exists, ignore period.
+    if (term) {
+      const nameMatch = client.client_name?.toLowerCase().includes(term);
+      const serviceMatch = client.services?.name?.toLowerCase().includes(term);
+      return nameMatch || serviceMatch;
+    }
+    
+    // If no search text, filter by selected period
+    return isDateInPeriod(client.date, selectedPeriod);
   });
 
   const getWhatsappLink = (phone: string) => {
@@ -121,6 +153,28 @@ export default function ClientesPage() {
               type="text"
             />
           </div>
+          
+          {/* Filter Bar */}
+          <div className="mt-3 flex items-center">
+            <div className="relative w-full sm:w-auto min-w-[180px]">
+              <select
+                value={selectedPeriod}
+                onChange={(e) => setSelectedPeriod(e.target.value)}
+                className="appearance-none block w-full pl-10 pr-10 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl leading-5 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary sm:text-sm transition-all cursor-pointer font-medium"
+              >
+                <option value="all">Todos os Períodos</option>
+                <option value="current">Mês Atual</option>
+                <option value="previous">Mês Anterior</option>
+                <option value="previous-2">2 Meses Atrás</option>
+              </select>
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <span className="material-symbols-outlined text-slate-400 text-[18px]">calendar_month</span>
+              </div>
+              <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                <span className="material-symbols-outlined text-slate-400 text-[18px]">expand_more</span>
+              </div>
+            </div>
+          </div>
         </div>
       </header>
 
@@ -133,6 +187,8 @@ export default function ClientesPage() {
             <p className="text-slate-500">
               {searchTerm
                 ? "Nenhum cliente encontrado para sua busca."
+                : selectedPeriod !== "all"
+                ? "Nenhum cliente encontrado neste período."
                 : "Nenhum serviço concluído ainda. Seus clientes aparecerão aqui."}
             </p>
           </div>
