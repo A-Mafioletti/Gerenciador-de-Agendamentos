@@ -1,12 +1,12 @@
 # 📅 Gerenciador de Agendamentos Inteligente (MVP)
 
-> **🚀 APLICAÇÃO EM PRODUÇÃO (LIVE DEMO):**
+> **🚀 APLICAÇÃO EM PRODUÇÃO E ROTEIRO DE TESTE:**
 > 
 > 🧑‍💻 **Visão do Cliente (Pública):** **[👉 ACESSAR A BOOKING PAGE](https://projeto-agendamentos-ashen.vercel.app)**
-> *(Acesso livre para testes. Escolha um horário para simular o fluxo de agendamento).*
+> * **O que avaliar:** Escolha um serviço longo (ex: Troca de Chuveiro - 1h30) e tente agendar no último horário do dia para ver a proteção de *"Time Overflow"*. Verifique também a blindagem contra "Double-Booking" (Conflito de Intersecção) e o estado de "Loading" (Double Submit) ao confirmar.
 >
 > 🧑‍🔧 **Visão do Profissional (Dashboard):** **[👉 ACESSAR O LOGIN DO SISTEMA](https://projeto-agendamentos-ashen.vercel.app/login)**
-> *(Protegido via Clerk. Utilize a opção "Continuar com Google" com qualquer conta para acessar o painel administrativo e testar os bloqueios de agenda).*
+> * **O que avaliar:** Utilize "Continuar com Google" com qualquer conta. O sistema Multi-Tenant (Clerk) criará um ambiente seguro e isolado para você, puxando seu nome e foto reais. Na aba "Meus Clientes", teste o filtro dinâmico de período, projetado para evitar a exclusão de dados e proteger o histórico financeiro do profissional.
 
 Bem-vindo ao repositório do Gerenciador de Agendamentos Inteligente, uma plataforma autônoma projetada para profissionais que executam trabalhos manuais (como eletricistas, encanadores, marcenaria e estética a domicílio). Este sistema atua como um assistente digital 24/7, permitindo que os clientes agendem horários de forma independente, reduzindo tarefas administrativas e evitando choques de horários ("double-booking").
 
@@ -19,6 +19,7 @@ A aplicação é um monorepo construído com tecnologias modernas da stack Jamst
 ---
 
 ## 📦 Estrutura do Repositório (Monorepo)
+
 ```text
 gerenciador-agendamentos/
 ├── apps/
@@ -32,8 +33,8 @@ gerenciador-agendamentos/
 
 ## 🤖 Uso de Inteligência Artificial (Pair Programming)
 
-Este projeto utilizou ferramentas de IA Generativa (Google Gemini) como suporte ao desenvolvimento. O registro detalhado dos prompts utilizados para modelagem de banco de dados, resolução de bugs de infraestrutura e geração de documentação encontra-se no arquivo:
-📄 **[Acesse os Prompts de IA aqui](./docs/ai_prompts.md)**
+Este projeto utilizou ferramentas de IA Generativa (Google Gemini) como suporte ao desenvolvimento. O registro detalhado dos prompts utilizados para modelagem de banco de dados, resolução de bugs de infraestrutura, refatoração de UX e algoritmos matemáticos encontra-se no arquivo:
+📄 **[Acesse as Evidências e Prompts de IA aqui](./docs/ai_prompts.md)**
 
 ---
 
@@ -46,12 +47,12 @@ A documentação completa exigida para a avaliação está organizada na pasta `
 
 ---
 
-## 💻 Como rodar o projeto localmente
+## 💻 Como Reproduzir o Projeto Localmente
 
-**Pré-requisitos:** Node.js (versão LTS recomendada) e Instância do PostgreSQL (ou Supabase configurado).
+**Pré-requisitos:** Node.js (v18+) e Instância do PostgreSQL (ou Supabase configurado).
 
-1. Clone o repositório e acesse a pasta do backend executando `cd apps/backend`.
+1. Clone o repositório e acesse a pasta principal da aplicação (dependendo do seu workspace, ex: `cd apps/frontend`).
 2. Instale as dependências executando `npm install`.
-3. Crie um arquivo `.env` baseado no `.env.example` e insira suas credenciais do banco.
-4. Sincronize o banco de dados via Prisma executando `npx prisma generate` seguido de `npx prisma db pull`.
-5. Inicie o servidor de desenvolvimento executando `npm run dev`.
+3. Crie um arquivo `.env` baseado no `.env.example`. **Importante:** Insira suas credenciais do banco (Supabase) e as chaves de autenticação do Clerk (`NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` e `CLERK_SECRET_KEY`), caso contrário o Next.js falhará na inicialização das rotas privadas.
+4. Sincronize o banco de dados via Prisma executando `npx prisma generate` seguido de `npx prisma db push` (ou `db pull` caso já tenha a estrutura remota).
+5. Inicie o servidor de desenvolvimento executando `npm run dev`. A aplicação estará disponível em `http://localhost:3000`.
