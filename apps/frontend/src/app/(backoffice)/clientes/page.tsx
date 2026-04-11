@@ -129,6 +129,24 @@ export default function ClientesPage() {
     });
   };
 
+  const filterOptions = (() => {
+    const options = [{ value: "all", label: "Todos os Períodos" }];
+    const today = new Date();
+    
+    const formatMonthYear = (date: Date) => {
+      const parts = new Intl.DateTimeFormat("pt-BR", { month: "long", year: "numeric" }).formatToParts(date);
+      const m = parts.find((p) => p.type === "month")?.value || "";
+      const y = parts.find((p) => p.type === "year")?.value || "";
+      return `${m.charAt(0).toUpperCase() + m.slice(1)} ${y}`;
+    };
+
+    options.push({ value: "current", label: formatMonthYear(new Date(today.getFullYear(), today.getMonth(), 1)) });
+    options.push({ value: "previous", label: formatMonthYear(new Date(today.getFullYear(), today.getMonth() - 1, 1)) });
+    options.push({ value: "previous-2", label: formatMonthYear(new Date(today.getFullYear(), today.getMonth() - 2, 1)) });
+    
+    return options;
+  })();
+
   return (
     <div className="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
       {/* Header Section */}
@@ -162,10 +180,11 @@ export default function ClientesPage() {
                 onChange={(e) => setSelectedPeriod(e.target.value)}
                 className="appearance-none block w-full pl-10 pr-10 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl leading-5 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary sm:text-sm transition-all cursor-pointer font-medium"
               >
-                <option value="all">Todos os Períodos</option>
-                <option value="current">Mês Atual</option>
-                <option value="previous">Mês Anterior</option>
-                <option value="previous-2">2 Meses Atrás</option>
+                {filterOptions.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
               </select>
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <span className="material-symbols-outlined text-slate-400 text-[18px]">calendar_month</span>
