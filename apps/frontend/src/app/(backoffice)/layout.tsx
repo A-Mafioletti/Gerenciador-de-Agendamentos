@@ -58,8 +58,9 @@ export default function BackofficeLayout({ children }: { children: React.ReactNo
         <div className="p-4 border-t border-slate-200 dark:border-slate-800">
           <div className="flex items-center gap-3 px-2 py-2">
              <div className="size-10 rounded-full bg-primary/10 overflow-hidden border border-primary/20 shrink-0">
-               {/* Substitua o link abaixo pelo caminho do arquivo (ex: "/images/carlos.jpg") caso precise de uma imagem local */}
-               <img src={"https://lh3.googleusercontent.com/aida-public/AB6AXuCTjL8evO208DzmWZwY_gGCcq2GM5LhO2ijZndyRkUbFG75MSoDJjW5i1A-uH6XcqbSXvhhAdvmyQB_Ada6LxaVqempgjZEJgl_uWv1ifI3hRY86RhJ7Ikcszve4PxvonGWv2UASq1szRikspY5rRNNL8RoSMG_yM0vuIIwq2rc-GxHL5_iWn28C-8SZu6ZiAC5mR8ekDPAXab7ZDGuXkhTqV04cze0qWzQv2YnKaC9VSN-gOCnZip4H35IMGjgFpY6xmRUcUhcQPE"} alt="User" className="w-full h-full object-cover" />
+               {user?.imageUrl && (
+                 <img src={user.imageUrl} alt={user?.fullName || "User Avatar"} className="w-full h-full object-cover" />
+               )}
              </div>
              <div className="overflow-hidden">
                <p className="text-sm font-bold truncate">{user?.fullName || "Profissional"}</p>
