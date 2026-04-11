@@ -1,10 +1,10 @@
 # Registro de Uso de Inteligência Artificial (IA)
 
-Conforme as diretrizes de desenvolvimento moderno e as exigências do Roteiro de Discovery, ferramentas de IA Generativa foram utilizadas em duas frentes principais: na concepção do produto (Discovery) e como suporte técnico avançado ("Pair Programming") durante a codificação.
+Conforme as diretrizes de desenvolvimento moderno e as exigências do Roteiro de Discovery, ferramentas de IA Generativa foram utilizadas em duas frentes principais: na concepção do produto (Discovery) e como suporte técnico avançado ("Pair Programming") durante a codificação e refatoração.
 
 ## Ferramentas Utilizadas
 
-* **Google Gemini (Modelos Pro e Flash):** Utilizado via interface conversacional e integrado ao ambiente de desenvolvimento para refatoração, documentação e arquitetura.
+* **Google Gemini (Modelos Pro e Flash):** Utilizado via interface conversacional e integrado ao ambiente de desenvolvimento para refatoração, documentação, lógica matemática e arquitetura.
 * **Google Stitch:** Utilizado para a geração dos protótipos de alta fidelidade baseados nas especificações de UI.
 
 ---
@@ -24,7 +24,7 @@ Conforme as diretrizes de desenvolvimento moderno e as exigências do Roteiro de
 ---
 
 ## 2. Exemplos de Interações - Fase de Desenvolvimento e Infraestrutura
-*Estes prompts refletem o uso da IA para resolver problemas reais de engenharia e escalabilidade durante o hand-on.*
+*Estes prompts refletem o uso da IA para resolver problemas reais de engenharia e escalabilidade durante o hands-on.*
 
 **Modelagem de Dados e Casos Extremos (Edge Cases):**
 > **Prompt:** "Atue como um DBA PostgreSQL. Precisamos criar uma tabela de configurações para o profissional definir seus dias de trabalho. É mais performático criar uma tabela relacional para cada dia da semana ou usar uma coluna JSONB na tabela 'professional_settings'? Avalie os trade-offs considerando Next.js e Prisma."
@@ -37,9 +37,24 @@ Conforme as diretrizes de desenvolvimento moderno e as exigências do Roteiro de
 
 ---
 
-## 3. Impacto no Projeto
+## 3. Exemplos de Interações - Refatoração Algorítmica e UX Avançada (Pair Programming)
+*Estes prompts demonstram o uso avançado da IA como co-piloto na reta final do projeto para resolver regras de negócio complexas e polir a experiência do usuário.*
+
+**Prevenção de 'Time Overflow' e Conflito de Intersecção (Matemática de Agenda):**
+> **Prompt:** "Identificamos uma falha de colisão na página de agendamento. O sistema permite reservar um horário se o início estiver livre, mas não valida se a duração do serviço invade o horário de um agendamento posterior. Refatore a função de slots. A lógica deve buscar o início do próximo agendamento confirmado e calcular: `Hora do Slot Atual + Duração do Serviço Selecionado`. Se o resultado for maior que o início do próximo agendamento, o slot deve ser removido ou desabilitado visualmente."
+
+**Proteção de Mutação de Dados (Double Submit):**
+> **Prompt:** "Encontramos um bug de 'Double Submit' no formulário de agendamento. Usuários clicam duas vezes por falta de feedback visual, gerando agendamentos duplicados no banco. Implemente um estado `isSubmitting` no React, bloqueie o botão e adicione um spinner de carregamento, usando um bloco `finally` para garantir o destravamento em caso de erro de rede."
+
+**Arquitetura de Frontend e Proteção de Histórico:**
+> **Prompt:** "Precisamos de uma funcionalidade para organizar a tela de clientes. Não podemos permitir a exclusão de clientes no banco (Prisma/Supabase) para não quebrar o histórico financeiro dos agendamentos passados. Como alternativa, implemente um filtro de Mês/Período no frontend. O Dropdown deve gerar as opções usando a API nativa `Intl.DateTimeFormat` de forma dinâmica."
+
+---
+
+## 4. Impacto no Projeto
 
 A utilização da IA transcendeu a simples geração de texto. Ela atuou como um acelerador crítico para:
 1. **Conformidade Metodológica:** Garantir que todos os artefatos de Discovery seguissem padrões de mercado (C4 Model, PRD).
-2. **Debugging em Cloud:** Reduzir o tempo de resolução de problemas complexos de infraestrutura (como o gargalo de conexões do Supabase na Vercel).
-3. **Tomada de Decisão Técnica:** Validar escolhas arquiteturais, como a adoção do Clerk para segurança e o uso de JSONB para flexibilidade de configurações, elevando o nível técnico do MVP.
+2. **Engenharia Robusta:** Transformar lógicas complexas de tempo (operações com minutos totais e intersecção de arrays) em código limpo, protegendo a regra principal do negócio (evitar o *double-booking*).
+3. **Debugging em Cloud:** Reduzir drasticamente o tempo de resolução de problemas de infraestrutura (como o gargalo de conexões na Vercel).
+4. **Segurança e UX:** Polir a aplicação com boas práticas de usabilidade (Prevenção de Double Submit, Loading States e Proteção de Dados Históricos), elevando o nível técnico do MVP para padrões de mercado.
