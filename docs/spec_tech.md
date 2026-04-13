@@ -21,20 +21,19 @@ A estrutura é baseada no modelo de **Recipientes (Containers/Serviços)**, com 
 graph TD
     %% Cores e Estilos
     classDef frontend fill:#000000,stroke:#333,stroke-width:2px,color:#fff;
-    classDef backend fill:#0070F3,stroke:#333,stroke-width:2px,color:#fff;
+    classDef backend fill:#0070f3,stroke:#333,stroke-width:2px,color:#fff;
     classDef database fill:#3ECF8E,stroke:#333,stroke-width:2px,color:#000;
     classDef auth fill:#6C47FF,stroke:#333,stroke-width:2px,color:#fff;
     classDef local fill:#2496ED,stroke:#333,stroke-width:2px,color:#fff;
 
     %% Atores
-    User((🧑‍🔧 Profissional /<br>🧑‍💻 Cliente))
+    User((🧑‍🔧 Profissional /<br> 🧑‍💼 Cliente))
 
     %% Nuvem / Produção
     subgraph "Nuvem (Produção)"
         UI[💻 Frontend<br>Next.js / React]:::frontend
         API[⚙️ Backend / API<br>Next.js Route Handlers]:::backend
-        
-        Clerk[🔐 Autenticação<br>Clerk Auth]:::auth
+        Clerk[🔒 Autenticação<br>Clerk Auth]:::auth
         DB[(🗄️ Banco de Dados<br>Supabase PostgreSQL)]:::database
     end
 
@@ -45,13 +44,10 @@ graph TD
 
     %% Conexões
     User -->|Acessa| UI
-    UI -->|Login/Sessão| Clerk
+    UI -->|Login ou Sessao| Clerk
     UI -->|Consome HTTP| API
-    API -->|Valida Sessão| Clerk
-    API -->|Consultas (via clerk_id)| DB
-    
-    Docker -.->|Replica| UI
-    Docker -.->|Replica| API
+    API -->|Valida Sessao| Clerk
+    API -->|Consultas via clerk id| DB
 ```
 
 * **Componentes Principais:**
