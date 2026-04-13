@@ -6,16 +6,17 @@ Para garantir a melhor experiência de usuário (UX) e atender aos requisitos de
 
 > **Nota para o Avaliador:** Como a aplicação já ultrapassou a fase de Discovery e encontra-se funcional (MVP), apresentamos abaixo as telas reais em alta fidelidade que substituem os wireframes iniciais.
 
-### 1.1 Visão do Profissional (Dashboard)
+**1.1 Visão do Profissional (Dashboard)**
+
 *(Representação da INT-04 - Controle de agenda e bloqueios)*
 
-![Mockup - Dashboard do Profissional](./design/dashboard_mockup.png)
+![Mockup - Dashboard do Profissional](./Design/dashboard_mockup.png)
 
+**1.2 Visão do Cliente (Booking Page)**
 
-### 1.2 Visão do Cliente (Booking Page)
 *(Representação da INT-01 - Seleção de data, horário e lead time)*
 
-![Mockup - Página de Agendamento](./design/booking_mockup.png)
+![Mockup - Página de Agendamento](./Design/booking_mockup.png)
 
 
 ---
