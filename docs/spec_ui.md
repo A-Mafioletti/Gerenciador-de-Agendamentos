@@ -11,7 +11,6 @@ Para garantir a melhor experiência de usuário (UX) e atender aos requisitos de
 
 ![Mockup - Dashboard do Profissional](./design/dashboard_mockup.png)
 
-> **Ação Necessária (Andre):** Tire um print da sua tela de Dashboard, salve com o nome `dashboard_mockup.png` e coloque dentro da sua pasta `docs/design/`.
 
 ### 1.2 Visão do Cliente (Booking Page)
 *(Representação da INT-01 - Seleção de data, horário e lead time)*
