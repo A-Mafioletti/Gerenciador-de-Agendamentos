@@ -93,7 +93,7 @@ graph TD
         B --> C{Escolhe Data e Hora}:::acao
         C -->|Preenche Form| D(Confirmar Agendamento):::acao
         D -->|Redireciona| E(INT-02: Success Page):::tela
-        E -->|Fim do Fluxo| F[Redireciona WhatsApp do Profissional]:::cliente
+        E -->|Fim do Fluxo| F[Confirma o Agendamento e o Profissional entrará em contato]:::cliente
     end
 
     %% Jornada do Profissional
