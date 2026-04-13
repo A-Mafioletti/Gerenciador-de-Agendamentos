@@ -55,6 +55,7 @@ graph TD
     * **Data/API Layer (Backend):** Servidor Node.js rodando nativamente via Next.js Route Handlers, operando como Serverless Functions na Vercel.
     * **Auth Service (Clerk):** Serviço gerenciado responsável pela emissão de tokens (JWT) e segurança da sessão.
     * **Database Provider (Supabase):** Banco de dados relacional (PostgreSQL) gerenciado na nuvem.
+    * **Ambiente de Containerização (Docker):** A orquestração local via docker-compose garante a portabilidade do sistema (atendendo ao RNF-06), encapsulando o frontend, backend e gerenciamento de dependências em uma imagem OCI, servindo como ambiente de paridade e alternativa de deploy fora da arquitetura Serverless.
 * **Infraestrutura de Deployment:** CI/CD automatizado via GitHub Actions realizando o deploy integrado para a Vercel.
 
 ### Especificidades de Infraestrutura na Nuvem
@@ -82,7 +83,7 @@ graph TD
 * **Gerenciamento de pacotes:** npm.
 * **Pipeline CI/CD:** GitHub Actions (Scripts customizados de deploy para Vercel).
 * **Hospedagem de Produção:** Vercel (Frontend e Backend integrados).
-* **Ambiente de Desenvolvimento Local:** Docker & Docker Compose.
+* **Ambiente de Desenvolvimento Local e Portabilidade:** Docker & Docker Compose. Justificado pela necessidade de paridade entre os ambientes de desenvolvimento e produção, além de garantir o cumprimento do requisito de portabilidade (RNF-06), prevenindo dependência exclusiva da infraestrutura Vercel.
 
 ---
 
