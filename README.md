@@ -6,7 +6,18 @@
 > * **O que avaliar:** Escolha um serviço longo (ex: Troca de Chuveiro - 1h30) e tente agendar no último horário do dia para ver a proteção de *"Time Overflow"*. Verifique também a blindagem contra "Double-Booking" (Conflito de Intersecção) e o estado de "Loading" (Double Submit) ao confirmar.
 >
 > 🧑‍🔧 **Visão do Profissional (Dashboard):** **[👉 ACESSAR O LOGIN DO SISTEMA](https://projeto-agendamentos-ashen.vercel.app/login)**
-> * **O que avaliar:** Utilize "Continuar com Google" com qualquer conta. O sistema Multi-Tenant (Clerk) criará um ambiente seguro e isolado para você, puxando seu nome e foto reais. Na aba "Meus Clientes", teste o filtro dinâmico de período, projetado para evitar a exclusão de dados e proteger o histórico financeiro do profissional.
+>
+>  Para avaliar o sistema administrativo, sugerimos dois caminhos distintos:
+> 
+> * **Opção A: Ambiente Populado (Recomendado):** Utilize nossa persona de testes. Este perfil já possui serviços cadastrados, configurações de expediente e histórico preenchido para facilitar a validação imediata.
+> *  **Login:** carlos.eletricista@hotmail.com - **Senha:** teste123
+>   
+>  **O que avaliar:** Teste o bloqueio manual de horários (simulando imprevistos) e a gestão da agenda diária. *Nota: Este é o perfil que possui a Booking Page pública ativada.*.
+> * **Opção B: Exploração do Dashboard (Do Zero):** Escolha "Continuar com Google" usando sua própria conta.
+>   
+>  **O que avaliar:** O isolamento de dados da arquitetura Multi-Tenant (Clerk). Você entrará em um painel "limpo", podendo testar as validações da interface ao configurar seu horário de trabalho e serviços.
+>   
+>  *Nota Técnica do MVP:* A geração dinâmica de URLs públicas de agendamento (ex: `/agendamentos/usuario`) foi considerada fora do escopo desta versão inicial. Portanto, contas novas podem navegar pelo Dashboard administrativo, mas não gerarão uma Booking Page externa.
 
 Bem-vindo ao repositório do Gerenciador de Agendamentos Inteligente, uma plataforma autônoma projetada para profissionais que executam trabalhos manuais (como eletricistas, encanadores, marcenaria e estética a domicílio). Este sistema atua como um assistente digital 24/7, permitindo que os clientes agendem horários de forma independente, reduzindo tarefas administrativas e evitando choques de horários ("double-booking").
 
