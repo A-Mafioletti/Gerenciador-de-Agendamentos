@@ -8,7 +8,7 @@ import { Loader2 } from "lucide-react";
 export default function Home() {
   const router = useRouter();
   const [selectedDate, setSelectedDate] = useState("");
-  const [selectedTime, setSelectedTime] = useState("08:00");
+  const [selectedTime, setSelectedTime] = useState("");
   const [days, setDays] = useState<{ label: string; day: string; fullDate: string }[]>([]);
   const [monthYear, setMonthYear] = useState("");
   const [bookedTimes, setBookedTimes] = useState<{ startMins: number; endMins: number }[]>([]);
@@ -307,6 +307,11 @@ export default function Home() {
   };
 
   const handleBooking = async () => {
+    if (!selectedTime) {
+      alert("Por favor, selecione um horário disponível antes de prosseguir.");
+      return;
+    }
+
     if (!formData.name.trim()) {
       alert("Por favor, preencha o seu nome.");
       return;
@@ -514,8 +519,8 @@ export default function Home() {
                   <div className="hidden lg:block mt-8">
                     <button
                       onClick={handleBooking}
-                      disabled={isSubmitting}
-                      className="w-full flex items-center justify-center gap-2 bg-primary text-white py-4 rounded-xl font-bold text-lg shadow-xl shadow-primary/30 active:scale-[0.98] transition-transform hover:bg-primary/90 hover:shadow-primary/40 disabled:opacity-70 disabled:pointer-events-none"
+                      disabled={isSubmitting || !selectedTime}
+                      className="w-full flex items-center justify-center gap-2 bg-primary text-white py-4 rounded-xl font-bold text-lg shadow-xl shadow-primary/30 active:scale-[0.98] transition-transform hover:bg-primary/90 hover:shadow-primary/40 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {isSubmitting ? (
                         <>
@@ -535,8 +540,8 @@ export default function Home() {
                 <div className="max-w-md mx-auto">
                   <button
                     onClick={handleBooking}
-                    disabled={isSubmitting}
-                    className="w-full flex items-center justify-center gap-2 bg-primary text-white py-4 rounded-xl font-bold text-lg shadow-xl shadow-primary/30 active:scale-[0.98] transition-transform hover:bg-primary/90 disabled:opacity-70 disabled:pointer-events-none"
+                    disabled={isSubmitting || !selectedTime}
+                    className="w-full flex items-center justify-center gap-2 bg-primary text-white py-4 rounded-xl font-bold text-lg shadow-xl shadow-primary/30 active:scale-[0.98] transition-transform hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isSubmitting ? (
                       <>
