@@ -11,7 +11,7 @@
 **Nossos Diferenciais:**
 - **Foco em Autônomos:** Interface simplificada para quem está em campo.
 - **Bloqueio Inteligente:** Permite invalidar horários para compromissos pessoais de forma rápida.
-- **Zero Atrito:** Cliente agenda sem precisar baixar apps ou criar contas.
+- **Zero Atrito:** Cliente agenda sem precisar baixar apps.
 
 ---
 

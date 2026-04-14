@@ -21,20 +21,19 @@ A estrutura é baseada no modelo de **Recipientes (Containers/Serviços)**, com 
 graph TD
     %% Cores e Estilos
     classDef frontend fill:#000000,stroke:#333,stroke-width:2px,color:#fff;
-    classDef backend fill:#0070F3,stroke:#333,stroke-width:2px,color:#fff;
+    classDef backend fill:#0070f3,stroke:#333,stroke-width:2px,color:#fff;
     classDef database fill:#3ECF8E,stroke:#333,stroke-width:2px,color:#000;
     classDef auth fill:#6C47FF,stroke:#333,stroke-width:2px,color:#fff;
     classDef local fill:#2496ED,stroke:#333,stroke-width:2px,color:#fff;
 
     %% Atores
-    User((🧑‍🔧 Profissional /<br>🧑‍💻 Cliente))
+    User((🧑‍🔧 Profissional /<br> 🧑‍💼 Cliente))
 
     %% Nuvem / Produção
     subgraph "Nuvem (Produção)"
         UI[💻 Frontend<br>Next.js / React]:::frontend
         API[⚙️ Backend / API<br>Next.js Route Handlers]:::backend
-        
-        Clerk[🔐 Autenticação<br>Clerk Auth]:::auth
+        Clerk[🔒 Autenticação<br>Clerk Auth]:::auth
         DB[(🗄️ Banco de Dados<br>Supabase PostgreSQL)]:::database
     end
 
@@ -45,13 +44,10 @@ graph TD
 
     %% Conexões
     User -->|Acessa| UI
-    UI -->|Login/Sessão| Clerk
+    UI -->|Login ou Sessao| Clerk
     UI -->|Consome HTTP| API
-    API -->|Valida Sessão| Clerk
-    API -->|Consultas (via clerk_id)| DB
-    
-    Docker -.->|Replica| UI
-    Docker -.->|Replica| API
+    API -->|Valida Sessao| Clerk
+    API -->|Consultas via clerk id| DB
 ```
 
 * **Componentes Principais:**
@@ -59,6 +55,7 @@ graph TD
     * **Data/API Layer (Backend):** Servidor Node.js rodando nativamente via Next.js Route Handlers, operando como Serverless Functions na Vercel.
     * **Auth Service (Clerk):** Serviço gerenciado responsável pela emissão de tokens (JWT) e segurança da sessão.
     * **Database Provider (Supabase):** Banco de dados relacional (PostgreSQL) gerenciado na nuvem.
+    * **Ambiente de Containerização (Docker):** A orquestração local via docker-compose garante a portabilidade do sistema (atendendo ao RNF-06), encapsulando o frontend, backend e gerenciamento de dependências em uma imagem OCI, servindo como ambiente de paridade e alternativa de deploy fora da arquitetura Serverless.
 * **Infraestrutura de Deployment:** CI/CD automatizado via GitHub Actions realizando o deploy integrado para a Vercel.
 
 ### Especificidades de Infraestrutura na Nuvem
@@ -86,7 +83,7 @@ graph TD
 * **Gerenciamento de pacotes:** npm.
 * **Pipeline CI/CD:** GitHub Actions (Scripts customizados de deploy para Vercel).
 * **Hospedagem de Produção:** Vercel (Frontend e Backend integrados).
-* **Ambiente de Desenvolvimento Local:** Docker & Docker Compose.
+* **Ambiente de Desenvolvimento Local e Portabilidade:** Docker & Docker Compose. Justificado pela necessidade de paridade entre os ambientes de desenvolvimento e produção, além de garantir o cumprimento do requisito de portabilidade (RNF-06), prevenindo dependência exclusiva da infraestrutura Vercel.
 
 ---
 
