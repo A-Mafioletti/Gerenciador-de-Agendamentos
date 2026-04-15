@@ -272,9 +272,16 @@ export default function DashboardPage() {
 
     try {
       const todayStr = getTodayString();
-      // Filtrar agendamentos do dia ativo no momento (podendo ser próximos confirmados)
+      // Filtrar agendamentos do dia ativo no momento
       const todaysAppointments = appointments.filter(apt => apt.date === todayStr && apt.status === 'confirmed');
-      const result = await generateAgendaSummary(todaysAppointments);
+      const todaysHistory = appointments.filter(apt => apt.date === todayStr && apt.status === 'completed');
+      
+      const workConfig = {
+        startTime: professionalSettings?.start_time ? professionalSettings.start_time.substring(0, 5) : "08:00",
+        endTime: professionalSettings?.end_time ? professionalSettings.end_time.substring(0, 5) : "18:00"
+      };
+
+      const result = await generateAgendaSummary(todaysAppointments, todaysHistory, workConfig);
       
       if (result.success && result.text) {
         setAiSummary(result.text);

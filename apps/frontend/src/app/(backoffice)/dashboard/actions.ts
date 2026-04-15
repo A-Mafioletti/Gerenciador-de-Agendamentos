@@ -2,7 +2,7 @@
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-export async function generateAgendaSummary(appointments: any[]) {
+export async function generateAgendaSummary(appointments: any[], history: any[], workConfig: { startTime: string, endTime: string }) {
   try {
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
@@ -15,20 +15,36 @@ export async function generateAgendaSummary(appointments: any[]) {
     const horaAtual = new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo', hour: '2-digit', minute: '2-digit' });
     let prompt = "";
 
-    // Filtra para garantir que apenas bloqueios ou agendamentos confirmados reais sejam considerados
-    const validAppointments = appointments.filter(apt => apt.client_name !== "🔒 BLOQUEIO PESSOAL");
+    // Garantir lidar com null/undefined de forma segura
+    const safeAppointments = appointments || [];
+    const safeHistory = history || [];
 
-    if (validAppointments && validAppointments.length > 0) {
-      // Regras A e C
-      const appointmentsDetails = validAppointments.map((apt: any) => {
-        return `- Cliente: ${apt.client_name}, Serviço: ${apt.services?.name || 'Serviço Geral'}, Horário: ${apt.start_time.substring(0, 5)}h`;
-      }).join('\n');
+    const validAppointments = safeAppointments.filter(apt => apt.client_name !== "🔒 BLOQUEIO PESSOAL");
+    const validHistory = safeHistory.filter(apt => apt.client_name !== "🔒 BLOQUEIO PESSOAL");
 
-      prompt = `O horário atual é ${horaAtual}.\n\nAqui está a lista de agendamentos de hoje do profissional:\n${appointmentsDetails}\n\nResuma o dia em um parágrafo curto e motivacional. Cite os nomes dos clientes, os serviços que serão realizados, e sugira discretamente ferramentas ou preparativos necessários com base nos serviços. Mantenha um tom otimista e encorajador. Seja direto ao ponto e muito natural.\n\nRegra importante: Compare o horário atual com os horários dos agendamentos. Se todos os agendamentos do dia já tiverem passado, mude o tom da resposta. Parabenize o profissional pelo dia de trabalho concluído, diga que o expediente encerrou e sugira que ele descanse para o próximo dia útil.`;
-    } else {
-      // Regra B
-      prompt = `O horário atual é ${horaAtual}.\n\nA agenda de hoje não possui compromissos marcados.\n\nEscreva um parágrafo amigável e motivacional informando que a agenda do profissional hoje está livre. Sugira que ele aproveite o tempo para organizar as ferramentas, fazer prospecção de novos clientes no WhatsApp ou simplesmente tirar um momento para descansar. Mantenha um tom muito otimista e positivo. Seja direto ao ponto.`;
-    }
+    const appointmentsDetails = validAppointments.length > 0
+      ? validAppointments.map((apt: any) => `- PENDENTE: Cliente: ${apt.client_name}, Serviço: ${apt.services?.name || 'Serviço Geral'}, Horário: ${apt.start_time.substring(0, 5)}h`).join('\n')
+      : "Nenhum agendamento pendente.";
+
+    const historyDetails = validHistory.length > 0
+      ? validHistory.map((apt: any) => `- CONCLUÍDO: Cliente: ${apt.client_name}, Serviço: ${apt.services?.name || 'Serviço Geral'}, Horário: ${apt.start_time.substring(0, 5)}h`).join('\n')
+      : "Nenhum histórico hoje.";
+
+    prompt = `O horário atual é ${horaAtual}. O expediente deste profissional é das ${workConfig.startTime} às ${workConfig.endTime}.
+
+Baseado nos seguintes dados de hoje:
+--- PENDENTES ---
+${appointmentsDetails}
+
+--- CONCLUÍDOS ---
+${historyDetails}
+
+Instruções para agir como um assistente super inteligente e educado do profissional:
+1. Resuma o dia em um parágrafo.
+2. Se houver itens concluídos listados no histórico, mencione-os brevemente como conquistas do dia (ex: "Você já atendeu X e Y hoje, excelente trabalho!").
+3. Se houver agendamentos pendentes, foque no que ainda precisa ser preparado, sugerindo discretamente as ferramentas necessárias com base no serviço de cada um.
+4. Compare a hora atual com o horário de fim de expediente (${workConfig.endTime}). Se a hora atual for igual ou superior ao fim do expediente E não houver mais agendamentos pendentes, o tom deve ser de encerramento total e descanso, celebrando o que foi feito no histórico.
+5. Seja natural, humano e muito motivacional. Cuidado para não "alucinar" nomes caso os dados estejam vazios. Se tudo estiver vazio, apenas informe que o dia está livre e sugira organizar coisas ou descansar.`;
 
     const result = await model.generateContent(prompt);
     const response = await result.response;
