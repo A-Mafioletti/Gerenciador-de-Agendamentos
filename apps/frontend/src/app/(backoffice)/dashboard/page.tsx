@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { useUser, useSession } from "@clerk/nextjs";
 import { supabase } from "@/lib/supabase-client";
+import { generateAgendaSummary } from "./actions";
 
 const getTodayString = () => {
   const d = new Date();
@@ -32,6 +33,8 @@ export default function DashboardPage() {
   const [professionalSettings, setProfessionalSettings] = useState<any>(null);
   const [internalProfessionalId, setInternalProfessionalId] = useState<string | null>(null);
   const [isBlocking, setIsBlocking] = useState(false);
+  const [aiSummary, setAiSummary] = useState<string | null>(null);
+  const [isGeneratingSummary, setIsGeneratingSummary] = useState(false);
 
   const { session } = useSession();
   const { user } = useUser();
@@ -263,6 +266,29 @@ export default function DashboardPage() {
     }
   };
 
+  const handleGenerateSummary = async () => {
+    setIsGeneratingSummary(true);
+    setAiSummary(null);
+
+    try {
+      const todayStr = getTodayString();
+      // Filtrar agendamentos do dia ativo no momento (podendo ser próximos confirmados)
+      const todaysAppointments = appointments.filter(apt => apt.date === todayStr && apt.status === 'confirmed');
+      const result = await generateAgendaSummary(todaysAppointments);
+      
+      if (result.success && result.text) {
+        setAiSummary(result.text);
+      } else {
+        alert(result.error);
+      }
+    } catch (error) {
+      console.error("Erro ao gerar o resumo:", error);
+      alert("Ocorreu um erro ao gerar o resumo.");
+    } finally {
+      setIsGeneratingSummary(false);
+    }
+  };
+
   const todayStr = getTodayString();
 
   const historyRaw = appointments.filter((apt) => {
@@ -381,6 +407,33 @@ export default function DashboardPage() {
             </span>
           )}
         </div>
+
+        {activeTab === 'upcoming' && (
+          <div className="mb-6 flex flex-col gap-4">
+            <button 
+              onClick={handleGenerateSummary}
+              disabled={isGeneratingSummary}
+              className="w-full sm:w-auto bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+            >
+              {isGeneratingSummary ? (
+                 <span className="animate-spin material-symbols-outlined text-white">progress_activity</span>
+              ) : (
+                <span>✨</span>
+              )}
+              {isGeneratingSummary ? 'Analisando agenda...' : 'Resumir meu dia com IA'}
+            </button>
+            
+            {aiSummary && (
+              <div className="bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-800 rounded-xl p-5 shadow-sm relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-purple-200/50 to-transparent dark:from-purple-900/30 rounded-bl-full pointer-events-none"></div>
+                <h4 className="text-indigo-800 dark:text-indigo-300 font-bold mb-2 flex items-center gap-1.5"><span className="material-symbols-outlined text-lg">auto_awesome</span> Resumo Inteligente</h4>
+                <p className="text-indigo-900 dark:text-indigo-100 leading-relaxed text-sm">
+                  {aiSummary}
+                </p>
+              </div>
+            )}
+          </div>
+        )}
 
         {activeTab === 'history' && availableMonths.length > 0 && (
           <div className="mb-4">
