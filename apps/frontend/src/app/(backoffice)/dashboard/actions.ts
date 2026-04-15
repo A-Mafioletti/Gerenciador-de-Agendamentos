@@ -10,7 +10,7 @@ export async function generateAgendaSummary(appointments: any[]) {
     }
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" }, { apiVersion: "v1" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" }, { apiVersion: "v1" });
 
     let prompt = "";
 
@@ -22,7 +22,7 @@ export async function generateAgendaSummary(appointments: any[]) {
       const appointmentsDetails = validAppointments.map((apt: any) => {
         return `- Cliente: ${apt.client_name}, Serviço: ${apt.services?.name || 'Serviço Geral'}, Horário: ${apt.start_time.substring(0, 5)}h`;
       }).join('\n');
-      
+
       prompt = `Aqui está a lista de agendamentos de hoje do profissional:\n${appointmentsDetails}\n\nResuma o dia em um parágrafo curto e motivacional. Cite os nomes dos clientes, os serviços que serão realizados, e sugira discretamente ferramentas ou preparativos necessários com base nos serviços. Mantenha um tom otimista e encorajador. Seja direto ao ponto e muito natural.`;
     } else {
       // Regra B
@@ -32,7 +32,7 @@ export async function generateAgendaSummary(appointments: any[]) {
     const result = await model.generateContent(prompt);
     const response = await result.response;
     const text = response.text();
-    
+
     return { success: true, text };
   } catch (error: any) {
     console.error("Error generating AI summary:", error);
