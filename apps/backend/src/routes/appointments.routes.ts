@@ -58,6 +58,27 @@ router.post('/', async (req, res) => {
       appointmentData.service_id = finalServiceId;
     }
 
+    // --- Início da Trava de Concorrência (Double Booking) ---
+    // Verifica se já existe um agendamento não-cancelado para o mesmo profissional, data e horário
+    const existingAppointment = await prisma.appointment.findFirst({
+      where: {
+        professional_id: finalProfessionalId,
+        date: appointmentDate,
+        start_time: startTimeAsDate,
+        status: {
+          not: 'cancelled'
+        }
+      }
+    });
+
+    if (existingAppointment) {
+      return res.status(409).json({ 
+        success: false, 
+        error: 'Este horário acabou de ser reservado por outra pessoa. Por favor, escolha outro.' 
+      });
+    }
+    // --- Fim da Trava ---
+
     const newAppointment = await prisma.appointment.create({
       data: appointmentData
     });

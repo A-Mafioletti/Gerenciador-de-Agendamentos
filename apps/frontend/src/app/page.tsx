@@ -342,8 +342,11 @@ export default function Home() {
         }),
       });
 
-      if (!response.ok) {
-        throw new Error(`Erro ao salvar o agendamento: ${response.status}`);
+      const responseData = await response.json().catch(() => null);
+
+      if (!response.ok || (responseData && responseData.success === false)) {
+        const errorMessage = responseData?.error || responseData?.message || `Erro ao salvar o agendamento: ${response.status}`;
+        throw new Error(errorMessage);
       }
 
       console.log("Booking Confirmed!", { selectedDate, selectedTime, ...formData });
@@ -354,9 +357,9 @@ export default function Home() {
       }).toString();
       router.push(`/sucesso?${query}`);
 
-    } catch (error) {
+    } catch (error: any) {
       console.error("Erro no agendamento:", error);
-      alert("Ocorreu um erro ao tentar realizar o agendamento. Por favor, tente novamente.");
+      alert(error.message || "Ocorreu um erro ao tentar realizar o agendamento. Por favor, tente novamente.");
     } finally {
       setIsSubmitting(false);
     }
