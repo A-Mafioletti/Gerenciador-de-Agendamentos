@@ -37,7 +37,3 @@ classDiagram
   Profissional "1" -- "*" Servico : oferece
   Profissional "1" -- "*" Agendamento : recebe
   Servico "1" -- "*" Agendamento : associado
-```
-
-> **Nota Arquitetural:** > * A propriedade `diasTrabalho` foi modelada como `JSONB` para otimização de performance no tráfego de dados com o Next.js (Ref: ADR-003).
-> * O `servicoId` dentro de `Agendamento` é utilizado tanto para serviços reais de clientes quanto para os serviços administrativos internos que bloqueiam a agenda para compromissos pessoais do profissional (Ref: ADR-004).
