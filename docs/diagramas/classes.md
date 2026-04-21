@@ -22,7 +22,6 @@ classDiagram
     +Int id
     +String nome
     +Int duracaoMinutos
-    +Float preco
   }
   
   class Agendamento {

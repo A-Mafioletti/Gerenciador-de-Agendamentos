@@ -337,7 +337,7 @@ export default function DashboardPage() {
   }
 
   const handleCopyLink = () => {
-    const link = "https://projeto-agendamentos-ashen.vercel.app/booking/carlos";
+    const link = "https://projeto-agendamentos-ashen.vercel.app/";
     navigator.clipboard.writeText(link);
     alert("Link de agendamento copiado!");
   };

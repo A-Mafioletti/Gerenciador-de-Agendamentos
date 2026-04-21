@@ -254,9 +254,9 @@ export default function Home() {
               // O slot cai no princípio ou exatamente dentro de um agendamento. Marcamos como inativo visualmente
               isBooked = true;
             } else if (startMinutes < booked.startMins && slotEndMinutes > booked.startMins) {
-               // Choque por invadir retroativamente o horário já ocupado (e.g. pega um serviço de 1h30 q alcançaria o evento logo após)
-               isValid = false; // "deve ser removido da lista de disponíveis"
-               break;
+              // Choque por invadir retroativamente o horário já ocupado (e.g. pega um serviço de 1h30 q alcançaria o evento logo após)
+              isValid = false; // "deve ser removido da lista de disponíveis"
+              break;
             }
           }
         }
@@ -276,7 +276,7 @@ export default function Home() {
     }
 
     setTimes(generatedTimes);
-    
+
     // Se o horário atualmente selecionado agora não está mais disponível ou está ocupado
     if (selectedTime !== "") {
       const matchingTime = generatedTimes.find(t => t.time === selectedTime);
@@ -424,8 +424,8 @@ export default function Home() {
                       setMonthYear(`${monthNames[parseInt(month, 10) - 1]} ${year}`);
                     }}
                     className={`shrink-0 flex flex-col items-center justify-center w-16 h-20 lg:w-20 lg:h-24 rounded-xl transition-all ${selectedDate === item.fullDate
-                        ? "bg-primary text-white shadow-lg shadow-primary/20 scale-105"
-                        : "bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-primary/50"
+                      ? "bg-primary text-white shadow-lg shadow-primary/20 scale-105"
+                      : "bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-primary/50"
                       }`}
                   >
                     <span className={`text-[10px] lg:text-xs uppercase font-bold ${selectedDate === item.fullDate ? 'opacity-80' : 'text-slate-400'}`}>{item.label}</span>
@@ -448,10 +448,10 @@ export default function Home() {
                       onClick={() => !isBooked && setSelectedTime(time)}
                       disabled={isBooked}
                       className={`py-2.5 lg:py-3 rounded-lg border text-sm lg:text-base transition-colors ${isBooked
-                          ? "border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 text-slate-400 dark:text-slate-600 cursor-not-allowed opacity-50"
-                          : selectedTime === time
-                            ? "border-primary bg-primary/10 text-primary font-semibold shadow-sm"
-                            : "border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-primary/60 hover:bg-slate-50 dark:hover:bg-slate-700/50"
+                        ? "border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 text-slate-400 dark:text-slate-600 cursor-not-allowed opacity-50"
+                        : selectedTime === time
+                          ? "border-primary bg-primary/10 text-primary font-semibold shadow-sm"
+                          : "border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-primary/60 hover:bg-slate-50 dark:hover:bg-slate-700/50"
                         }`}
                     >
                       {time}
