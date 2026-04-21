@@ -10,11 +10,13 @@ Para validar a aplicação em tempo real, utilize os acessos abaixo:
 
 ### 🧑‍💻 Visão do Cliente (Pública)
 **URL:** [👉 projeto-agendamentos-ashen.vercel.app](https://projeto-agendamentos-ashen.vercel.app)
+
 * **Sugestão de Teste:** Tente realizar um agendamento no último horário disponível do dia para validar a trava de *"Time Overflow"* (o sistema impede que um serviço de 2h seja marcado faltando apenas 1h para o fim do expediente).
 
 ### 🧑‍🔧 Visão do Profissional (Dashboard Administrativo)
 **URL:** [👉 Login do Sistema](https://projeto-agendamentos-ashen.vercel.app/login)
 * **Login:** `carlos.eletricista@hotmail.com` | **Senha:** `teste123`
+
 * **Sugestão de Teste:** Clique no botão **"Resumir meu dia com IA"**. O sistema consumirá a API do **Google Gemini** para gerar um briefing de produtividade baseado nos agendamentos reais do banco.
 
 ---
@@ -36,20 +38,33 @@ A arquitetura foi desenhada para cumprir integralmente os Requisitos Não Funcio
 
 ## 📦 Estrutura do Repositório (Monorepo)
 
-O projeto utiliza o conceito de workspaces para separar responsabilidades de forma clara:
+O projeto utiliza o conceito de **Workspaces** para isolar as camadas da aplicação, facilitando a manutenção e futuras migrações de infraestrutura.
 
-```text
-gerenciador-agendamentos/
-├── apps/
-│   ├── frontend/        # Aplicação Next.js (Interface e Server Actions)
-│   └── backend/         # Esquemas de Banco de Dados, Migrations e Prisma
-├── docs/                # Artefatos de projeto
-│   ├── diagramas/       # Arquitetura C4 Model (Contexto, Container, Component, Deploy)
-│   ├── adrs/            # Architectural Decision Records
-│   └── prd.md           # Product Requirements Document
-├── tests/               # Arquivos de configuração e suítes Jest
-├── docker-compose.yml   # Orquestração para execução local isolada
-└── package.json         # Gerenciamento de scripts e workspaces
+```mermaid
+graph LR
+    %% Estilos
+    classDef workspace fill:#1e293b,stroke:#3b82f6,stroke-width:2px,color:#f8fafc
+    classDef docs fill:#334155,stroke:#94a3b8,stroke-width:1px,color:#cbd5e1
+
+    Root[📁 Gerenciador-Agendamentos]
+    
+    subgraph apps [Workspaces de Aplicação]
+        FE[💻 Frontend / Next.js App]:::workspace
+        BE[⚙️ Backend / Prisma & DB]:::workspace
+    end
+
+    subgraph docs_folder [Governança e Design]
+        DIAG[📊 Diagramas C4 Model]:::docs
+        ADR[📜 Decisões Arquiteturais]:::docs
+        SPEC[📄 Especificações / PRD]:::docs
+    end
+
+    TEST[🧪 Tests / Jest Suite]:::workspace
+
+    Root --> apps
+    Root --> docs_folder
+    Root --> TEST
+    Root --> DC[🐳 docker-compose.yml]
 ```
 
 ---
