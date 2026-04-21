@@ -44,7 +44,7 @@ O projeto consolida as melhores práticas de entrega contínua e monitoramento e
 
 * **CI/CD Customizado:** A pipeline via **GitHub Actions** possui controle cirúrgico sobre o build, injetando variáveis de ambiente e compilando o ORM com os *binaryTargets* corretos para o ambiente Linux da Vercel (`rhel-openssl-3.0.x`), resolvendo conflitos nativos de Serverless (ADRs 006 e 007).
 * **Observabilidade em Tempo Real (RNF-04):** Abandonamos a dependência de logs de terminal e implementamos o **Sentry SDK** na camada de apresentação (Frontend/Next.js), que é o ponto crítico de contato com o cliente. O sistema rastreia exceções e performance em tempo real, realizando upload de *Source Maps* para identificar a linha exata de falha no TypeScript original (ADR-010). A arquitetura já está validada e pronta para a expansão dessa mesma stack de monitoramento para os microsserviços de backend nas próximas sprints.
-* **Compatibilidade Serverless:** Resolvemos conflitos complexos de sistema operacional na nuvem, configurando os *binaryTargets* do Prisma (`rhel-openssl-3.0.x`) para garantir que o motor do banco de dados rode perfeitamente no ambiente Linux da Vercel (conforme ADR-006).
+
 
 ---
 
