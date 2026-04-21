@@ -117,3 +117,68 @@ Desativar o auto-deploy nativo da Vercel e adotar o **GitHub Actions** como ferr
 
 **Consequências:**
 Obtivemos controle cirúrgico sobre a nossa esteira de integração contínua. Essa decisão nos permite expandir a Action no futuro para rodar testes automatizados antes do deploy, garantindo um processo de entrega de software em nível de qualidade corporativa.
+
+---
+
+## ADR 008: Prevenção de Concorrência e Evitação de Double Booking
+
+* **Status:** Aceito
+* **Data:** Abril de 2026
+
+**Contexto:**
+Em um cenário de uso real, existe a possibilidade de múltiplos clientes tentarem agendar exatamente o mesmo horário com o mesmo profissional simultaneamente. Sem uma trava de segurança rigorosa, o sistema poderia processar as duas requisições e gravar um agendamento duplicado (double booking), gerando desgaste na relação entre cliente e prestador.
+
+**Decisão:**
+Implementamos uma trava de validação estrita no backend. Antes de executar qualquer comando INSERT no Supabase, a rota de agendamento consulta a base de dados para verificar se o slot de horário solicitado (cruzando data, hora e professional_id) já existe. Se existir, o processo é abortado imediatamente e retorna um erro 409 (Conflict) para o frontend.
+
+**Consequências:**
+Garantia de consistência e integridade da agenda do profissional. O trade-off é uma leve adição na latência da requisição (uma consulta SELECT a mais antes do INSERT), o que é perfeitamente aceitável dada a criticidade da regra de negócio.
+
+---
+
+## ADR 009: Integração de IA Generativa para Resumo de Agenda
+
+* **Status:** Aceito
+* **Data:** Abril de 2026
+
+**Contexto:**
+Para agregar mais valor ao painel do profissional e tornar a ferramenta proativa, identificamos a necessidade de fornecer um "briefing" diário. Em vez de apenas listar os horários em uma tabela, o sistema deveria interpretar os dados e comunicar como será o dia do prestador de forma humana.
+
+**Decisão:**
+Integramos a API do Google Gemini (LLM) no backend do sistema. O backend consulta os agendamentos do dia atual no Supabase, formata esses dados em um prompt estruturado contendo contexto temporal (horário de almoço, intervalos, carga de trabalho) e envia para a IA. O Gemini devolve um texto natural resumindo o dia, que é exibido no Dashboard do profissional.
+
+**Consequências:**
+O sistema ganha um diferencial competitivo tecnológico com a adoção de IA. A arquitetura exige que a comunicação com a API do Gemini seja feita exclusivamente via backend para proteger a chave de segurança (API_KEY) contra exposição no frontend.
+
+---
+
+## ADR 010: Implementação de Observabilidade com Sentry (RNF-04)
+
+* **Status: Aceito**
+* **Data: Abril de 2026**
+
+**Contexto:**
+Para atender ao RNF-04 (Observabilidade e Rastreabilidade) e garantir a manutenibilidade do sistema em produção, não poderíamos depender apenas dos logs de terminal da Vercel. Precisávamos de uma ferramenta dedicada para capturar exceções, monitorar performance de requisições e entender o contexto do usuário em caso de falhas.
+
+**Decisão:**
+Adotamos o Sentry SDK focado no ambiente Next.js. Configuramos a integração diretamente na esteira de CI/CD da Vercel através da injeção segura de um SENTRY_AUTH_TOKEN. A configuração inclui o upload automático de Source Maps a cada novo build.
+
+**Consequências:**
+* **Positivo:** Captura em tempo real de erros não tratados no frontend e nas chamadas de API, mantendo a rastreabilidade (Tracing) e exibindo a linha exata do código TypeScript que gerou a falha, mesmo após a minificação do código em produção.
+* **Trade-off:** Aumento marginal no tamanho do bundle final da aplicação e na complexidade do processo de build.
+
+--- 
+
+## ADR 011: Estrutura de Testes Unitários e Testabilidade (RNF-05)
+
+* **Status: Aceito**
+* **Data: Abril de 2026**
+
+**Contexto:**
+Em cumprimento ao RNF-05 (Manutenibilidade e Testabilidade), o projeto precisava provar a capacidade de ser testado de forma automatizada, garantindo que refatorações futuras não quebrassem regras de negócios essenciais (regressão de código).
+
+**Decisão:**
+Implementamos o ecossistema de testes padronizado do mercado: Jest em conjunto com a React Testing Library. Configuramos o ambiente via jest.config.js nativo do Next.js e focamos os testes unitários iniciais em componentes vitais, como os utilitários de formatação de horários (timeUtils).
+
+**Consequências:**
+Criação de uma prova de conceito (PoC) arquitetural de testabilidade sólida. O ambiente está devidamente configurado para expansão e cobertura de novas funções sem bloqueios do compilador, aumentando a segurança no ciclo de desenvolvimento.

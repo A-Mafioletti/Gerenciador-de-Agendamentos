@@ -4,41 +4,37 @@
 
 **Problema:** Profissionais autônomos que executam trabalhos manuais perdem oportunidades de negócio, sofrem com conflitos de horários e sacrificam o descanso pessoal devido à gestão manual e reativa de agendamentos via WhatsApp ou papel.
 
-**Solução:** Um assistente digital 24/7 que automatiza o agendamento por meio de um link público sincronizado em tempo real com a disponibilidade, regras de negócio e compromissos pessoais do profissional.
+**Solução:** Um assistente digital 24/7 que automatiza o agendamento por meio de um link público sincronizado em tempo real com a disponibilidade e um Dashboard inteligente que utiliza IA para organizar a rotina do profissional.
 
-**Público-alvo:** Profissionais liberais "mão na massa" (eletricistas, encanadores, técnicos) que operam sozinhos. Para eles, o ganho é a recuperação de tempo administrativo e a eliminação do *double-booking*. Para o cliente final, o ganho é a autonomia e confirmação imediata do serviço.
+**Público-alvo:** Profissionais liberais "mão na massa" (eletricistas, encanadores, técnicos) que operam sozinhos. O sistema recupera o tempo administrativo e elimina erros de agendamento através de travas automáticas de concorrência.
 
 **Nossos Diferenciais:**
-- **Foco em Autônomos:** Interface simplificada para quem está em campo.
-- **Bloqueio Inteligente:** Permite invalidar horários para compromissos pessoais de forma rápida.
-- **Zero Atrito:** Cliente agenda sem precisar baixar apps.
+- **IA Generativa:** Briefing diário humanizado sobre a carga de trabalho.
+- **Bloqueio Inteligente:** Gestão rápida de compromissos pessoais e janelas de folga.
+- **Robustez Técnica:** Sistema monitorado em tempo real (Sentry) e blindado por testes unitários (Jest).
 
 ---
 
 ## Perfis de Usuário
 
 ### 1. Profissional Autônomo (Carlos, o Autônomo Conectado)
-- **Problemas:** Perda de orçamentos por demora na resposta; conflitos de agenda; exaustão por gerenciar marcações fora do horário comercial.
-- **Objetivos:** Automatizar o atendimento inicial e profissionalizar a gestão da agenda.
-- **Dados demográficos:** 18-60 anos, prestador de serviços técnicos, usuário intensivo de smartphone.
+- **Problemas:** Perda de orçamentos por demora na resposta; conflitos de agenda; exaustão por gerenciar marcações manualmente.
+- **Objetivos:** Automatizar o atendimento inicial e ter um "secretário digital" que resuma seu dia.
 - **Motivações:** Crescimento do negócio e mais tempo de lazer.
-- **Frustrações:** Sistemas complexos de desktop e interrupções constantes durante o trabalho.
 
 ### 2. Cliente Final
 - **Problemas:** Dificuldade em encontrar horários disponíveis e demora no retorno do profissional.
-- **Objetivos:** Agendar um serviço em segundos com garantia de horário.
-- **Dados demográficos:** Pessoas físicas que buscam serviços residenciais.
-- **Motivações:** Praticidade e resolução rápida de problemas domésticos.
-- **Frustrações:** Ter que negociar horários por mensagem e não receber confirmação clara.
+- **Objetivos:** Agendar um serviço em segundos com garantia de reserva imediata.
+- **Frustrações:** Negociar horários por mensagem sem garantia de que o horário está realmente livre.
 
 ---
 
-## Principais Funcionalidades
+## Principais Funcionalidades (Requisitos Funcionais)
 
 ### RFN-01 - Página de Agendamento Público (Booking Page)
 - Interface para o cliente escolher data, horário e serviço.
-- Filtro automático de horários ocupados ou bloqueados.
-- **Critérios de Aceitação:** O fluxo deve ser concluído em no máximo 4 telas. O horário deve ficar indisponível para outros clientes imediatamente após a confirmação.
+- **Prevenção de Concorrência (Double Booking):** Trava lógica no backend que impede dois clientes de confirmarem o mesmo slot simultaneamente.
+- **Critérios de Aceitação:** O fluxo deve ser concluído em no máximo 4 telas. O sistema deve validar a disponibilidade no momento exato da reserva para evitar conflitos.
 
 ### RFN-02 - Dashboard Administrativo
 - Visualização centralizada de agendamentos confirmados com status (Pendente, Concluído, Cancelado).
@@ -47,15 +43,19 @@
 
 ### RFN-03 - Configuração de Grade de Trabalho
 - Definição de dias de trabalho (seg-dom), horário de início/fim e intervalo de almoço.
-- **Critérios de Aceitação:** Alterações nos Ajustes devem refletir na página pública sem necessidade de deploy ou reinicialização do sistema.
+- **Critérios de Aceitação:** Alterações nos Ajustes devem refletir instantaneamente na página pública.
 
 ### RFN-04 - Gestão de Catálogo de Serviços
 - Cadastro, edição e exclusão de serviços com nome e duração estimada.
-- **Critérios de Aceitação:** A duração do serviço deve influenciar na disponibilidade de horários finais da agenda (regra de segurança de término).
+- **Critérios de Aceitação:** A duração do serviço deve influenciar no cálculo dinâmico de janelas disponíveis na agenda.
 
 ### RFN-05 - Bloqueio de Horário Específico (Compromissos Pessoais)
 - Interface para invalidar janelas de tempo específicas em datas selecionadas.
 - **Critérios de Aceitação:** O bloqueio deve gerar um registro interno ("🔒 BLOQUEIO PESSOAL") que impeça agendamentos de clientes naquele intervalo.
+
+### RFN-06 - Resumo Inteligente da Agenda (IA Gemini)
+- O Dashboard apresenta um texto natural e humanizado resumindo os compromissos do dia atual.
+- **Critérios de Aceitação:** A IA deve interpretar o volume de serviços e os intervalos (almoço/descanso) para fornecer um briefing proativo ao profissional.
 
 ---
 
@@ -63,56 +63,46 @@
 
 Para garantir a qualidade, estabilidade e segurança da plataforma, o sistema deve atender aos seguintes critérios técnicos:
 
-* **Desempenho (Performance):** O tempo de carregamento da página pública de agendamento (Booking Page) deve ser inferior a 2 segundos em conexões 4G (LCP < 2.5s).
-* O cálculo de horários disponíveis (considerando Lead Time e fuso horário) deve ser processado em tempo real, garantindo uma resposta ágil da interface.
+* **RNF-01 - Desempenho (Performance):** Tempo de carregamento da Booking Page < 2 segundos em conexões 4G (LCP < 2.5s). Cálculo de horários processado em tempo real.
+* **RNF-02 - Segurança e Privacidade:** Autenticação via **Clerk**. Isolamento de dados via **Row Level Security (RLS)** no Supabase. Toda a comunicação via HTTPS.
+* **RNF-03 - Escalabilidade e Disponibilidade:** Disponibilidade mínima de 99.9%. Arquitetura Serverless (Next.js na Vercel) para escalonamento automático.
+* **RNF-04 - Observabilidade e Rastreabilidade (Sentry):** O sistema deve monitorar erros e performance em tempo real. Falhas críticas devem ser rastreáveis até a linha exata do código via Source Maps.
+* **RNF-05 - Manutenibilidade e Testabilidade (Jest):** Lógicas críticas de negócio (formatação de tempo, validação de agenda) devem possuir testes unitários automatizados.
+* **RNF-06 - Usabilidade e Portabilidade:** Interface **Mobile-First**. Ambiente de desenvolvimento replicável via **Docker** para garantir paridade e portabilidade.
 
-* **Segurança e Privacidade:** A autenticação e a gestão de sessão do profissional devem ser protegidas via **Clerk**, suportando mecanismos de segurança robustos.
-* Os dados sensíveis dos clientes (telefone, endereço) devem ser isolados no banco de dados (Supabase) através de **Row Level Security (RLS)**, garantindo que o Profissional "A" nunca acesse dados do Profissional "B" (Compliance com LGPD).
-* Toda a comunicação deve ocorrer obrigatoriamente via HTTPS (TLS/SSL).
-
-* **Escalabilidade e Disponibilidade:** O sistema deve possuir uma disponibilidade mínima de 99.9% (SLA padrão).
-* A adoção de uma arquitetura *Serverless* (Next.js na Vercel) deve garantir o escalonamento automático (auto-scaling) para suportar picos de acessos sem degradação do serviço.
-
-* **Usabilidade (UX/UI):** A interface deve ser estritamente **Mobile-First**, garantindo navegação fluida em telas menores, com alvos de toque adequados (mínimo de 44x44px).
-* O sistema deve fornecer feedback visual imediato para ações críticas (ex: confirmações de agendamento, validações de formulário).
 ---
 
 ## Métricas de Sucesso
-- Redução de 90% no uso de papel/mensagens manuais para marcação.
-- Taxa zero de conflitos de horário (Double-booking).
-- Tempo médio de agendamento pelo cliente inferior a 90 segundos.
+- **Taxa zero** de conflitos de horário (Double-booking).
+- Redução de **90%** no uso de mensagens manuais para marcação.
+- Tempo médio de agendamento pelo cliente inferior a **90 segundos**.
+- **100% de engajamento** do profissional com o resumo diário da IA.
 
 ---
 
 ## Premissas e Restrições
 
-**Premissas (Técnicas e Organizacionais):**
-* O profissional autônomo possui um smartphone com acesso à internet e o aplicativo WhatsApp instalado para receber as notificações de serviço.
-* O cliente final possui um navegador web moderno e acesso à internet.
-* A comunicação do profissional com o cliente continuará sendo feita primariamente via WhatsApp após o agendamento no sistema.
+**Premissas:**
+* O profissional possui smartphone com internet e WhatsApp instalado.
+* O cliente possui um navegador web moderno.
 
-**Restrições (Técnicas e de Infraestrutura):**
-* O sistema não realiza processamento de pagamentos nesta versão (v1).
-* A aplicação será exclusivamente web (Progressive Web App - PWA em potencial), não havendo desenvolvimento ou publicação de aplicativos nativos nas lojas (App Store / Google Play).
-* O envio de notificações automatizadas (SMS/WhatsApp API) está fora do escopo atual devido aos custos de integração; o redirecionamento é feito via *deep link* gratuito do WhatsApp.
+**Restrições:**
+* Sem processamento de pagamentos nesta versão (v1).
+* Aplicação exclusivamente web (PWA).
+* Notificações via redirecionamento de link (Deep Link) do WhatsApp.
 
 ---
 
 ## Escopo do Projeto
 
-O escopo do projeto está estritamente focado em resolver a dor do agendamento manual.
+**Está no Escopo (Entregue na V1):**
+* Autenticação segura (Clerk) e Banco de Dados (Supabase).
+* Gestão de grade, catálogo de serviços e bloqueios manuais.
+* Página pública com trava de concorrência.
+* Integração com **Google Gemini** para resumos de agenda.
+* Monitoramento de erros com **Sentry** e Testes Unitários com **Jest**.
 
-**Está no Escopo (O que será entregue na V1):**
-* Autenticação segura do profissional (Clerk).
-* Configuração da grade de horários de trabalho, dias úteis e bloqueios (Lead Time).
-* Cadastro e gestão de serviços ofertados.
-* Página pública de agendamento com cálculo dinâmico de disponibilidade.
-* Dashboard administrativo para visualizar e alterar status de agendamentos (Concluir/Cancelar).
-* Bloqueio manual de horários (Compromissos pessoais).
-
-**Fora do Escopo (O que não será entregue nesta fase):**
-* Gateway de pagamento online integrado (Pix, Cartão de Crédito).
-* Disparo automatizado de mensagens via WhatsApp Business API (bots).
-* Emissão de Notas Fiscais ou recibos de serviço.
-* Chat interno na plataforma.
-* Relatórios financeiros ou de produtividade complexos.
+**Fora do Escopo:**
+* Gateway de pagamentos e Chat interno.
+* Aplicativos nativos para lojas (App Store/Play Store).
+* Robôs de automação de mensagens (Bots).

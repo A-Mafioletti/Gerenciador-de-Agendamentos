@@ -5,7 +5,7 @@ A presente Especificação Técnica do Produto estabelece as diretrizes arquitet
 
 O objetivo deste documento é servir como um guia definitivo para o desenvolvimento, garantindo consistência, escalabilidade e manutenção facilitada do código através de uma arquitetura moderna e segura baseada em microsserviços na nuvem.
 
-O sistema opera sob o ecossistema **Jamstack / Serverless**, dividindo as responsabilidades em três pilares: a interface de usuário (Frontend), as regras de negócio distribuídas em funções sob demanda (Backend/Serverless), e os provedores gerenciados (BaaS) para autenticação e banco de dados.
+O sistema opera sob o ecossistema **Jamstack / Serverless**, dividindo as responsabilidades em três pilares: a interface de usuário (Frontend), as regras de negócio distribuídas em funções sob demanda (Backend/Serverless), e os provedores gerenciados (BaaS/SaaS) para autenticação, banco de dados e inteligência artificial.
 
 ---
 
@@ -25,6 +25,8 @@ graph TD
     classDef database fill:#3ECF8E,stroke:#333,stroke-width:2px,color:#000;
     classDef auth fill:#6C47FF,stroke:#333,stroke-width:2px,color:#fff;
     classDef local fill:#2496ED,stroke:#333,stroke-width:2px,color:#fff;
+    classDef ia fill:#FF9900,stroke:#333,stroke-width:2px,color:#000;
+    classDef monitor fill:#E02424,stroke:#333,stroke-width:2px,color:#fff;
 
     %% Atores
     User((🧑‍🔧 Profissional /<br> 🧑‍💼 Cliente))
@@ -35,6 +37,8 @@ graph TD
         API[⚙️ Backend / API<br>Next.js Route Handlers]:::backend
         Clerk[🔒 Autenticação<br>Clerk Auth]:::auth
         DB[(🗄️ Banco de Dados<br>Supabase PostgreSQL)]:::database
+        Gemini[🧠 IA Generativa<br>Google Gemini API]:::ia
+        Sentry[👁️ Observabilidade<br>Sentry SDK]:::monitor
     end
 
     %% Ambiente Local
@@ -44,10 +48,13 @@ graph TD
 
     %% Conexões
     User -->|Acessa| UI
-    UI -->|Login ou Sessao| Clerk
+    UI -->|Login ou Sessão| Clerk
     UI -->|Consome HTTP| API
-    API -->|Valida Sessao| Clerk
-    API -->|Consultas via clerk id| DB
+    API -->|Valida Sessão| Clerk
+    API -->|Consultas| DB
+    API -->|Gera Resumo Diário| Gemini
+    UI -->|Envia Erros| Sentry
+    API -->|Tracing de Performance| Sentry
 ```
 
 * **Componentes Principais:**
@@ -55,12 +62,12 @@ graph TD
     * **Data/API Layer (Backend):** Servidor Node.js rodando nativamente via Next.js Route Handlers, operando como Serverless Functions na Vercel.
     * **Auth Service (Clerk):** Serviço gerenciado responsável pela emissão de tokens (JWT) e segurança da sessão.
     * **Database Provider (Supabase):** Banco de dados relacional (PostgreSQL) gerenciado na nuvem.
-    * **Ambiente de Containerização (Docker):** A orquestração local via docker-compose garante a portabilidade do sistema (atendendo ao RNF-06), encapsulando o frontend, backend e gerenciamento de dependências em uma imagem OCI, servindo como ambiente de paridade e alternativa de deploy fora da arquitetura Serverless.
-* **Infraestrutura de Deployment:** CI/CD automatizado via GitHub Actions realizando o deploy integrado para a Vercel.
+    * **AI Layer (Gemini):** Integração com Google Gemini LLM para interpretação de dados e geração de resumos de agenda.
+    * **Ambiente de Containerização (Docker):** A orquestração local via docker-compose garante a portabilidade do sistema (atendendo ao RNF-06), encapsulando dependências em uma imagem OCI.
 
 ### Especificidades de Infraestrutura na Nuvem
 * **Comunicação Cross-Origin:** A API do Backend possui políticas estritas configuradas para aceitar requisições exclusivamente do domínio de produção do Frontend.
-* **Compatibilidade de Banco de Dados:** O Prisma ORM está configurado com `binaryTargets` específicos (`rhel-openssl-3.0.x`) para garantir a execução e compatibilidade do Query Engine no ambiente Linux Serverless da Vercel.
+* **Compatibilidade de Banco de Dados:** O Prisma ORM está configurado com `binaryTargets` específicos (`rhel-openssl-3.0.x`) para execução na Vercel.
 
 ---
 
@@ -69,38 +76,43 @@ graph TD
 ### Frontend
 * **Linguagem:** TypeScript
 * **Framework web:** Next.js 14+ (React)
-* **Estilização:** Tailwind CSS (Abordagem Utility-first / Mobile-First). *Justificada pela velocidade de desenvolvimento e facilidade na componentização.*
+* **Estilização:** Tailwind CSS (Abordagem Utility-first / Mobile-First).
 
 ### Backend e Persistência
 * **Linguagem:** TypeScript
-* **Runtime:** Node.js (Vercel Serverless Functions). *Justificado pela escalabilidade sob demanda e ausência de custos ociosos de servidor.*
+* **Runtime:** Node.js (Vercel Serverless Functions).
 * **Framework API:** Next.js Route Handlers.
-* **Persistência:** PostgreSQL (Fornecido pelo Supabase).
-* **ORM:** Prisma ORM. *Justificado por fornecer tipagem estrita de ponta a ponta integrando o banco ao TypeScript.*
+* **Persistência:** PostgreSQL (Supabase).
+* **ORM:** Prisma ORM.
+
+### Testes e Qualidade (RNF-05)
+* **Framework de Testes:** Jest.
+* **Validação de Interface:** React Testing Library e Jest DOM.
+* **Objetivo:** Garantir testabilidade de funções críticas (ex: formatadores de data/hora e lógicas de concorrência), prevenindo regressões de código.
+
+### Inteligência Artificial
+* **LLM API:** Google Gemini (Generative AI). *Utilizado de forma assíncrona no backend para analisar os compromissos do dia e retornar um "briefing" natural e humanizado para o profissional.*
 
 ### Stack de Desenvolvimento e DevOps
 * **IDE:** VS Code.
-* **Gerenciamento de pacotes:** npm.
-* **Pipeline CI/CD:** GitHub Actions (Scripts customizados de deploy para Vercel).
-* **Hospedagem de Produção:** Vercel (Frontend e Backend integrados).
-* **Ambiente de Desenvolvimento Local e Portabilidade:** Docker & Docker Compose. Justificado pela necessidade de paridade entre os ambientes de desenvolvimento e produção, além de garantir o cumprimento do requisito de portabilidade (RNF-06), prevenindo dependência exclusiva da infraestrutura Vercel.
+* **Pipeline CI/CD:** GitHub Actions.
+* **Hospedagem de Produção:** Vercel.
+* **Ambiente de Desenvolvimento Local:** Docker & Docker Compose.
 
 ---
 
 ## 4. Segurança e Observabilidade
 
-### Autenticação e Gestão de Sessão (Estratégia Híbrida)
-A aplicação delega a gestão de identidade ao **Clerk**, garantindo fluxos seguros de login (incluindo Google Auth) e proteção de rotas via Middleware. A vinculação dos dados ocorre armazenando o ID único gerado pelo Clerk (`professional_id`) no banco de dados Supabase. Em cada requisição, o backend valida o token JWT do Clerk antes de consultar o banco.
+### Autenticação e Gestão de Sessão
+A aplicação delega a gestão de identidade ao **Clerk**, armazenando o ID único gerado (`professional_id`) no banco de dados Supabase. Em cada requisição, o backend valida o token JWT do Clerk.
 
-### Controle de Acesso e Autorização 
-O isolamento de dados é garantido pela chave **professional_id**. O sistema valida em cada requisição se o usuário autenticado possui permissão para acessar ou modificar os registros solicitados.
+### Segurança de Dados e Transações
+* **Criptografia:** Todo tráfego é HTTPS/TLS nativo da Vercel.
+* **Prevenção de Concorrência (Double Booking):** As rotas de criação de agendamento possuem travas de banco de dados (`SELECT` prévio) que validam e barram requisições simultâneas para o mesmo slot de horário, retornando código `409 Conflict`.
 
-### Segurança de Dados e Validação
-* **Criptografia:** Todo tráfego é roteado de forma criptografada via HTTPS/TLS nativo da Vercel. Dados em repouso são protegidos pela infraestrutura do Supabase.
-* **Sanitização:** Uso de tipos estritos em TypeScript e schemas de validação no recebimento de payloads HTTP para prevenir SQL Injection e XSS.
-
-### Observabilidade
-* O sistema utiliza logs nativos da Vercel e Vercel Web Analytics para rastrear eventos relevantes, gargalos de performance e manter o histórico de falhas de execução nas rotas da API.
+### Observabilidade e Rastreabilidade (RNF-04)
+A dependência exclusiva de logs nativos da Vercel foi substituída por uma ferramenta de nível corporativo:
+* **Sentry SDK:** Configurado no projeto e integrado à pipeline CI/CD (com envio de *Source Maps*). O Sentry monitora automaticamente a aplicação em tempo real, capturando exceções (*Error Tracking*) e medindo a latência de chamadas à API de agendamentos e banco de dados (*Distributed Tracing*).
 
 ---
 
@@ -108,15 +120,15 @@ O isolamento de dados é garantido pela chave **professional_id**. O sistema val
 A comunicação entre Cliente e Servidor segue o padrão REST via Next.js Route Handlers.
 
 ### Endpoints Principais
-* `POST /api/appointments`: Criação de novos agendamentos (clientes) e inserção de bloqueios manuais de horário (profissional).
-* `GET /api/appointments`: Recuperação da lista de compromissos filtrada por data e profissional, utilizada para calcular a disponibilidade em tempo real.
+* `POST /api/appointments`: Criação de novos agendamentos (clientes) com validação de *double booking*.
+* `GET /api/appointments`: Recuperação da lista de compromissos filtrada por data e profissional.
 * `GET /api/health`: Rota de verificação de status e integridade do Backend.
 
 ---
 
 ## 6. Tenancy
 * **Estratégia:** Arquitetura *Multi-Tenant* (Single Database, Shared Schema).
-* **Isolamento:** A separação lógica é feita via `professional_id`. O sistema foi projetado para que cada profissional gerencie apenas sua própria grade, sem interferência em outros perfis.
+* **Isolamento:** A separação lógica é feita via `professional_id`.
 * **Segurança:** Filtros obrigatórios em todas as queries SQL/Prisma baseados na identidade do profissional logado.
 
 ---
@@ -148,4 +160,4 @@ erDiagram
 ## 8. Diretrizes para Desenvolvimento Assistido por IA
 1.  **Tipagem Estrita:** A IA deve sempre gerar interfaces TypeScript e evitar o tipo genérico `any`.
 2.  **Modularização:** Manter componentes de interface separados da lógica de acesso ao banco de dados.
-3.  **Sincronia com PRD:** Toda nova implementação sugerida pela IA deve ser validada contra os requisitos definidos no documento de PRD (Requisitos do Produto).
+3.  **Sincronia com PRD:** Toda nova implementação sugerida pela IA deve ser validada contra os requisitos definidos no documento de PRD.

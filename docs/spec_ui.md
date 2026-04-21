@@ -8,7 +8,7 @@ Para garantir a melhor experiência de usuário (UX) e atender aos requisitos de
 
 **1.1 Visão do Profissional (Dashboard)**
 
-*(Representação da INT-04 - Controle de agenda e bloqueios)*
+*(Representação da INT-04 - Controle de agenda, IA e bloqueios)*
 
 ![Mockup - Dashboard do Profissional](./Design/dashboard_mockup.png)
 
@@ -35,7 +35,7 @@ Abaixo listamos as especificações detalhadas das interfaces desenvolvidas para
   * Serviço Desejado (Dropdown populado dinamicamente com os serviços do profissional, ocultando automaticamente serviços administrativos de bloqueio).
   * Endereço / Observações (Textarea).
 * **Botões:** `Confirmar Agendamento` (CTA com cor de destaque).
-* **Considerações:** O design deve ser extremamente limpo, focado na conversão, sem distrações.
+* **Considerações:** O design deve ser extremamente limpo, focado na conversão, sem distrações. Feedback visual obrigatório caso o horário seja tomado por outro usuário (prevenção de *double booking*).
 
 ### INT-02 - Tela de Confirmação de Agendamento (Success Page)
 * **Tipo de contêiner:** Página de Sucesso.
@@ -50,7 +50,8 @@ Abaixo listamos as especificações detalhadas das interfaces desenvolvidas para
 
 ### INT-04 - Dashboard Principal (Minha Agenda)
 * **Tipo de contêiner:** Painel de Controle Administrativo.
-* **Campos:** * Abas de navegação interna (`Próximos` / `Histórico`).
+* **Campos:** * **Resumo Inteligente (IA):** Card de destaque no topo da tela com o briefing humanizado gerado pelo Google Gemini (ex: *"Bom dia, Carlos! Você tem 3 agendamentos hoje e uma janela livre às 14h..."*).
+  * Abas de navegação interna (`Próximos` / `Histórico`).
   * Lista de Cards de Agendamento: Exibe horário, nome do cliente, serviço e endereço.
   * **Identificador de Bloqueio:** Cards referentes a compromissos pessoais recebem estilo visual distinto (ícone de cadeado, cor acinzentada, título "🔒 BLOQUEIO PESSOAL") e não exibem botões de contato.
 * **Botões:** * `Bloquear` (Abre a INT-06).
@@ -101,6 +102,7 @@ graph TD
         G[Acesso ao Sistema]:::prof -->|Redireciona| H(INT-03: Login Clerk):::tela
         H -->|Autenticação| I(INT-04: Dashboard Principal):::tela
         
+        I -->|Briefing Diário| Z{Consulta Resumo IA}:::acao
         I -->|Ação Rápida| J(INT-06: Modal de Bloqueio):::tela
         I -->|Menu Lateral| K(INT-05: Ajustes e Serviços):::tela
         I -->|Menu Lateral| L(INT-07: Lista de Clientes):::tela
@@ -113,4 +115,5 @@ graph TD
 1. **Clean UI & Acessibilidade:** Foco absoluto em interfaces minimalistas (estilo Apple/Stripe). Priorizar uso de whitespace e contraste visual.
 2. **Componentização (Atomic Design):** Interfaces não devem ser geradas em arquivos `.tsx` monolíticos. A IA deve isolar formulários, cards e modais em sub-componentes independentes.
 3. **Responsividade (Mobile-First):** Cada fragmento de design (Tailwind classes) deve ser validado para funcionamento impecável em telas estreitas, priorizando a usabilidade touch (botões grandes, espaçamentos generosos).
-4. **Tratamento de Estado:** A aplicação (e as rotinas geradas por IA) devem implementar feedbacks visuais imediatos (loading spinners, `disabled states` em botões, *toast notifications* de sucesso/erro) durante as requisições ao Supabase.
+4. **Tratamento de Estado e Sentry:** A aplicação deve implementar feedbacks visuais imediatos (loading spinners, botões desabilitados). Em caso de falhas capturadas pelo **Sentry**, a UI deve acionar componentes de *Error Boundary* amigáveis, informando ao usuário que o problema já foi reportado.
+5. **Degradação Graciosa (IA):** Caso a API do Google Gemini sofra instabilidade ou timeout, a interface do Dashboard deve tratar o erro de forma silenciosa e elegante, exibindo apenas uma saudação padrão sem quebrar a renderização da agenda do profissional.
