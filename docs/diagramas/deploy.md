@@ -41,8 +41,8 @@ graph TD
     end
 
     %% Fluxos de Implantação e Execução
-    Docker -.->|Git Push (Desenvolvedor)| Actions
-    Actions -->|Build & Deploy| Serverless
+    Docker -->|Git Push do Desenvolvedor| Actions
+    Actions -->|Build e Deploy| Serverless
     Actions -->|Upload Source Maps| Sentry
 
     Internet((🌎 Internet)) -->|HTTPS Request| CDN
