@@ -51,7 +51,7 @@ Ver que o sistema bloqueia automaticamente o horário de almoço e calcula as ja
 
 Para maximizar a conversão de orçamentos, o sistema foi desenhado com um **Fluxo sem Atrito** para o cliente final. Não há necessidade de criar contas, baixar aplicativos ou criar senhas.
 
-![Fluxo de Agendamento via WhatsApp](design/chamada_whatsapp.png)
+![Fluxo de Agendamento via WhatsApp](./design/chamada_whatsapp.png)
 
 *(Acima: O cliente Matheus clica no link do WhatsApp e vai direto para a conversão, inserindo apenas Nome e WhatsApp).*
 
