@@ -47,15 +47,21 @@ Ver que o sistema bloqueia automaticamente o horário de almoço e calcula as ja
 
 ---
 
-### 🟦 Etapa 3: Agendamento Passivo e a Trava de Segurança (O Coração do Sistema)
+### 🟦 Etapa 3: Agendamento Passivo e Trava de Segurança
+
+Para maximizar a conversão de orçamentos, o sistema foi desenhado com um **Fluxo sem Atrito** para o cliente final. Não há necessidade de criar contas, baixar aplicativos ou criar senhas.
+![Fluxo de Agendamento via WhatsApp](./design/chamada_whatsapp.png)
+*(Acima: O cliente Matheus clica no link do WhatsApp e vai direto para a conversão, inserindo apenas Nome e WhatsApp).*
 
 **Ações (O que acontece enquanto Carlos trabalha):**
-1. O cliente final acessa a Booking Page, escolhe a data e preenche os dados.
-2. **A Mágica da Concorrência:** Se dois clientes tentarem marcar a última vaga das 14h ao mesmo tempo, o Backend (Prisma/Supabase) aciona a trava de *Double-Booking*. O primeiro cliente confirma, o segundo recebe um aviso instantâneo de que a vaga acabou de ser preenchida.
-3. Carlos abre o celular no fim do dia e vê a agenda preenchida perfeitamente, sem sobreposições.
+1. O cliente final acessa a Booking Page diretamente pelo link recebido.
+2. **Sem Cadastro:** O cliente visualiza a grade, escolhe o serviço e preenche apenas os dados essenciais de contato (Nome e WhatsApp), confirmando o agendamento em menos de 30 segundos.
+3. **A Mágica da Concorrência:** Se dois clientes tentarem marcar a última vaga das 14h ao mesmo tempo, o Backend (Prisma/Supabase) aciona a trava de *Double-Booking*. O primeiro cliente confirma, o segundo recebe um aviso instantâneo de que a vaga acabou de ser preenchida.
+4. Carlos abre o celular no fim do dia e vê a agenda preenchida perfeitamente, com os contatos dos clientes prontos para uso.
 
 **Percepção do Usuário:**
-* **Confiança Total:** Ele sabe que nunca chegará na casa de um cliente e descobrirá que prometeu o mesmo horário para outra pessoa. O sistema é um juiz imparcial.
+* **Para o Cliente Final:** Alívio e conveniência. Ele resolveu o problema do agendamento rapidamente, sem burocracia.
+* **Para o Profissional:** Confiança total. Ele sabe que não perdeu o cliente por atrito de sistema e que nunca chegará na casa de alguém para descobrir um choque de horários. O sistema atuou como um funil de vendas perfeito e um juiz imparcial.
 
 ---
 
