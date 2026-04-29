@@ -10,7 +10,7 @@ export async function generateAgendaSummary(appointments: any[], history: any[],
     }
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" }, { apiVersion: "v1" });
 
     const horaAtual = new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo', hour: '2-digit', minute: '2-digit' });
     let prompt = "";
@@ -53,6 +53,9 @@ Instruções para agir como um assistente super inteligente e educado do profiss
     return { success: true, text };
   } catch (error: any) {
     console.error("Error generating AI summary:", error);
+    // Se o erro for de servidor lotado (503), avisa o usuário.
+    if (error.message && error.message.includes("503")) {
+        return { success: false, error: "A inteligência artificial está muito requisitada no momento. Tente novamente em 1 minuto." };
+    }
     return { success: false, error: "Não foi possível gerar o resumo. Tente novamente mais tarde." };
   }
-}
