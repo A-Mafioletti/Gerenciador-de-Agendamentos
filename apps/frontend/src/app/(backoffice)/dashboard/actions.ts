@@ -59,3 +59,4 @@ Instruções para agir como um assistente super inteligente e educado do profiss
     }
     return { success: false, error: "Não foi possível gerar o resumo. Tente novamente mais tarde." };
   }
+}
